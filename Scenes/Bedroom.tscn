@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://be5p0j4w6v1m4"]
+
+[ext_resource type="PackedScene" path="res://Models/ichigo_bedroom/source/Ichigo Bedroom dae/0B1 Ichigo BadRoom Bleach.dae" id="1_bedroom"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(20, 0.1, 20)
+
+[node name="Bedroom" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_bedroom")]
+
+[node name="FloorCollision" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FloorCollision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+shape = SubResource("BoxShape3D_floor")
