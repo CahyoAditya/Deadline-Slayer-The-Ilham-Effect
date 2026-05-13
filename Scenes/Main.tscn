@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c8yv40tqh0t2t" path="res://Scenes/Player.tscn" id="1_player"]
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="3_post"]
-[ext_resource type="PackedScene" path="res://Scenes/Bedroom.tscn" id="5_bedroom"]
+[ext_resource type="PackedScene" uid="uid://be5p0j4w6v1m4" path="res://Scenes/Bedroom.tscn" id="5_bedroom"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -40,8 +40,8 @@ light_energy = 0.8
 shadow_enabled = true
 omni_range = 7.0
 
-
 [node name="Bedroom" parent="." instance=ExtResource("5_bedroom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00029551983, 0.00040233135, 0.0021004453)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 
