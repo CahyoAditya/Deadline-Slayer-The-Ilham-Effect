@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8yv40tqh0t2t"]
+
+[ext_resource type="PackedScene" uid="uid://c8yv40tqh0t2t" path="res://scenes/player/Player.tscn" id="1_player"]
+[ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://shaders/PostProcess.gdshader" id="3_post"]
+[ext_resource type="PackedScene" uid="uid://be5p0j4w6v1m4" path="res://scenes/world/KostRoom.tscn" id="5_bedroom"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.02, 0.02, 0.05, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.05, 0.05, 0.1, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_strength = 0.8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
+shader = ExtResource("3_post")
+shader_parameter/vignette_intensity = 0.5
+shader_parameter/vignette_opacity = 0.6
+shader_parameter/vignette_color = Color(0, 0, 0, 1)
+shader_parameter/grain_amount = 0.07
+shader_parameter/grain_size = 1.0
+shader_parameter/aberration_amount = 1.5
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 5, 0)
+light_color = Color(0.470588, 0.588235, 0.862745, 1)
+light_energy = 0.1
+shadow_enabled = true
+
+[node name="RoomLamp" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -2)
+light_color = Color(1, 0.882353, 0.627451, 1)
+light_energy = 0.8
+shadow_enabled = true
+omni_range = 7.0
+
+[node name="Bedroom" parent="." instance=ExtResource("5_bedroom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00029551983, 0.00040233135, 0.0021004453)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+
+[node name="PostProcessLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="PostProcessLayer"]
+material = SubResource("ShaderMaterial_1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

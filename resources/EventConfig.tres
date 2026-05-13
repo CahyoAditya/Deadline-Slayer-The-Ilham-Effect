@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EventConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/EventConfig.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+thresholds = [25, 50, 75, 99, 100]
+jumpscare_duration = 1.5
+kernel_panic_auto_reboot_time = 10.0

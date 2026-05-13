@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SanityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/SanityData.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+max_sanity = 100.0
+passive_drain_per_second = 0.5
+specter_drain_per_second = 3.0
+kopi_restore_amount = 25.0
