@@ -14,6 +14,13 @@ var walk_anim_name: String = ""
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	# Bulletproof fix: Force the Armature to be perfectly upright when the game starts
+	# The original T-pose transform is a 180-degree rotation on the Y axis
+	if has_node("Head/Camera3D/Armature"):
+		var armature = get_node("Head/Camera3D/Armature")
+		armature.transform.basis = Basis(Vector3.UP, PI)
+
 	# Auto-detect the walking animation name from the library
 	if anim_player.has_animation_library("walking"):
 		var walk_lib = anim_player.get_animation_library("walking")
@@ -21,16 +28,17 @@ func _ready():
 		if anim_list.size() > 0:
 			walk_anim_name = "walking/" + anim_list[0]
 			
-			# Fix the rotation issue programmatically!
-			# The animation is read-only, so we duplicate it, disable the bad track, and save it back.
 			var fixed_anim = anim_player.get_animation(walk_anim_name).duplicate()
+			print("--- ALL TRACKS IN ANIMATION ---")
 			for i in range(fixed_anim.get_track_count()):
 				var path = str(fixed_anim.track_get_path(i))
-				# The root track (path ".") is what forces the character to lie down
-				if path == "." or path == "Armature" or path.begins_with("Armature:"):
+				print(path)
+				# Disable any track that might be the root
+				if path == "." or path == "Armature" or path.begins_with("Armature:") or path.begins_with(".:") or path.contains("Root") or path.contains("Hips"):
 					fixed_anim.track_set_enabled(i, false)
+					print("DISABLED TRACK: ", path)
+			print("-------------------------------")
 			
-			# Add the fixed animation back to the player
 			var new_lib = AnimationLibrary.new()
 			new_lib.add_animation(anim_list[0], fixed_anim)
 			anim_player.remove_animation_library("walking")
