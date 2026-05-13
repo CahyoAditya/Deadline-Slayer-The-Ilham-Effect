@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://df7h4hav11a4x"]
+[gd_scene load_steps=7 format=3 uid="uid://df7h4hav11a4x"]
 
 [ext_resource type="PackedScene" uid="uid://c8yv40tqh0t2t" path="res://Scenes/Player.tscn" id="1_player"]
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="3_post"]
 [ext_resource type="PackedScene" uid="uid://be5p0j4w6v1m4" path="res://Scenes/Bedroom.tscn" id="5_bedroom"]
+[ext_resource type="Script" path="res://Scripts/Systems/ProgressSystem.gd" id="6_progress"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -23,6 +24,9 @@ shader_parameter/grain_size = 1.0
 shader_parameter/aberration_amount = 1.5
 
 [node name="Main" type="Node3D"]
+
+[node name="ProgressSystem" type="Node" parent="."]
+script = ExtResource("6_progress")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1")

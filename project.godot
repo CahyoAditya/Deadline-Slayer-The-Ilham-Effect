@@ -15,6 +15,11 @@ run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+EventBus="*res://Scripts/Autoload/EventBus.gd"
+GameManager="*res://Scripts/Autoload/GameManager.gd"
+
 [input]
 
 move_forward={
