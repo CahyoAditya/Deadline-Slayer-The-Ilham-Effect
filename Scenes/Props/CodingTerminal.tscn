@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Props/CodingTerminal.gd" id="1_terminal"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_terminal"]
+size = Vector3(1.2, 0.16, 0.75)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_terminal"]
+size = Vector3(1.2, 0.16, 0.75)
+
+[node name="CodingTerminal" type="StaticBody3D"]
+script = ExtResource("1_terminal")
+interact_message = "Open terminal"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_terminal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_terminal")

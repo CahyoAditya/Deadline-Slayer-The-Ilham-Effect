@@ -1,8 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://df7h4hav11a4x"]
+[gd_scene load_steps=11 format=3 uid="uid://df7h4hav11a4x"]
 
 [ext_resource type="PackedScene" uid="uid://c8yv40tqh0t2t" path="res://Scenes/Player.tscn" id="1_player"]
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="3_post"]
 [ext_resource type="PackedScene" uid="uid://be5p0j4w6v1m4" path="res://Scenes/Bedroom.tscn" id="5_bedroom"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/HUD.tscn" id="6_hud"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/CodingTerminal.tscn" id="7_terminal"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/KopiItem.tscn" id="8_kopi"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/BatteryPickup.tscn" id="9_battery"]
+[ext_resource type="PackedScene" path="res://Scenes/Entities/Specter.tscn" id="10_specter"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -35,6 +40,7 @@ shadow_enabled = true
 
 [node name="RoomLamp" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -2)
+visible = false
 light_color = Color(1, 0.882353, 0.627451, 1)
 light_energy = 0.8
 shadow_enabled = true
@@ -44,6 +50,23 @@ omni_range = 7.0
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28778052, 0)
+
+[node name="CodingTerminal" parent="." instance=ExtResource("7_terminal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, -1.8)
+
+[node name="KopiItem" parent="." instance=ExtResource("8_kopi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 1, -1.6)
+
+[node name="KopiItem2" parent="." instance=ExtResource("8_kopi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 1, -1.6)
+
+[node name="BatteryPickup" parent="." instance=ExtResource("9_battery")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 1, -1.2)
+
+[node name="Specter" parent="." instance=ExtResource("10_specter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 5)
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]
 
 [node name="PostProcessLayer" type="CanvasLayer" parent="."]
 

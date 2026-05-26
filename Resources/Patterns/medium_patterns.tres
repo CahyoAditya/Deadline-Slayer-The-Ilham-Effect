@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PatternSet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Minigame/PatternSet.gd" id="1_pattern"]
+
+[resource]
+script = ExtResource("1_pattern")
+difficulty = "medium"
+patterns = Array[String](["if sanity <= 0:", "func restore(amount):", "EventBus.sanity_changed.emit(value)", "for task in tasks:", "var progress = clamp(value, 0, 100)", "match threshold:", "Input.is_action_pressed(\"interact\")", "get_tree().reload_current_scene()", "var tween = create_tween()", "deadline_timer -= delta", "set_process(true)", "if battery_level <= 0:", "return input.strip_edges()", "AudioManager.play_sfx(id)", "GameManager.trigger_win()", "var pattern = patterns.pick_random()", "line_edit.grab_focus()", "panel.visible = true", "camera.rotate_x(angle)", "velocity = velocity.normalized()"])

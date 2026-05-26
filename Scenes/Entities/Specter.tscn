@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Entities/SpecterAI.gd" id="1_specter"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_specter"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_specter"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_detection"]
+radius = 1.25
+
+[node name="Specter" type="CharacterBody3D"]
+script = ExtResource("1_specter")
+move_speed = 1.4
+catch_distance = 1.25
+spawn_distance = 8.0
+grace_seconds = 4.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_specter")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_specter")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_detection")

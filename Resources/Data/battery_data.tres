@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="BatteryData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Systems/BatteryData.gd" id="1_battery"]
+
+[resource]
+script = ExtResource("1_battery")
+max_battery = 100.0
+drain_per_second = 1.0
+pickup_restore_amount = 50.0

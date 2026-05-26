@@ -1,0 +1,126 @@
+extends CanvasLayer
+
+@onready var deadline_timer: Label = %DeadlineTimer
+@onready var sanity_bar: ProgressBar = %SanityBar
+@onready var battery_meter: ProgressBar = %BatteryMeter
+@onready var progress_bar: ProgressBar = %ProgressBar
+@onready var interact_hint: Label = %InteractHint
+@onready var message_label: Label = %MessageLabel
+@onready var pause_overlay: PanelContainer = %PauseOverlay
+@onready var end_screen: PanelContainer = %EndScreen
+@onready var end_title: Label = %EndTitle
+@onready var end_reason: Label = %EndReason
+@onready var end_stats: Label = %EndStats
+@onready var resume_button: Button = %ResumeButton
+@onready var retry_button: Button = %RetryButton
+@onready var quit_button: Button = %QuitButton
+
+var last_sanity := 100.0
+var last_battery := 100.0
+var last_progress := 0.0
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	EventBus.deadline_changed.connect(_on_deadline_changed)
+	EventBus.sanity_changed.connect(_on_sanity_changed)
+	EventBus.battery_changed.connect(_on_battery_changed)
+	EventBus.progress_changed.connect(_on_progress_changed)
+	EventBus.interact_hint_changed.connect(_on_interact_hint_changed)
+	EventBus.message_requested.connect(_on_message_requested)
+	EventBus.game_lost.connect(_on_game_lost)
+	EventBus.game_won.connect(_on_game_won)
+	EventBus.game_paused.connect(_on_game_paused)
+	EventBus.game_resumed.connect(_on_game_resumed)
+	resume_button.pressed.connect(GameManager.resume_game)
+	retry_button.pressed.connect(GameManager.restart_game)
+	quit_button.pressed.connect(func() -> void: get_tree().quit())
+
+	_on_deadline_changed(GameManager.deadline_timer)
+	_on_sanity_changed(100.0)
+	_on_battery_changed(100.0)
+	_on_progress_changed(0.0)
+	pause_overlay.visible = false
+	end_screen.visible = false
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		GameManager.toggle_pause()
+		get_viewport().set_input_as_handled()
+
+func _on_deadline_changed(time_left_seconds: float) -> void:
+	var total_seconds := int(ceil(time_left_seconds))
+	var minutes := int(total_seconds / 60)
+	var seconds := total_seconds % 60
+	deadline_timer.text = "DEADLINE: %02d:%02d" % [minutes, seconds]
+	deadline_timer.add_theme_color_override("font_color", Color.RED if time_left_seconds <= 300.0 else Color.WHITE)
+
+func _on_sanity_changed(value: float) -> void:
+	last_sanity = value
+	sanity_bar.value = value
+	if value <= 20.0:
+		sanity_bar.modulate = Color(1.0, 0.2, 0.2)
+	elif value <= 50.0:
+		sanity_bar.modulate = Color(1.0, 0.85, 0.2)
+	else:
+		sanity_bar.modulate = Color(0.3, 1.0, 0.35)
+
+func _on_battery_changed(value: float) -> void:
+	last_battery = value
+	battery_meter.value = value
+	battery_meter.modulate = Color(1.0, 0.25, 0.25) if value <= 15.0 else Color.WHITE
+
+func _on_progress_changed(value: float) -> void:
+	last_progress = value
+	progress_bar.value = value
+
+func _on_interact_hint_changed(text: String) -> void:
+	interact_hint.text = text
+	interact_hint.visible = text != ""
+
+func _on_message_requested(text: String) -> void:
+	message_label.text = text
+	message_label.visible = text != ""
+	if text != "":
+		var timer := get_tree().create_timer(3.0)
+		timer.timeout.connect(func() -> void:
+			if message_label.text == text:
+				message_label.visible = false
+		)
+
+func _on_game_lost(reason: String) -> void:
+	var text := "Time's up. The professor has logged out."
+	if reason == "sanity_depleted":
+		text = "Your mind collapsed before the deadline."
+	elif reason == "caught_by_specter":
+		text = "The Specter claimed you. Deadline missed."
+	_show_end_screen("DEADLINE MISSED", text)
+
+func _on_game_won() -> void:
+	_show_end_screen("SUBMITTED.", "The upload made it before the deadline.")
+
+func _on_game_paused() -> void:
+	pause_overlay.visible = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func _on_game_resumed() -> void:
+	pause_overlay.visible = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _show_end_screen(title: String, reason: String) -> void:
+	end_title.text = title
+	end_reason.text = reason
+	end_stats.text = "Progress: %.1f%%\nSanity: %.1f%%\nBattery: %.1f%%\nTime survived: %s" % [
+		last_progress,
+		last_sanity,
+		last_battery,
+		_format_time(GameManager.time_survived)
+	]
+	end_screen.visible = true
+	pause_overlay.visible = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func _format_time(seconds_value: float) -> String:
+	var total_seconds := int(floor(seconds_value))
+	var minutes := int(total_seconds / 60)
+	var seconds := total_seconds % 60
+	return "%02d:%02d" % [minutes, seconds]

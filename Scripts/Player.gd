@@ -5,52 +5,22 @@ const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.002
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var walk_anim_name: String = ""
+var input_locked := false
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
 @onready var interact_ray = $Head/Camera3D/InteractRay
-@onready var anim_player: AnimationPlayer = $Head/Camera3D/AnimationPlayer
 
 func _ready():
+	add_to_group("player")
+	EventBus.terminal_opened.connect(_on_terminal_opened)
+	EventBus.terminal_closed.connect(_on_terminal_closed)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
-	# Bulletproof fix: Force the Armature to be perfectly upright when the game starts
-	# The original T-pose transform is a 180-degree rotation on the Y axis
-	if has_node("Head/Camera3D/Armature"):
-		var armature = get_node("Head/Camera3D/Armature")
-		armature.transform.basis = Basis(Vector3.UP, PI)
-
-	# Auto-detect the walking animation name from the library
-	if anim_player.has_animation_library("walking"):
-		var walk_lib = anim_player.get_animation_library("walking")
-		var anim_list = walk_lib.get_animation_list()
-		if anim_list.size() > 0:
-			walk_anim_name = "walking/" + anim_list[0]
-			
-			var fixed_anim = anim_player.get_animation(walk_anim_name).duplicate()
-			print("--- ALL TRACKS IN ANIMATION ---")
-			for i in range(fixed_anim.get_track_count()):
-				var path = str(fixed_anim.track_get_path(i))
-				print(path)
-				# Disable any track that might be the root
-				if path == "." or path == "Armature" or path.begins_with("Armature:") or path.begins_with(".:") or path.contains("Root") or path.contains("Hips"):
-					fixed_anim.track_set_enabled(i, false)
-					print("DISABLED TRACK: ", path)
-			print("-------------------------------")
-			
-			var new_lib = AnimationLibrary.new()
-			new_lib.add_animation(anim_list[0], fixed_anim)
-			anim_player.remove_animation_library("walking")
-			anim_player.add_animation_library("walking", new_lib)
-			
-			print("Walking animation loaded and rotation fixed: ", walk_anim_name)
-		else:
-			print("Walking animation library found but it contains no animations!")
-	else:
-		print("ERROR: Walking animation library not found on AnimationPlayer!")
 
 func _unhandled_input(event):
+	if input_locked or not GameManager.is_playing():
+		return
+
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		head.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
@@ -68,18 +38,19 @@ func _unhandled_input(event):
 func _try_interact():
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
-		# Search for an Interactable component or directly call interact
-		if collider.has_method("interact"):
-			collider.interact(self)
-		else:
-			for child in collider.get_children():
-				if child.has_method("interact"):
-					child.interact(self)
-					break
+		var target := _find_interactable(collider)
+		if target != null:
+			target.interact(self)
 
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+
+	if input_locked or not GameManager.is_playing():
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+		move_and_slide()
+		return
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -89,14 +60,48 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		# Play walking animation when moving
-		if walk_anim_name != "" and anim_player.current_animation != walk_anim_name:
-			anim_player.play(walk_anim_name)
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-		# Stop walking animation when idle
-		if walk_anim_name != "" and anim_player.current_animation == walk_anim_name:
-			anim_player.stop()
 
 	move_and_slide()
+
+func _process(_delta: float) -> void:
+	if input_locked or not GameManager.is_playing():
+		EventBus.emit_interact_hint_changed("")
+		return
+
+	if interact_ray.is_colliding():
+		var collider = interact_ray.get_collider()
+		var target := _find_interactable(collider)
+		if target != null:
+			var hint := "Press E"
+			var message = target.get("interact_message")
+			if message != null and str(message) != "":
+				hint = "Press E - " + str(message)
+			EventBus.emit_interact_hint_changed(hint)
+			return
+
+	EventBus.emit_interact_hint_changed("")
+
+func _find_interactable(collider: Variant) -> Node:
+	if collider == null or not collider is Node:
+		return null
+
+	var collider_node := collider as Node
+	if collider_node.has_method("interact"):
+		return collider_node
+
+	for child in collider_node.get_children():
+		if child.has_method("interact"):
+			return child
+
+	return null
+
+func _on_terminal_opened() -> void:
+	input_locked = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func _on_terminal_closed() -> void:
+	input_locked = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ProgressData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Systems/ProgressData.gd" id="1_progress"]
+
+[resource]
+script = ExtResource("1_progress")
+current_progress = 0.0
+max_progress = 100.0
+progress_per_correct_input = 2.0

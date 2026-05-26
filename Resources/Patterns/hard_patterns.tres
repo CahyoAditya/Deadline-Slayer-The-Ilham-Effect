@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PatternSet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Minigame/PatternSet.gd" id="1_pattern"]
+
+[resource]
+script = ExtResource("1_pattern")
+difficulty = "hard"
+patterns = Array[String](["func _physics_process(delta: float) -> void:", "current_progress = clamp(current_progress + amount, 0.0, 100.0)", "EventBus.progress_threshold_reached.connect(_on_threshold_reached)", "var next_pos = navigation_agent.get_next_path_position()", "if current_state == GameState.KERNEL_PANIC:", "await get_tree().create_timer(2.0).timeout", "var accuracy = correct_chars / max(total_chars, 1)", "for threshold in GameManager.event_config.thresholds:", "message_panel.set_anchors_preset(Control.PRESET_CENTER)", "flashlight.visible = flashlight_on and battery_level > 0.0", "var direction = global_position.direction_to(player.global_position)", "EventBus.emit_interact_hint_changed(\"Press E\")", "if event is InputEventMouseMotion:", "var total_seconds := int(ceil(time_left_seconds))", "current_pattern_label.text = current_pattern", "output_log.append_text(line + \"\\n\")", "battery_level = clamp(battery_level + amount, 0.0, max_battery)", "GameManager.set_state(GameManager.GameState.PLAYING)", "Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)", "target.interact(self)"])

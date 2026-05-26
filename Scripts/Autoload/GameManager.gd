@@ -1,0 +1,123 @@
+extends Node
+
+enum GameState { MENU, PLAYING, PAUSED, KERNEL_PANIC, GAME_OVER, WIN }
+
+@export var progress_data: ProgressData = ProgressData.new()
+@export var sanity_data: SanityData = SanityData.new()
+@export var battery_data: BatteryData = BatteryData.new()
+@export var event_config: EventConfig = EventConfig.new()
+
+var current_state: GameState = GameState.MENU
+var deadline_timer := 0.0
+var is_specter_active := false
+var lose_reason := ""
+var time_survived := 0.0
+
+func _ready() -> void:
+	_load_resources()
+	EventBus.sanity_depleted.connect(func() -> void: trigger_lose("sanity_depleted"))
+	EventBus.specter_caught_player.connect(func() -> void: trigger_lose("caught_by_specter"))
+	call_deferred("start_game")
+
+func _process(delta: float) -> void:
+	if current_state != GameState.PLAYING:
+		return
+
+	time_survived += delta
+	deadline_timer = maxf(deadline_timer - delta, 0.0)
+	EventBus.emit_deadline_changed(deadline_timer)
+
+	if deadline_timer <= 0.0:
+		trigger_lose("timeout")
+
+func start_game() -> void:
+	progress_data.reset()
+	if is_instance_valid(ProgressSystem):
+		ProgressSystem.reset()
+	deadline_timer = event_config.deadline_seconds
+	is_specter_active = false
+	lose_reason = ""
+	time_survived = 0.0
+	EventBus.emit_deadline_changed(deadline_timer)
+	set_state(GameState.PLAYING)
+
+func set_state(new_state: GameState) -> void:
+	if current_state == new_state:
+		return
+
+	var old_state := current_state
+	current_state = new_state
+	EventBus.emit_game_state_changed(current_state)
+
+	if new_state == GameState.PAUSED:
+		EventBus.emit_game_paused()
+	elif old_state == GameState.PAUSED and new_state == GameState.PLAYING:
+		EventBus.emit_game_resumed()
+
+func is_playing() -> bool:
+	return current_state == GameState.PLAYING
+
+func pause_game() -> void:
+	if current_state == GameState.PLAYING:
+		set_state(GameState.PAUSED)
+		EventBus.emit_message_requested("PAUSED")
+
+func resume_game() -> void:
+	if current_state == GameState.PAUSED:
+		set_state(GameState.PLAYING)
+		EventBus.emit_message_requested("")
+
+func toggle_pause() -> void:
+	if current_state == GameState.PLAYING:
+		pause_game()
+	elif current_state == GameState.PAUSED:
+		resume_game()
+
+func restart_game() -> void:
+	current_state = GameState.MENU
+	get_tree().reload_current_scene()
+	call_deferred("start_game")
+
+func trigger_win() -> void:
+	if current_state == GameState.WIN:
+		return
+
+	set_state(GameState.WIN)
+	EventBus.emit_game_won()
+	EventBus.emit_message_requested("SUBMITTED.")
+
+func trigger_lose(reason: String) -> void:
+	if current_state == GameState.GAME_OVER or current_state == GameState.WIN:
+		return
+
+	lose_reason = reason
+	set_state(GameState.GAME_OVER)
+	EventBus.emit_game_lost(reason)
+
+	var message := "Time's up. The professor has logged out."
+	if reason == "sanity_depleted":
+		message = "Your mind collapsed before the deadline."
+	elif reason == "caught_by_specter":
+		message = "The Specter claimed you. Deadline missed."
+	EventBus.emit_message_requested(message)
+
+func _load_resources() -> void:
+	if ResourceLoader.exists("res://Resources/Data/progress_data.tres"):
+		var loaded_progress := load("res://Resources/Data/progress_data.tres")
+		if loaded_progress is ProgressData:
+			progress_data = loaded_progress
+
+	if ResourceLoader.exists("res://Resources/Data/sanity_data.tres"):
+		var loaded_sanity := load("res://Resources/Data/sanity_data.tres")
+		if loaded_sanity is SanityData:
+			sanity_data = loaded_sanity
+
+	if ResourceLoader.exists("res://Resources/Data/battery_data.tres"):
+		var loaded_battery := load("res://Resources/Data/battery_data.tres")
+		if loaded_battery is BatteryData:
+			battery_data = loaded_battery
+
+	if ResourceLoader.exists("res://Resources/Data/event_config.tres"):
+		var loaded_config := load("res://Resources/Data/event_config.tres")
+		if loaded_config is EventConfig:
+			event_config = loaded_config

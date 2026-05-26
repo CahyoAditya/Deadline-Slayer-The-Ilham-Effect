@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PatternSet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Minigame/PatternSet.gd" id="1_pattern"]
+
+[resource]
+script = ExtResource("1_pattern")
+difficulty = "easy"
+patterns = Array[String](["print(\"hello\")", "x = 5", "deadline = true", "return score", "var hp = 100", "if ready:", "queue_free()", "await timer", "func start():", "pass", "for i in range(3):", "player.move()", "sanity -= 1", "battery += 10", "emit_signal()", "load_level()", "save_game()", "open_laptop()", "close_terminal()", "compile()"])

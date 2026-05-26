@@ -1,0 +1,252 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/HUDController.gd" id="1_hud"]
+[ext_resource type="Script" path="res://Scripts/UI/TerminalUIController.gd" id="2_terminal_ui"]
+[ext_resource type="Script" path="res://Scripts/Minigame/TerminalGame.gd" id="3_terminal_game"]
+
+[node name="HUD" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="StatsPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.02
+anchor_right = 0.28
+anchor_bottom = 0.23
+
+[node name="StatsMargin" type="MarginContainer" parent="Root/StatsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StatsVBox" type="VBoxContainer" parent="Root/StatsPanel/StatsMargin"]
+layout_mode = 2
+
+[node name="DeadlineTimer" type="Label" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DEADLINE: 20:00"
+
+[node name="SanityLabel" type="Label" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+layout_mode = 2
+text = "SANITY"
+
+[node name="SanityBar" type="ProgressBar" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="BatteryLabel" type="Label" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+layout_mode = 2
+text = "BATTERY"
+
+[node name="BatteryMeter" type="ProgressBar" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="ProgressBar" type="ProgressBar" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32
+anchor_top = 0.92
+anchor_right = 0.68
+anchor_bottom = 0.96
+max_value = 100.0
+show_percentage = true
+
+[node name="InteractHint" type="Label" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.72
+anchor_right = 0.6
+anchor_bottom = 0.78
+horizontal_alignment = 1
+text = "Press E"
+
+[node name="MessageLabel" type="Label" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.36
+anchor_right = 0.75
+anchor_bottom = 0.48
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 28
+text = ""
+
+[node name="PauseOverlay" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.36
+anchor_top = 0.3
+anchor_right = 0.64
+anchor_bottom = 0.58
+
+[node name="PauseMargin" type="MarginContainer" parent="Root/PauseOverlay"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="PauseVBox" type="VBoxContainer" parent="Root/PauseOverlay/PauseMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PauseTitle" type="Label" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="PauseHelp" type="Label" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
+layout_mode = 2
+text = "Press P or click Resume."
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Resume"
+
+[node name="EndScreen" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.22
+anchor_right = 0.7
+anchor_bottom = 0.76
+
+[node name="EndMargin" type="MarginContainer" parent="Root/EndScreen"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="EndVBox" type="VBoxContainer" parent="Root/EndScreen/EndMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="EndTitle" type="Label" parent="Root/EndScreen/EndMargin/EndVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "END"
+horizontal_alignment = 1
+
+[node name="EndReason" type="Label" parent="Root/EndScreen/EndMargin/EndVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reason"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EndStats" type="Label" parent="Root/EndScreen/EndMargin/EndVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stats"
+horizontal_alignment = 1
+
+[node name="RetryButton" type="Button" parent="Root/EndScreen/EndMargin/EndVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Try Again"
+
+[node name="QuitButton" type="Button" parent="Root/EndScreen/EndMargin/EndVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+
+[node name="TerminalPanel" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.14
+anchor_right = 0.8
+anchor_bottom = 0.86
+script = ExtResource("2_terminal_ui")
+
+[node name="TerminalGame" type="Node" parent="Root/TerminalPanel"]
+script = ExtResource("3_terminal_game")
+
+[node name="TerminalMargin" type="MarginContainer" parent="Root/TerminalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="TerminalVBox" type="VBoxContainer" parent="Root/TerminalPanel/TerminalMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TerminalTitle" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
+layout_mode = 2
+text = "SIPEMAS TERMINAL"
+
+[node name="TerminalHelp" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
+layout_mode = 2
+text = "Type the pattern below exactly, then press Enter. Press Esc to close."
+autowrap_mode = 3
+
+[node name="CurrentPattern" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "TYPE EXACTLY:"
+autowrap_mode = 3
+
+[node name="OutputLog" type="RichTextLabel" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+bbcode_enabled = true
+scroll_following = true
+
+[node name="InputField" type="LineEdit" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "type the pattern and press Enter"
+keep_editing_on_text_submit = true
+
+[node name="TerminalFeedback" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+
+[node name="StatusBar" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "UPLOAD 0.0%"
