@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://df7h4hav11a4x"]
+[gd_scene load_steps=14 format=3 uid="uid://df7h4hav11a4x"]
 
 [ext_resource type="PackedScene" uid="uid://c8yv40tqh0t2t" path="res://Scenes/Player.tscn" id="1_player"]
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="3_post"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" path="res://Scenes/Props/KopiItem.tscn" id="8_kopi"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/BatteryPickup.tscn" id="9_battery"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Specter.tscn" id="10_specter"]
+[ext_resource type="Shader" uid="uid://b8t1eosuff2cn" path="res://Shaders/SanityDistort.gdshader" id="11_distort"]
+[ext_resource type="Script" uid="uid://bo3lj06bn7y24" path="res://Scripts/UI/PostProcessController.gd" id="12_controller"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -17,6 +19,11 @@ ambient_light_color = Color(0.05, 0.05, 0.1, 1)
 tonemap_mode = 2
 glow_enabled = true
 glow_strength = 0.8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2"]
+shader = ExtResource("11_distort")
+shader_parameter/distort_amount = 0.0
+shader_parameter/distort_speed = 3.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
 shader = ExtResource("3_post")
@@ -40,6 +47,7 @@ shadow_enabled = true
 
 [node name="RoomLamp" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -2)
+visible = false
 light_color = Color(1, 0.882353, 0.627451, 1)
 light_energy = 0.8
 shadow_enabled = true
@@ -69,8 +77,18 @@ spawn_points = Array[Vector3]([Vector3(0, 0.9, -0.65), Vector3(0.25, 0.9, 1.2), 
 [node name="HUD" parent="." instance=ExtResource("6_hud")]
 
 [node name="PostProcessLayer" type="CanvasLayer" parent="."]
+script = ExtResource("12_controller")
 
-[node name="ColorRect" type="ColorRect" parent="PostProcessLayer"]
+[node name="DistortRect" type="ColorRect" parent="PostProcessLayer"]
+material = SubResource("ShaderMaterial_2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PostProcessRect" type="ColorRect" parent="PostProcessLayer"]
 material = SubResource("ShaderMaterial_1")
 anchors_preset = 15
 anchor_right = 1.0
