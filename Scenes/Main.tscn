@@ -52,16 +52,16 @@ omni_range = 7.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28778052, 0)
 
 [node name="CodingTerminal" parent="." instance=ExtResource("7_terminal")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, -1.8)
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -2.6122649, 1.1457566, -0.6524214)
 
 [node name="KopiItem" parent="." instance=ExtResource("8_kopi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 1, -1.6)
+transform = Transform3D(0.51, 0, 0, 0, 0.51, 0, 0, 0, 0.51, -2.3074894, 1.0588962, 0.086559355)
 
 [node name="KopiItem2" parent="." instance=ExtResource("8_kopi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 1, -1.6)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.3601797, 1.0591336, -1.1270444)
 
 [node name="BatteryPickup" parent="." instance=ExtResource("9_battery")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 1, -1.2)
+transform = Transform3D(0.28395778, 0, 0.4115434, 0, 0.5, 0, -0.4115434, 0, 0.28395778, -2.1916904, 0.9029902, -1.6060847)
 
 [node name="Specter" parent="." instance=ExtResource("10_specter")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 5)
