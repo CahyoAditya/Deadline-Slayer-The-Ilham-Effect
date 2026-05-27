@@ -15,10 +15,8 @@ radius = 1.25
 
 [node name="Specter" type="CharacterBody3D"]
 script = ExtResource("1_specter")
-move_speed = 1.4
-catch_distance = 1.25
-spawn_distance = 8.0
-grace_seconds = 4.0
+jumpscare_time_limit = 7.0
+senter_duration_to_dismiss = 5.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_specter")

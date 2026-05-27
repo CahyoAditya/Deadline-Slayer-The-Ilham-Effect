@@ -25,11 +25,13 @@ func _fire_event_25() -> void:
 
 func _fire_event_50() -> void:
 	EventBus.emit_jumpscare_fired("doorway_jumpscare")
+	EventBus.emit_specter_spawned()
 	EventBus.emit_message_requested("The doorway is not empty.")
 
 func _fire_event_75() -> void:
 	EventBus.emit_jumpscare_fired("desk_jumpscare")
 	AudioManager.play_sfx("jumpscare_02")
+	EventBus.emit_specter_spawned()
 	EventBus.emit_message_requested("The lights hate you now.")
 
 func _fire_kernel_panic() -> void:
