@@ -40,7 +40,6 @@ shadow_enabled = true
 
 [node name="RoomLamp" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -2)
-visible = false
 light_color = Color(1, 0.882353, 0.627451, 1)
 light_energy = 0.8
 shadow_enabled = true
@@ -64,7 +63,8 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.3601797, 1.0591336, 
 transform = Transform3D(0.28395778, 0, 0.4115434, 0, 0.5, 0, -0.4115434, 0, 0.28395778, -2.1916904, 0.9029902, -1.6060847)
 
 [node name="Specter" parent="." instance=ExtResource("10_specter")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 8.263377)
+spawn_points = Array[Vector3]([Vector3(0, 0.9, -0.65), Vector3(0.25, 0.9, 1.2), Vector3(2, 0.9, -1.85), Vector3(2.5, 0.9, -0.5)])
 
 [node name="HUD" parent="." instance=ExtResource("6_hud")]
 

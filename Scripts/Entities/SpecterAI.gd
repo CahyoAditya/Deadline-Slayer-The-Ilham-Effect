@@ -28,12 +28,6 @@ func _process(delta: float) -> void:
 		$MeshInstance3D.position = Vector3.ZERO
 		return
 
-	# Decrement jumpscare timer
-	jumpscare_timer -= delta
-	if jumpscare_timer <= 0.0:
-		_trigger_jumpscare()
-		return
-
 	# Check if player is shining flashlight at the Specter
 	var is_flashing = _check_if_flashed()
 
@@ -52,6 +46,11 @@ func _process(delta: float) -> void:
 			_dismiss_specter()
 	else:
 		$MeshInstance3D.position = Vector3.ZERO
+		# Decrement jumpscare timer only when NOT being flashed
+		jumpscare_timer -= delta
+		if jumpscare_timer <= 0.0:
+			_trigger_jumpscare()
+			return
 
 func _check_if_flashed() -> bool:
 	if player == null:
