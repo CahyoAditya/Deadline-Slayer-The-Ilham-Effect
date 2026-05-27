@@ -49,7 +49,7 @@ omni_range = 7.0
 [node name="Bedroom" parent="." instance=ExtResource("5_bedroom")]
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28778052, 0)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.5802236, 0.28778052, -0.6524214)
 
 [node name="CodingTerminal" parent="." instance=ExtResource("7_terminal")]
 transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -2.6122649, 1.1457566, -0.6524214)
