@@ -15,9 +15,18 @@ extends CanvasLayer
 @onready var retry_button: Button = %RetryButton
 @onready var quit_button: Button = %QuitButton
 
+@onready var kernel_panic_overlay: PanelContainer = %KernelPanicOverlay
+@onready var reboot_progress_bar: ProgressBar = %RebootProgressBar
+
 var last_sanity := 100.0
 var last_battery := 100.0
 var last_progress := 0.0
+
+var in_kernel_panic := false
+var reboot_progress := 0.0
+
+const BASE_REBOOT_GAIN := 15.0
+const REBOOT_DECAY_RATE := 12.0 # 12% decay per second
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -31,6 +40,8 @@ func _ready() -> void:
 	EventBus.game_won.connect(_on_game_won)
 	EventBus.game_paused.connect(_on_game_paused)
 	EventBus.game_resumed.connect(_on_game_resumed)
+	EventBus.kernel_panic_triggered.connect(_on_kernel_panic_triggered)
+	EventBus.kernel_panic_resolved.connect(_on_kernel_panic_resolved)
 	resume_button.pressed.connect(GameManager.resume_game)
 	retry_button.pressed.connect(GameManager.restart_game)
 	quit_button.pressed.connect(func() -> void: get_tree().quit())
@@ -41,11 +52,54 @@ func _ready() -> void:
 	_on_progress_changed(0.0)
 	pause_overlay.visible = false
 	end_screen.visible = false
+	kernel_panic_overlay.visible = false
+
+func _process(delta: float) -> void:
+	if in_kernel_panic:
+		# Decay reboot progress over time
+		reboot_progress = clampf(reboot_progress - REBOOT_DECAY_RATE * delta, 0.0, 100.0)
+		reboot_progress_bar.value = reboot_progress
 
 func _unhandled_input(event: InputEvent) -> void:
+	if in_kernel_panic:
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode == KEY_R:
+				_on_reboot_tap()
+				get_viewport().set_input_as_handled()
+		return # block normal inputs while in kernel panic
+
 	if event.is_action_pressed("pause"):
 		GameManager.toggle_pause()
 		get_viewport().set_input_as_handled()
+
+func _on_reboot_tap() -> void:
+	# Calculate gain with friction (diminishing returns)
+	var ratio = reboot_progress / 100.0
+	# Smooth friction: gain reduces as bar fills, minimum gain of 0.07 (approx 1.05%)
+	var multiplier = clampf(1.0 - pow(ratio, 1.5), 0.07, 1.0)
+	var gain = BASE_REBOOT_GAIN * multiplier
+	
+	reboot_progress = clampf(reboot_progress + gain, 0.0, 100.0)
+	reboot_progress_bar.value = reboot_progress
+	
+	# Key press audio feedback
+	AudioManager.play_sfx("keyboard_type")
+	
+	if reboot_progress >= 100.0:
+		if is_instance_valid(KernelPanicSystem):
+			KernelPanicSystem.resolve()
+
+func _on_kernel_panic_triggered() -> void:
+	in_kernel_panic = true
+	reboot_progress = 0.0
+	reboot_progress_bar.value = 0.0
+	kernel_panic_overlay.visible = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+func _on_kernel_panic_resolved() -> void:
+	in_kernel_panic = false
+	kernel_panic_overlay.visible = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _on_deadline_changed(time_left_seconds: float) -> void:
 	var total_seconds := int(ceil(time_left_seconds))

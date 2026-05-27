@@ -99,6 +99,7 @@ func _build_ui() -> void:
 	_add_button(button_grid, "Hide", hide_ui)
 	_add_button(button_grid, "Progress +10", _on_progress_pressed)
 	_add_button(button_grid, "Lose Sanity", _on_lose_sanity_pressed)
+	_add_button(button_grid, "Set 99%", _on_set_99_pressed)
 
 func _add_button(parent: Node, text: String, callback: Callable) -> void:
 	var button := Button.new()
@@ -138,3 +139,15 @@ func _on_lose_sanity_pressed() -> void:
 	if player != null and player.has_node("SanitySystem"):
 		player.get_node("SanitySystem").drain(25.0)
 	last_event_text = "Last event: sanity -25"
+
+func _on_set_99_pressed() -> void:
+	if not GameManager.is_playing():
+		return
+	var needed = 99.0 - ProgressSystem.get_progress()
+	if needed > 0.0:
+		ProgressSystem.add_progress(needed)
+	elif needed < 0.0:
+		ProgressSystem.current_progress = 99.0
+		GameManager.progress_data.current_progress = 99.0
+		EventBus.emit_progress_changed(99.0)
+	last_event_text = "Last event: progress set to 99%"

@@ -250,3 +250,57 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 text = "UPLOAD 0.0%"
+
+[node name="KernelPanicOverlay" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BSODColor" type="ColorRect" parent="Root/KernelPanicOverlay"]
+layout_mode = 2
+color = Color(0, 0, 0.666667, 1)
+
+[node name="BSODMargin" type="MarginContainer" parent="Root/KernelPanicOverlay"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="BSODVBox" type="VBoxContainer" parent="Root/KernelPanicOverlay/BSODMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BSODHeader" type="Label" parent="Root/KernelPanicOverlay/BSODMargin/BSODVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = ":( KERNEL PANIC - SYSTEM CRITICAL"
+
+[node name="BSODBody" type="Label" parent="Root/KernelPanicOverlay/BSODMargin/BSODVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "[    0.000000] Kernel panic - not syncing: Fatal exception in academic workload
+[    0.000000] CPU: 0 PID: 1304 Comm: kom1304 Tainted: G        W  O  4.15.0
+[    0.000000] Hardware name: Kost-Room Laptop / Student Edition
+[    0.000000] Call Trace:
+[    0.000000]  [<ffffffff810a3005>] panic+0xe4/0x22d
+[    0.000000]  [<ffffffff8106a77e>] do_exit+0xb4e/0xc30
+[    0.000000]  [<ffffffff8106a93b>] do_group_exit+0x3b/0xb0
+[    0.000000]  [<ffffffff81076f74>] get_signal+0x294/0x6c0
+[    0.000000]  [<ffffffff81003207>] do_signal+0x37/0x710
+[    0.000000] ---[ end Kernel panic - not syncing: Fatal exception ]---
+
+PRESS [R] REPEATEDLY TO FORCE MANUAL REBOOT (TAP RAPIDLY TO FILL THE BAR!)"
+autowrap_mode = 3
+
+[node name="RebootProgressBar" type="ProgressBar" parent="Root/KernelPanicOverlay/BSODMargin/BSODVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 100.0
+show_percentage = false
