@@ -37,7 +37,7 @@ func open() -> void:
 		return
 
 	visible = true
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	EventBus.emit_terminal_opened()
 	_next_pattern()
 	_refocus_input()

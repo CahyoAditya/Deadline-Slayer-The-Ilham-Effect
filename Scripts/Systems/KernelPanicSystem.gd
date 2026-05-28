@@ -10,8 +10,6 @@ func _on_kernel_panic_triggered() -> void:
 		return
 
 	is_active = true
-	await get_tree().create_timer(GameManager.event_config.kernel_panic_auto_reboot_time).timeout
-	resolve()
 
 func resolve() -> void:
 	if not is_active:

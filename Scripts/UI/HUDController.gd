@@ -94,7 +94,7 @@ func _on_kernel_panic_triggered() -> void:
 	reboot_progress = 0.0
 	reboot_progress_bar.value = 0.0
 	kernel_panic_overlay.visible = true
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _on_kernel_panic_resolved() -> void:
 	in_kernel_panic = false
