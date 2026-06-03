@@ -57,7 +57,8 @@ func _build_ui() -> void:
 	panel = PanelContainer.new()
 	panel.visible = false
 	panel.position = Vector2(16, 16)
-	panel.custom_minimum_size = Vector2(280, 0)
+	panel.custom_minimum_size = Vector2(320, 0)
+	panel.size = Vector2(320, 600) # Give it a fixed height so it can scroll
 	canvas_layer.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -67,9 +68,14 @@ func _build_ui() -> void:
 	margin.add_theme_constant_override("margin_bottom", 12)
 	panel.add_child(margin)
 
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	margin.add_child(scroll)
+
 	var root := VBoxContainer.new()
+	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	root.add_theme_constant_override("separation", 8)
-	margin.add_child(root)
+	scroll.add_child(root)
 
 	var title := Label.new()
 	title.text = "Debug Test UI (F3)"

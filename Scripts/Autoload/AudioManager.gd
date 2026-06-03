@@ -185,7 +185,7 @@ const SFX_MAP: Dictionary = {
 const MUSIC_LAYERS: Dictionary = {
 	"calm": {
 		"base":    "music_calm_ambient",
-		"overlay": "music_haunting",
+		"overlay": "", # Silence the haunting undertones until the specter appears
 	},
 	"tension": {
 		"base":    "music_haunting_long",
