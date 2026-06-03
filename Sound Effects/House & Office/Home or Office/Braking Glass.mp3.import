@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dm1tc5xtyrlps"
+path="res://.godot/imported/Braking Glass.mp3-d58738b86989f2f13d3e07e78f53ce8a.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Braking Glass.mp3"
+dest_files=["res://.godot/imported/Braking Glass.mp3-d58738b86989f2f13d3e07e78f53ce8a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

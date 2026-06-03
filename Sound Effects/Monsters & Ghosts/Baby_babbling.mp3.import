@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bmvath27su5my"
+path="res://.godot/imported/Baby_babbling.mp3-c9d4787bd479cc96f46e1bdf7abd0632.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Monsters & Ghosts/Baby_babbling.mp3"
+dest_files=["res://.godot/imported/Baby_babbling.mp3-c9d4787bd479cc96f46e1bdf7abd0632.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

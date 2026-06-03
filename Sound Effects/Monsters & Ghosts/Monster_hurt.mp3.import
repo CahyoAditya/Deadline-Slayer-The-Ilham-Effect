@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://vu3moqnelg4r"
+path="res://.godot/imported/Monster_hurt.mp3-74a56164e1a69f68f85163d0e4efb57a.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Monsters & Ghosts/Monster_hurt.mp3"
+dest_files=["res://.godot/imported/Monster_hurt.mp3-74a56164e1a69f68f85163d0e4efb57a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

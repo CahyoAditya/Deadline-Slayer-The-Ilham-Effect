@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bitqnqdhftm0p"
+path="res://.godot/imported/Typing_5.mp3-ae847b3dfcc37a951d92f4960ecb2061.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Typing_5.mp3"
+dest_files=["res://.godot/imported/Typing_5.mp3-ae847b3dfcc37a951d92f4960ecb2061.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -15,6 +15,13 @@ var jumpscare_timer := 0.0
 var senter_time_accumulated := 0.0
 var is_jumpscaring := false
 
+# Horror audio state
+var _last_flash_sound_time := 0.0
+var _footstep_timer := 0.0
+var _footstep_interval := 3.5
+var _breath_interval_timer := 0.0
+var _horror_mode_triggered := false  # Extra scary mode when timer < 4s
+
 @onready var detection_area = get_node_or_null("DetectionArea")
 
 func _ready() -> void:
@@ -42,14 +49,43 @@ func _process(delta: float) -> void:
 			randf_range(-shake_strength, shake_strength)
 		)
 
+		# Play a hurt/growl sound periodically while being flashed
+		_last_flash_sound_time += delta
+		if _last_flash_sound_time >= 0.6:
+			_last_flash_sound_time = 0.0
+			AudioManager.play_sfx("specter_growl", -4.0)
+			AudioManager.play_sfx("specter_hurt", -2.0)
+
 		if senter_time_accumulated >= senter_duration_to_dismiss:
 			_dismiss_specter()
 	else:
 		$MeshInstance3D.position = Vector3.ZERO
+		_last_flash_sound_time = 0.0
+
+		# Periodic phantom footsteps while active
+		_footstep_timer += delta
+		if _footstep_timer >= _footstep_interval:
+			_footstep_timer = 0.0
+			_footstep_interval = randf_range(2.5, 5.0)  # vary the rhythm
+			AudioManager.play_sfx("specter_footstep", -6.0)
+
+		# Periodic spectral breathing
+		_breath_interval_timer += delta
+		if _breath_interval_timer >= randf_range(4.0, 8.0):
+			_breath_interval_timer = 0.0
+			AudioManager.play_sfx("specter_breath", -8.0)
+
 		# Decrement jumpscare timer only when NOT being flashed
 		jumpscare_timer -= delta
+
+		# HORROR MODE: when timer < 4s switch to most intense music + extra moans
+		if jumpscare_timer <= 4.0 and not _horror_mode_triggered:
+			_horror_mode_triggered = true
+			AudioManager.play_music("horror_active")
+			AudioManager.play_sfx("specter_moan_aggressive", -2.0)
+
 		if jumpscare_timer <= 0.0:
-			_trigger_jumpscare()
+			_initiate_jumpscare_sequence()
 			return
 
 func _check_if_flashed() -> bool:
@@ -105,23 +141,48 @@ func _on_specter_spawned() -> void:
 	is_jumpscaring = false
 	jumpscare_timer = jumpscare_time_limit
 	senter_time_accumulated = 0.0
+	_horror_mode_triggered = false
+	_footstep_timer = 0.0
+	_breath_interval_timer = 0.0
 	$MeshInstance3D.position = Vector3.ZERO
 
-	# Play horror ambient music
-	AudioManager.play_music("horror_ambient")
+	# ── HORROR AUDIO SEQUENCE ON SPAWN ──────────────────────────────────────
+	# 1. Play a moan immediately to announce presence
+	AudioManager.play_sfx("specter_moan", -2.0)
+	# 2. After 0.8s, switch to the tense horror ambient music
+	await get_tree().create_timer(0.8).timeout
+	if is_active:  # Guard in case dismissed while waiting
+		AudioManager.play_music("horror_ambient")
 	EventBus.emit_message_requested("A chilling presence fills the room...")
 
 func _dismiss_specter() -> void:
 	visible = false
 	is_active = false
+	_horror_mode_triggered = false
 	$MeshInstance3D.position = Vector3.ZERO
-	# Return to tension/normal music
+
+	# Play a retreating scream, then switch back to tension music
+	AudioManager.play_sfx("specter_dismissed", 0.0)
+	await get_tree().create_timer(0.5).timeout
 	AudioManager.play_music("tension_loop")
 	EventBus.emit_message_requested("The presence has faded.")
+	EventBus.emit_specter_sight_broken()
 
-func _trigger_jumpscare() -> void:
+## Step 1 of jumpscare: kill all sound (horror silence technique)
+func _initiate_jumpscare_sequence() -> void:
 	is_jumpscaring = true
-	AudioManager.play_sfx("jumpscare_01")
+	is_active = false
+
+	# ── PRE-JUMPSCARE SILENCE ─────────────────────────────────────────────
+	# The silence before the scream is what makes the scream terrifying.
+	await AudioManager.silence_for_jumpscare(_do_jumpscare.bind())
+
+func _do_jumpscare() -> void:
+	# ── JUMPSCARE AUDIO BLAST ─────────────────────────────────────────────
+	# Fire both the ghost scream AND the piano dissonance at max volume
+	AudioManager.play_sfx("jumpscare_01", 3.0)
+	AudioManager.play_stinger("jumpscare_stinger", 4.0)
+
 	EventBus.emit_message_requested("TOO LATE.")
 	
 	# Camera shake effect
@@ -139,6 +200,5 @@ func _trigger_jumpscare() -> void:
 			camera.h_offset = 0.0
 			camera.v_offset = 0.0
 
-	is_active = false
 	visible = false
 	EventBus.emit_specter_caught_player()

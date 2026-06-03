@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cludxvhoyqadd"
+path="res://.godot/imported/Creak_Long.mp3-a0acb97120c3ca2e4597ee8e333ae5d3.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Creak_Long.mp3"
+dest_files=["res://.godot/imported/Creak_Long.mp3-a0acb97120c3ca2e4597ee8e333ae5d3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b5w6th87gekmv"
+path="res://.godot/imported/Stinger.mp3-c4195a1fb03d86669e0c2ab22db618f5.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Stingers & Spooky Triggers/Stinger.mp3"
+dest_files=["res://.godot/imported/Stinger.mp3-c4195a1fb03d86669e0c2ab22db618f5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

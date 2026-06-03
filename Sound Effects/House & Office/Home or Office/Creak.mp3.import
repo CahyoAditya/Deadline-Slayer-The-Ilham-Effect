@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://jpnhfsnywpph"
+path="res://.godot/imported/Creak.mp3-6710cc56f42909d187d7b7921928a028.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Creak.mp3"
+dest_files=["res://.godot/imported/Creak.mp3-6710cc56f42909d187d7b7921928a028.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

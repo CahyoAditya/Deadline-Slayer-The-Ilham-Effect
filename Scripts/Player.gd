@@ -11,6 +11,10 @@ var input_locked := false
 @onready var camera = $Head/Camera3D
 @onready var interact_ray = $Head/Camera3D/InteractRay
 
+# Footstep audio
+var _footstep_timer := 0.0
+const FOOTSTEP_INTERVAL := 0.5  # seconds between steps
+
 func _ready():
 	add_to_group("player")
 	EventBus.terminal_opened.connect(_on_terminal_opened)
@@ -40,6 +44,7 @@ func _try_interact():
 		var collider = interact_ray.get_collider()
 		var target := _find_interactable(collider)
 		if target != null:
+			AudioManager.play_sfx("interact", 0.0)
 			target.interact(self)
 
 func _physics_process(delta):
@@ -51,6 +56,20 @@ func _physics_process(delta):
 	velocity.x = 0.0
 	velocity.z = 0.0
 	move_and_slide()
+
+	# Footstep audio — plays when player is on the floor and moving
+	if is_on_floor() and GameManager.is_playing() and not input_locked:
+		var is_moving := Input.is_action_pressed("move_forward") or \
+					   Input.is_action_pressed("move_backward") or \
+					   Input.is_action_pressed("move_left") or \
+					   Input.is_action_pressed("move_right")
+		if is_moving:
+			_footstep_timer += delta
+			if _footstep_timer >= FOOTSTEP_INTERVAL:
+				_footstep_timer = 0.0
+				AudioManager.play_sfx("footstep_wood", -6.0)
+		else:
+			_footstep_timer = 0.0
 
 func _process(_delta: float) -> void:
 	if input_locked or not GameManager.is_playing():

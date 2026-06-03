@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://diroilw2wscyu"
+path="res://.godot/imported/Slow Stinger.mp3-f0c66e036c7b0b7a83e323d0a5077e73.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Stingers & Spooky Triggers/Slow Stinger.mp3"
+dest_files=["res://.godot/imported/Slow Stinger.mp3-f0c66e036c7b0b7a83e323d0a5077e73.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

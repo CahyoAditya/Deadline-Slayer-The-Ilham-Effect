@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://rlao4ldybcix"
+path="res://.godot/imported/Can_opening.mp3-77663ab001b95a89327a8607387559a4.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Character/Can_opening.mp3"
+dest_files=["res://.godot/imported/Can_opening.mp3-77663ab001b95a89327a8607387559a4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

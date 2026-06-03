@@ -36,6 +36,9 @@ func _ready() -> void:
 
 func get_pattern() -> String:
 	var progress := ProgressSystem.get_progress()
+	# If the Specter is active, always use hard patterns to maximise panic
+	if GameManager.is_specter_active:
+		return hard_patterns.pick_random()
 	if progress < 34.0:
 		return easy_patterns.pick_random()
 	if progress < 67.0:

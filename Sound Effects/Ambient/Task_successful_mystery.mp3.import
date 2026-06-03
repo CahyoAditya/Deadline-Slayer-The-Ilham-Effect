@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bnwg3cnsqj1i6"
+path="res://.godot/imported/Task_successful_mystery.mp3-6919befd87d4c34ca831eb7ea6cd0f4b.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Ambient/Task_successful_mystery.mp3"
+dest_files=["res://.godot/imported/Task_successful_mystery.mp3-6919befd87d4c34ca831eb7ea6cd0f4b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

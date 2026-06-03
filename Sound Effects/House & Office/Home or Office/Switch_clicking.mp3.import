@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d4dgolbeuqmpb"
+path="res://.godot/imported/Switch_clicking.mp3-735f30b156d6b9a96543ffcf9bf1a60a.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Switch_clicking.mp3"
+dest_files=["res://.godot/imported/Switch_clicking.mp3-735f30b156d6b9a96543ffcf9bf1a60a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

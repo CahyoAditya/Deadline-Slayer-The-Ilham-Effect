@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cjgjykcfkydfb"
+path="res://.godot/imported/Piano_stinger_dissonent.mp3-3f205c13f563aee72b926ec77ceede0d.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Stingers & Spooky Triggers/Piano_stinger_dissonent.mp3"
+dest_files=["res://.godot/imported/Piano_stinger_dissonent.mp3-3f205c13f563aee72b926ec77ceede0d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
