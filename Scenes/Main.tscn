@@ -131,6 +131,21 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="BBC1" type="BackBufferCopy" parent="PostProcessLayer"]
+copy_mode = 2
+
+[node name="PS1Rect" type="ColorRect" parent="PostProcessLayer"]
+material = SubResource("ShaderMaterial_5")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BBC2" type="BackBufferCopy" parent="PostProcessLayer"]
+copy_mode = 2
+
 [node name="PostProcessRect" type="ColorRect" parent="PostProcessLayer"]
 material = SubResource("ShaderMaterial_1")
 anchors_preset = 15
@@ -139,6 +154,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="BBC3" type="BackBufferCopy" parent="PostProcessLayer"]
+copy_mode = 2
 
 [node name="VHSRect" type="ColorRect" parent="PostProcessLayer"]
 material = SubResource("ShaderMaterial_3")
@@ -149,14 +167,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="PS1Rect" type="ColorRect" parent="PostProcessLayer"]
-material = SubResource("ShaderMaterial_5")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="BBC4" type="BackBufferCopy" parent="PostProcessLayer"]
+copy_mode = 2
 
 [node name="GlitchRect" type="ColorRect" parent="PostProcessLayer"]
 material = SubResource("ShaderMaterial_4")

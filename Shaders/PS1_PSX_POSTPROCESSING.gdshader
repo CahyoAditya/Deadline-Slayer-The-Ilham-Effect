@@ -8,6 +8,7 @@ uniform bool enabled = true;
 uniform bool dithering = true;
 uniform int colors : hint_range(1, MAXCOLORS) = 12;
 uniform int dither_size: hint_range(1, 8) = 1;
+uniform float intensity : hint_range(0.0, 1.0) = 1.0;
 
 // Read from the actual screen, not the ColorRect's blank texture
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
@@ -65,9 +66,9 @@ void fragment() {
 			dithering_value = dithering_pattern(uv);
 		}
 		
-		COLOR.r = reduce_color(raw.r, (dithering_value - 0.5) * dithering_value + 0.5, colors - 1);
-		COLOR.g = reduce_color(raw.g, (dithering_value - 0.5) * dithering_value + 0.5, colors - 1);
-		COLOR.b = reduce_color(raw.b, (dithering_value - 0.5) * dithering_value + 0.5, colors - 1);
+		COLOR.r = mix(raw.r, reduce_color(raw.r, (dithering_value - 0.5) * dithering_value + 0.5, colors - 1), intensity);
+		COLOR.g = mix(raw.g, reduce_color(raw.g, (dithering_value - 0.5) * dithering_value + 0.5, colors - 1), intensity);
+		COLOR.b = mix(raw.b, reduce_color(raw.b, (dithering_value - 0.5) * dithering_value + 0.5, colors - 1), intensity);
 
 	} else {
 		COLOR.rgb = raw.rgb;

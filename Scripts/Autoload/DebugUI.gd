@@ -113,6 +113,39 @@ func _build_ui() -> void:
 	_add_shader_toggle(shader_grid, "PS1 Post", "PS1Rect")
 	_add_shader_toggle(shader_grid, "Distort", "DistortRect")
 
+	var slider_label := Label.new()
+	slider_label.text = "Shader Intensity:"
+	root.add_child(slider_label)
+
+	var slider_grid := GridContainer.new()
+	slider_grid.columns = 2
+	slider_grid.add_theme_constant_override("h_separation", 16)
+	root.add_child(slider_grid)
+
+	_add_shader_slider(slider_grid, "PSX Intensity", "PS1Rect", "intensity", 0.0, 1.0, 1.0)
+	_add_shader_slider(slider_grid, "VHS Curve", "VHSRect", "warp_amount", 0.0, 3.0, 0.5)
+	_add_shader_slider(slider_grid, "VHS Lines", "VHSRect", "scanlines_opacity", 0.0, 1.0, 0.12)
+	_add_shader_slider(slider_grid, "Glitch Shake", "GlitchRect", "shake_power", 0.0, 0.1, 0.03)
+
+func _add_shader_slider(parent: Node, text: String, node_name: String, param: String, min_val: float, max_val: float, default_val: float) -> void:
+	var label = Label.new()
+	label.text = text
+	parent.add_child(label)
+	
+	var slider = HSlider.new()
+	slider.min_value = min_val
+	slider.max_value = max_val
+	slider.step = (max_val - min_val) / 100.0
+	slider.value = default_val
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.custom_minimum_size.x = 100
+	slider.value_changed.connect(func(val: float):
+		var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
+		if rect and rect.material is ShaderMaterial:
+			(rect.material as ShaderMaterial).set_shader_parameter(param, val)
+	)
+	parent.add_child(slider)
+
 func _add_shader_toggle(parent: Node, text: String, node_name: String) -> void:
 	var cb := CheckBox.new()
 	cb.text = text

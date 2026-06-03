@@ -216,9 +216,9 @@ var _ambient: AudioStreamPlayer
 var _stinger: AudioStreamPlayer
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _sfx_pool_index: int = 0
-# Dedicated player for typing — clips the long recording to 80ms per keypress
+# Dedicated player for typing — clips the long recording to 150ms per keypress
 var _typing_player: AudioStreamPlayer
-const TYPING_CLIP_DURATION := 0.08  # seconds of the recording to play per key
+const TYPING_CLIP_DURATION := 0.15  # seconds of the recording to play per key
 
 var _current_music_state := ""
 var _is_silenced := false
