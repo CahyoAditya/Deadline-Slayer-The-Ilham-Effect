@@ -88,8 +88,8 @@ shader_parameter/clip_edges = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7"]
 shader = ExtResource("18_color")
 shader_parameter/tint_color = Color(0.85, 0.75, 0.45, 1)
-shader_parameter/tint_amount = 0.35
-shader_parameter/saturation = 0.4
+shader_parameter/tint_amount = 0.85
+shader_parameter/saturation = 0.25
 
 [node name="Main" type="Node3D"]
 
@@ -144,6 +144,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+visible = false
 
 [node name="BBC0" type="BackBufferCopy" parent="PostProcessLayer"]
 copy_mode = 2
@@ -192,6 +193,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+visible = false
 
 [node name="BBC4" type="BackBufferCopy" parent="PostProcessLayer"]
 copy_mode = 2
@@ -204,6 +206,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+visible = false
 
 [node name="BBC5" type="BackBufferCopy" parent="PostProcessLayer"]
 copy_mode = 2
@@ -216,6 +219,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+visible = false
 
 [node name="ShaderController" type="Node" parent="PostProcessLayer"]
 script = ExtResource("16_shaderctrl")

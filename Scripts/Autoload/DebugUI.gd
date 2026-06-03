@@ -106,6 +106,13 @@ func _build_ui() -> void:
 	_add_button(button_grid, "Progress +10", _on_progress_pressed)
 	_add_button(button_grid, "Lose Sanity", _on_lose_sanity_pressed)
 
+	var preset_grid := GridContainer.new()
+	preset_grid.columns = 2
+	preset_grid.add_theme_constant_override("h_separation", 8)
+	root.add_child(preset_grid)
+	_add_button(preset_grid, "Save UI Preset", _save_preset)
+	_add_button(preset_grid, "Load UI Preset", _load_preset)
+
 	var shader_label := Label.new()
 	shader_label.text = "Shader Toggles:"
 	root.add_child(shader_label)
@@ -122,8 +129,10 @@ func _build_ui() -> void:
 	_add_shader_toggle(shader_grid, "Color Grade", "ColorGradeRect")
 
 	var fps_cb := CheckBox.new()
+	fps_cb.name = "FPSLimit"
 	fps_cb.text = "Cinematic FPS Limit (24)"
 	fps_cb.focus_mode = Control.FOCUS_NONE
+	fps_cb.button_pressed = Engine.max_fps == 24
 	fps_cb.toggled.connect(func(toggled_on: bool):
 		Engine.max_fps = 24 if toggled_on else 0
 	)
@@ -138,45 +147,127 @@ func _build_ui() -> void:
 	slider_grid.add_theme_constant_override("h_separation", 16)
 	root.add_child(slider_grid)
 
-	_add_shader_slider(slider_grid, "PSX Intensity", "PS1Rect", "intensity", 0.0, 1.0, 1.0)
-	_add_shader_slider(slider_grid, "VHS Curve", "VHSRect", "warp_amount", 0.0, 3.0, 0.5)
-	_add_shader_slider(slider_grid, "VHS Lines", "VHSRect", "scanlines_opacity", 0.0, 1.0, 0.12)
-	_add_shader_slider(slider_grid, "Glitch Shake", "GlitchRect", "shake_power", 0.0, 0.1, 0.03)
-	_add_shader_slider(slider_grid, "Fisheye Bend", "FisheyeRect", "distortion", -2.0, 2.0, 0.8)
-	_add_shader_slider(slider_grid, "Grade Saturate", "ColorGradeRect", "saturation", 0.0, 1.5, 0.4)
-	_add_shader_slider(slider_grid, "Grade Yellow", "ColorGradeRect", "tint_amount", 0.0, 1.0, 0.35)
+	_add_shader_slider(slider_grid, "PSX Intensity", "PS1Rect", "intensity", 0.0, 1.0)
+	_add_shader_slider(slider_grid, "VHS Curve", "VHSRect", "warp_amount", 0.0, 3.0)
+	_add_shader_slider(slider_grid, "VHS Lines", "VHSRect", "scanlines_opacity", 0.0, 1.0)
+	_add_shader_slider(slider_grid, "Glitch Shake", "GlitchRect", "shake_power", 0.0, 0.1)
+	_add_shader_slider(slider_grid, "Fisheye Bend", "FisheyeRect", "distortion", -2.0, 2.0)
+	_add_shader_slider(slider_grid, "Grade Saturate", "ColorGradeRect", "saturation", 0.0, 1.5)
+	_add_shader_slider(slider_grid, "Grade Yellow", "ColorGradeRect", "tint_amount", 0.0, 1.0)
 
-func _add_shader_slider(parent: Node, text: String, node_name: String, param: String, min_val: float, max_val: float, default_val: float) -> void:
+func _add_shader_slider(parent: Node, text: String, node_name: String, param: String, min_val: float, max_val: float) -> void:
 	var label = Label.new()
 	label.text = text
 	parent.add_child(label)
 	
 	var slider = HSlider.new()
+	slider.name = node_name + "_" + param
 	slider.min_value = min_val
 	slider.max_value = max_val
 	slider.step = (max_val - min_val) / 100.0
-	slider.value = default_val
+	
+	# Fetch current value dynamically
+	var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
+	if rect and rect.material is ShaderMaterial:
+		var current_val = (rect.material as ShaderMaterial).get_shader_parameter(param)
+		if current_val != null:
+			slider.value = current_val
+			
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.custom_minimum_size.x = 100
 	slider.value_changed.connect(func(val: float):
-		var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
-		if rect and rect.material is ShaderMaterial:
-			(rect.material as ShaderMaterial).set_shader_parameter(param, val)
+		var r = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
+		if r and r.material is ShaderMaterial:
+			(r.material as ShaderMaterial).set_shader_parameter(param, val)
 	)
 	parent.add_child(slider)
 
 func _add_shader_toggle(parent: Node, text: String, node_name: String) -> void:
 	var cb := CheckBox.new()
+	cb.name = "Toggle_" + node_name
 	cb.text = text
-	cb.button_pressed = true # Assumes they start visible
+	
+	var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
+	if rect:
+		cb.button_pressed = rect.visible
+		
 	cb.focus_mode = Control.FOCUS_NONE
 	cb.toggled.connect(func(toggled_on: bool):
-		var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
-		if rect:
-			rect.visible = toggled_on
+		var r = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
+		if r:
+			r.visible = toggled_on
 			last_event_text = "Last event: toggled " + node_name + " " + ("ON" if toggled_on else "OFF")
 	)
 	parent.add_child(cb)
+
+func _save_preset() -> void:
+	var config := ConfigFile.new()
+	var rects = ["VHSRect", "GlitchRect", "PS1Rect", "DistortRect", "FisheyeRect", "ColorGradeRect"]
+	for r_name in rects:
+		var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + r_name)
+		if rect:
+			config.set_value("Toggles", r_name, rect.visible)
+			if rect.material is ShaderMaterial:
+				var mat = rect.material as ShaderMaterial
+				if r_name == "PS1Rect": config.set_value("Params", "PS1Rect_intensity", mat.get_shader_parameter("intensity"))
+				if r_name == "VHSRect":
+					config.set_value("Params", "VHSRect_warp_amount", mat.get_shader_parameter("warp_amount"))
+					config.set_value("Params", "VHSRect_scanlines_opacity", mat.get_shader_parameter("scanlines_opacity"))
+				if r_name == "GlitchRect": config.set_value("Params", "GlitchRect_shake_power", mat.get_shader_parameter("shake_power"))
+				if r_name == "FisheyeRect": config.set_value("Params", "FisheyeRect_distortion", mat.get_shader_parameter("distortion"))
+				if r_name == "ColorGradeRect":
+					config.set_value("Params", "ColorGradeRect_saturation", mat.get_shader_parameter("saturation"))
+					config.set_value("Params", "ColorGradeRect_tint_amount", mat.get_shader_parameter("tint_amount"))
+	config.set_value("Toggles", "FPSLimit", Engine.max_fps == 24)
+	config.save("user://shader_preset.cfg")
+	last_event_text = "Last event: Saved preset to user://shader_preset.cfg"
+
+func _load_preset() -> void:
+	var config := ConfigFile.new()
+	if config.load("user://shader_preset.cfg") != OK:
+		last_event_text = "Last event: No preset found."
+		return
+		
+	var rects = ["VHSRect", "GlitchRect", "PS1Rect", "DistortRect", "FisheyeRect", "ColorGradeRect"]
+	for r_name in rects:
+		var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + r_name)
+		if rect:
+			var vis = config.get_value("Toggles", r_name, rect.visible)
+			rect.visible = vis
+			
+			# Also update the UI checkbox if it exists
+			var cb = _find_child_by_name("Toggle_" + r_name)
+			if cb and cb is CheckBox: cb.button_pressed = vis
+			
+			if rect.material is ShaderMaterial:
+				var mat = rect.material as ShaderMaterial
+				var p_key = r_name + "_"
+				# Update material and sliders
+				if r_name == "PS1Rect": _apply_param(mat, "intensity", config.get_value("Params", p_key + "intensity", 1.0), p_key + "intensity")
+				if r_name == "VHSRect":
+					_apply_param(mat, "warp_amount", config.get_value("Params", p_key + "warp_amount", 0.5), p_key + "warp_amount")
+					_apply_param(mat, "scanlines_opacity", config.get_value("Params", p_key + "scanlines_opacity", 0.12), p_key + "scanlines_opacity")
+				if r_name == "GlitchRect": _apply_param(mat, "shake_power", config.get_value("Params", p_key + "shake_power", 0.03), p_key + "shake_power")
+				if r_name == "FisheyeRect": _apply_param(mat, "distortion", config.get_value("Params", p_key + "distortion", 0.8), p_key + "distortion")
+				if r_name == "ColorGradeRect":
+					_apply_param(mat, "saturation", config.get_value("Params", p_key + "saturation", 0.25), p_key + "saturation")
+					_apply_param(mat, "tint_amount", config.get_value("Params", p_key + "tint_amount", 0.85), p_key + "tint_amount")
+	
+	var fps_limit = config.get_value("Toggles", "FPSLimit", false)
+	Engine.max_fps = 24 if fps_limit else 0
+	var fps_cb = _find_child_by_name("FPSLimit")
+	if fps_cb and fps_cb is CheckBox: fps_cb.button_pressed = fps_limit
+	
+	last_event_text = "Last event: Loaded preset from user://shader_preset.cfg"
+
+func _apply_param(mat: ShaderMaterial, param: String, val: float, slider_name: String) -> void:
+	mat.set_shader_parameter(param, val)
+	var slider = _find_child_by_name(slider_name)
+	if slider and slider is HSlider:
+		slider.value = val
+
+func _find_child_by_name(n: String) -> Node:
+	return panel.find_child(n, true, false)
 
 func _add_button(parent: Node, text: String, callback: Callable) -> void:
 	var button := Button.new()
