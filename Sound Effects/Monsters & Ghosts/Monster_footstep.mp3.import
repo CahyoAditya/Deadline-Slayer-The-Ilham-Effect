@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://brs4c8ku4cej1"
+path="res://.godot/imported/Monster_footstep.mp3-a09c9d19d6d1e250431852acf9b53def.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Monsters & Ghosts/Monster_footstep.mp3"
+dest_files=["res://.godot/imported/Monster_footstep.mp3-a09c9d19d6d1e250431852acf9b53def.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

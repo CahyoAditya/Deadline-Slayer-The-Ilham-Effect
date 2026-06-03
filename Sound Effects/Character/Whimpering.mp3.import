@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b7okivnkm4b7f"
+path="res://.godot/imported/Whimpering.mp3-f0e7d53916bedaaffb913843c9ef180a.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Character/Whimpering.mp3"
+dest_files=["res://.godot/imported/Whimpering.mp3-f0e7d53916bedaaffb913843c9ef180a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

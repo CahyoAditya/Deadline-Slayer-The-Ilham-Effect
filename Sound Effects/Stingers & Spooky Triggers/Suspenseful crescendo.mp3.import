@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bdsecrs4wql7d"
+path="res://.godot/imported/Suspenseful crescendo.mp3-a238158528378ea171ca8d91c501ff2a.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Stingers & Spooky Triggers/Suspenseful crescendo.mp3"
+dest_files=["res://.godot/imported/Suspenseful crescendo.mp3-a238158528378ea171ca8d91c501ff2a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

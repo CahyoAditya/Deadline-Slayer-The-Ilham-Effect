@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://mbl0pm1vg8vd"
+path="res://.godot/imported/Door_closing_squeaky.mp3-177d47fe7236f650e24bb361e31a03b7.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Door_closing_squeaky.mp3"
+dest_files=["res://.godot/imported/Door_closing_squeaky.mp3-177d47fe7236f650e24bb361e31a03b7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -40,6 +40,8 @@ func start_game() -> void:
 	time_survived = 0.0
 	EventBus.emit_deadline_changed(deadline_timer)
 	set_state(GameState.PLAYING)
+	# Start calm background music (deferred so AudioManager is fully ready)
+	call_deferred("_start_calm_music")
 
 func set_state(new_state: GameState) -> void:
 	if current_state == new_state:
@@ -83,6 +85,9 @@ func trigger_win() -> void:
 		return
 
 	set_state(GameState.WIN)
+	AudioManager.stop_music(0.5)
+	await get_tree().create_timer(0.3).timeout
+	AudioManager.play_sfx("event_win", 2.0)
 	EventBus.emit_game_won()
 	EventBus.emit_message_requested("SUBMITTED.")
 
@@ -93,6 +98,16 @@ func trigger_lose(reason: String) -> void:
 	lose_reason = reason
 	set_state(GameState.GAME_OVER)
 	EventBus.emit_game_lost(reason)
+
+	# Stop all music first
+	AudioManager.stop_music(0.3)
+	# Play reason-specific lose sound
+	if reason == "sanity_depleted":
+		AudioManager.play_sfx("event_lose_sanity", 2.0)
+	elif reason == "caught_by_specter":
+		AudioManager.play_sfx("event_lose_caught", 2.0)
+	else:
+		AudioManager.play_stinger("event_lose_timeout", 1.0)
 
 	var message := "Time's up. The professor has logged out."
 	if reason == "sanity_depleted":
@@ -121,3 +136,6 @@ func _load_resources() -> void:
 		var loaded_config := load("res://Resources/Data/event_config.tres")
 		if loaded_config is EventConfig:
 			event_config = loaded_config
+
+func _start_calm_music() -> void:
+	AudioManager.play_music("calm")

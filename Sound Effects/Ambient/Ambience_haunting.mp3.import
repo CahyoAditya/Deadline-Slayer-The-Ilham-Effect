@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ca7d08tme6me1"
+path="res://.godot/imported/Ambience_haunting.mp3-ee5b81547ade3b1198d13c2e2a041b85.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Ambient/Ambience_haunting.mp3"
+dest_files=["res://.godot/imported/Ambience_haunting.mp3-ee5b81547ade3b1198d13c2e2a041b85.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

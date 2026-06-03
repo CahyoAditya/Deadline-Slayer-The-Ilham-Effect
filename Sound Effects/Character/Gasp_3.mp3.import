@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://n51snuh8o56a"
+path="res://.godot/imported/Gasp_3.mp3-b5052e106f4285bd80b7aaa90d837a21.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Character/Gasp_3.mp3"
+dest_files=["res://.godot/imported/Gasp_3.mp3-b5052e106f4285bd80b7aaa90d837a21.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

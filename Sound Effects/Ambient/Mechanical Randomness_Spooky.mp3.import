@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bavsg83fnjgvi"
+path="res://.godot/imported/Mechanical Randomness_Spooky.mp3-514944d47fa6469236ca68f8cb69f597.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Ambient/Mechanical Randomness_Spooky.mp3"
+dest_files=["res://.godot/imported/Mechanical Randomness_Spooky.mp3-514944d47fa6469236ca68f8cb69f597.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

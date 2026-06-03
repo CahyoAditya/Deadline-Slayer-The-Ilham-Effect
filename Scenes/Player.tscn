@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://c8yv40tqh0t2t"]
 
 [ext_resource type="Script" uid="uid://dinhe762hg7ga" path="res://Scripts/Player.gd" id="1_player"]
-[ext_resource type="Script" path="res://Scripts/Player/SanitySystem.gd" id="2_sanity"]
-[ext_resource type="Script" path="res://Scripts/Systems/BatterySystem.gd" id="3_battery"]
+[ext_resource type="Script" uid="uid://c58appniliry" path="res://Scripts/Player/SanitySystem.gd" id="2_sanity"]
+[ext_resource type="Script" uid="uid://cq0vmbtm0xb7o" path="res://Scripts/Systems/BatterySystem.gd" id="3_battery"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.21533203
@@ -26,7 +26,6 @@ spot_range = 8.0
 spot_angle = 35.0
 
 [node name="InteractRay" type="RayCast3D" parent="Head/Camera3D"]
-enabled = true
 target_position = Vector3(0, 0, -2)
 
 [node name="SanitySystem" type="Node" parent="."]

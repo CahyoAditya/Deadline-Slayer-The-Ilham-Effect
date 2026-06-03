@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dg6sye0xhqo4v"
+path="res://.godot/imported/Door_knocking_quiet.mp3-875b2034fffeb3a700c5456595adc44b.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Door_knocking_quiet.mp3"
+dest_files=["res://.godot/imported/Door_knocking_quiet.mp3-875b2034fffeb3a700c5456595adc44b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

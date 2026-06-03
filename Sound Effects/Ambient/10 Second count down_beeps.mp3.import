@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c4rh81ru68shm"
+path="res://.godot/imported/10 Second count down_beeps.mp3-6a3b6e8f56e7fb9fde7d57d620d28ff3.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Ambient/10 Second count down_beeps.mp3"
+dest_files=["res://.godot/imported/10 Second count down_beeps.mp3-6a3b6e8f56e7fb9fde7d57d620d28ff3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dehbn0ewlmace"
+path="res://.godot/imported/Alarm_fast.mp3-f65c66b37789b20d6f31f22791c5b2ab.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Alarm_fast.mp3"
+dest_files=["res://.godot/imported/Alarm_fast.mp3-f65c66b37789b20d6f31f22791c5b2ab.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

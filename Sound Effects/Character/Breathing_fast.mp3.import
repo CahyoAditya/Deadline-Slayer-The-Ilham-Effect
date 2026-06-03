@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://u8autf6x4jr1"
+path="res://.godot/imported/Breathing_fast.mp3-8f84df6601fb28e535d14ec6367c8960.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Character/Breathing_fast.mp3"
+dest_files=["res://.godot/imported/Breathing_fast.mp3-8f84df6601fb28e535d14ec6367c8960.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

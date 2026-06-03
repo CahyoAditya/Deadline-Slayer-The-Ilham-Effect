@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cx35uqrpvhpuw"
+path="res://.godot/imported/Ghost_growl.mp3-728ee2f120e9771a0705bedc04abdde3.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Monsters & Ghosts/Ghost_growl.mp3"
+dest_files=["res://.godot/imported/Ghost_growl.mp3-728ee2f120e9771a0705bedc04abdde3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

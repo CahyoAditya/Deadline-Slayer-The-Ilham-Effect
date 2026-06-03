@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bjohmobx6ound"
+path="res://.godot/imported/Distant Yell_Echo and Reverb.mp3-eda8f45121abd7749d14bfc6694f5ea5.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Ambient/Distant Yell_Echo and Reverb.mp3"
+dest_files=["res://.godot/imported/Distant Yell_Echo and Reverb.mp3-eda8f45121abd7749d14bfc6694f5ea5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

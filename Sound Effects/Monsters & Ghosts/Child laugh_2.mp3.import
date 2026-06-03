@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ruecmbdi3d21"
+path="res://.godot/imported/Child laugh_2.mp3-5c41f3f889d346fe7cb0dfaaf71da22f.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Monsters & Ghosts/Child laugh_2.mp3"
+dest_files=["res://.godot/imported/Child laugh_2.mp3-5c41f3f889d346fe7cb0dfaaf71da22f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

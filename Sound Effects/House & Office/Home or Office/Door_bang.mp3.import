@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c1g8h1dsrmv6q"
+path="res://.godot/imported/Door_bang.mp3-310660ad4c2595bb0b7d657d015ef3bd.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Door_bang.mp3"
+dest_files=["res://.godot/imported/Door_bang.mp3-310660ad4c2595bb0b7d657d015ef3bd.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

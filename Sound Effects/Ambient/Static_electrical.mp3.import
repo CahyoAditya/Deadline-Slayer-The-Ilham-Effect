@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dqmpmjmbocwkr"
+path="res://.godot/imported/Static_electrical.mp3-409e7c7d65156478c7e8e5c2ae1326fc.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Ambient/Static_electrical.mp3"
+dest_files=["res://.godot/imported/Static_electrical.mp3-409e7c7d65156478c7e8e5c2ae1326fc.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

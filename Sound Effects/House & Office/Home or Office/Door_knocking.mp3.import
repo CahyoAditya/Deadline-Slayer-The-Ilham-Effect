@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cvgq6nefhl15h"
+path="res://.godot/imported/Door_knocking.mp3-6cdc5d6d6b86fa98e5b0c42d938e2b2a.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/House & Office/Home or Office/Door_knocking.mp3"
+dest_files=["res://.godot/imported/Door_knocking.mp3-6cdc5d6d6b86fa98e5b0c42d938e2b2a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cdwuxv1apslgj"
+path="res://.godot/imported/Screech_metalic_dragging_2.mp3-b1fd4cfe917fd9183c8e3f77e0060c73.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Ambient/Screech_metalic_dragging_2.mp3"
+dest_files=["res://.godot/imported/Screech_metalic_dragging_2.mp3-b1fd4cfe917fd9183c8e3f77e0060c73.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

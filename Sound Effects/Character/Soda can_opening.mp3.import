@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://xiai47xel3fy"
+path="res://.godot/imported/Soda can_opening.mp3-5d6e5e742f5c8e2a3961364bb1afaa32.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Character/Soda can_opening.mp3"
+dest_files=["res://.godot/imported/Soda can_opening.mp3-5d6e5e742f5c8e2a3961364bb1afaa32.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

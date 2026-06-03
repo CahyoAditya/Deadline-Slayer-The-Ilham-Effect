@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://digjsh113dpoh"
+path="res://.godot/imported/Child laugh.mp3-f10ee2e32b2824060f014af117b3cf07.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Monsters & Ghosts/Child laugh.mp3"
+dest_files=["res://.godot/imported/Child laugh.mp3-f10ee2e32b2824060f014af117b3cf07.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

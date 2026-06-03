@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bisp5rn05f7xf"
+path="res://.godot/imported/Ghost_moan.mp3-9e0a11c8bf73184c5b899c04a604138c.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/Monsters & Ghosts/Ghost_moan.mp3"
+dest_files=["res://.godot/imported/Ghost_moan.mp3-9e0a11c8bf73184c5b899c04a604138c.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
