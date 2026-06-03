@@ -125,3 +125,8 @@ func emit_terminal_closed() -> void:
 
 func emit_message_requested(text: String) -> void:
 	message_requested.emit(text)
+
+signal camera_moved(velocity: Vector2)
+
+func emit_camera_moved(velocity: Vector2) -> void:
+	camera_moved.emit(velocity)

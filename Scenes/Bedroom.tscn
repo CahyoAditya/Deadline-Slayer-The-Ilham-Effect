@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://be5p0j4w6v1m4"]
 
-[ext_resource type="PackedScene" path="res://Models/ichigo_bedroom/source/Ichigo Bedroom dae/0B1 Ichigo BadRoom Bleach.dae" id="1_bedroom"]
+[ext_resource type="PackedScene" uid="uid://b245jar7l48qp" path="res://Models/ichigo_bedroom/source/Ichigo Bedroom dae/0B1 Ichigo BadRoom Bleach.dae" id="1_bedroom"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(20, 0.1, 20)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://doem1em4jknac"]
 
-[ext_resource type="Script" path="res://Scripts/Props/CodingTerminal.gd" id="1_terminal"]
+[ext_resource type="Script" uid="uid://buvitdxxro4ky" path="res://Scripts/Props/CodingTerminal.gd" id="1_terminal"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/TerminalUI.tscn" id="2_terminalui"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_terminal"]
 size = Vector3(1.2, 0.16, 0.75)
@@ -8,12 +9,48 @@ size = Vector3(1.2, 0.16, 0.75)
 [sub_resource type="BoxShape3D" id="BoxShape3D_terminal"]
 size = Vector3(1.2, 0.16, 0.75)
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_1"]
+viewport_path = NodePath("TerminalViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_1")
+
+[sub_resource type="QuadMesh" id="QuadMesh_1"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector2(1, 0.75)
+
 [node name="CodingTerminal" type="StaticBody3D"]
 script = ExtResource("1_terminal")
 interact_message = "Open terminal"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.91012716, 0, 0, 0, 1, 0, 0, 0, 1.1054959, 0, 0, 0)
 mesh = SubResource("BoxMesh_terminal")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_terminal")
+
+[node name="ScreenMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 7.4505806e-08, 1.0000001, 0, -1.0000001, 7.4505806e-08, 0, 0.08802593, -0.0012824237)
+mesh = SubResource("QuadMesh_1")
+
+[node name="TerminalViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(800, 600)
+render_target_update_mode = 4
+
+[node name="TerminalPanel" parent="TerminalViewport" instance=ExtResource("2_terminalui")]
+layout_mode = 3
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CameraMarker" type="Marker3D" parent="."]
+transform = Transform3D(-4.371139e-08, 1.0000001, -7.4505806e-08, 0, 7.4505806e-08, 1.0000001, 1, 4.3711392e-08, -3.2567523e-15, 0, 0.76343614, 0)

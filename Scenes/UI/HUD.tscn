@@ -1,8 +1,6 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://Scripts/UI/HUDController.gd" id="1_hud"]
-[ext_resource type="Script" path="res://Scripts/UI/TerminalUIController.gd" id="2_terminal_ui"]
-[ext_resource type="Script" path="res://Scripts/Minigame/TerminalGame.gd" id="3_terminal_game"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 10
@@ -17,59 +15,99 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="StatsPanel" type="PanelContainer" parent="Root"]
+[node name="Crosshair" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.02
-anchor_top = 0.02
-anchor_right = 0.28
-anchor_bottom = 0.23
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="StatsMargin" type="MarginContainer" parent="Root/StatsPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+[node name="BottomHUD" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -140.0
+offset_right = 200.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 2
 
-[node name="StatsVBox" type="VBoxContainer" parent="Root/StatsPanel/StatsMargin"]
-layout_mode = 2
-
-[node name="DeadlineTimer" type="Label" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+[node name="DeadlineTimer" type="Label" parent="Root/BottomHUD"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 text = "DEADLINE: 20:00"
+horizontal_alignment = 1
 
-[node name="SanityLabel" type="Label" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+[node name="BarsHBox" type="HBoxContainer" parent="Root/BottomHUD"]
 layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="SanityVBox" type="VBoxContainer" parent="Root/BottomHUD/BarsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="SanityLabel" type="Label" parent="Root/BottomHUD/BarsHBox/SanityVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.8)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 text = "SANITY"
+horizontal_alignment = 1
 
-[node name="SanityBar" type="ProgressBar" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+[node name="SanityBar" type="ProgressBar" parent="Root/BottomHUD/BarsHBox/SanityVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+custom_minimum_size = Vector2(0, 4)
 max_value = 100.0
 value = 100.0
 show_percentage = false
 
-[node name="BatteryLabel" type="Label" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+[node name="BatteryVBox" type="VBoxContainer" parent="Root/BottomHUD/BarsHBox"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="BatteryLabel" type="Label" parent="Root/BottomHUD/BarsHBox/BatteryVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.8)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 text = "BATTERY"
+horizontal_alignment = 1
 
-[node name="BatteryMeter" type="ProgressBar" parent="Root/StatsPanel/StatsMargin/StatsVBox"]
+[node name="BatteryMeter" type="ProgressBar" parent="Root/BottomHUD/BarsHBox/BatteryVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+custom_minimum_size = Vector2(0, 4)
 max_value = 100.0
 value = 100.0
 show_percentage = false
 
-[node name="ProgressBar" type="ProgressBar" parent="Root"]
+[node name="ProgressBar" type="ProgressBar" parent="Root/BottomHUD"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.32
-anchor_top = 0.92
-anchor_right = 0.68
-anchor_bottom = 0.96
+layout_mode = 2
+custom_minimum_size = Vector2(0, 14)
 max_value = 100.0
 show_percentage = true
 
@@ -128,7 +166,7 @@ horizontal_alignment = 1
 
 [node name="PauseHelp" type="Label" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
 layout_mode = 2
-text = "Press P or click Resume."
+text = "Press ESC or click Resume."
 horizontal_alignment = 1
 
 [node name="ResumeButton" type="Button" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
@@ -187,66 +225,3 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Quit"
 
-[node name="TerminalPanel" type="PanelContainer" parent="Root"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.2
-anchor_top = 0.14
-anchor_right = 0.8
-anchor_bottom = 0.86
-script = ExtResource("2_terminal_ui")
-
-[node name="TerminalGame" type="Node" parent="Root/TerminalPanel"]
-script = ExtResource("3_terminal_game")
-
-[node name="TerminalMargin" type="MarginContainer" parent="Root/TerminalPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
-
-[node name="TerminalVBox" type="VBoxContainer" parent="Root/TerminalPanel/TerminalMargin"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="TerminalTitle" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
-layout_mode = 2
-text = "SIPEMAS TERMINAL"
-
-[node name="TerminalHelp" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
-layout_mode = 2
-text = "Type the pattern below exactly, then press Enter. Press Esc to close."
-autowrap_mode = 3
-
-[node name="CurrentPattern" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "TYPE EXACTLY:"
-autowrap_mode = 3
-
-[node name="OutputLog" type="RichTextLabel" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 260)
-layout_mode = 2
-bbcode_enabled = true
-scroll_following = true
-
-[node name="InputField" type="LineEdit" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "type the pattern and press Enter"
-keep_editing_on_text_submit = true
-
-[node name="TerminalFeedback" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = ""
-horizontal_alignment = 1
-
-[node name="StatusBar" type="Label" parent="Root/TerminalPanel/TerminalMargin/TerminalVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "UPLOAD 0.0%"

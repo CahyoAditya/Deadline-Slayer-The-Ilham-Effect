@@ -14,6 +14,10 @@ var _vhs_rect: ColorRect
 var _glitch_rect: ColorRect
 var _ps1_rect: ColorRect
 
+var _motion_blur_mat: ShaderMaterial
+var _target_motion := Vector2.ZERO
+var _current_motion := Vector2.ZERO
+
 # ─── State ────────────────────────────────────────────────────────────────────
 var _current_preset := "calm"
 var _jumpscare_active := false
@@ -80,6 +84,7 @@ func _ready() -> void:
 	EventBus.game_won.connect(_on_game_won)
 	EventBus.game_lost.connect(_on_game_lost)
 	EventBus.sanity_changed.connect(_on_sanity_changed)
+	EventBus.camera_moved.connect(_on_camera_moved)
 
 func _init_materials() -> void:
 	# Siblings on the parent PostProcessLayer
@@ -95,7 +100,37 @@ func _init_materials() -> void:
 	if _ps1_rect:
 		_ps1_post_mat = _ps1_rect.material as ShaderMaterial
 
+	# Dynamic Motion Blur Injection
+	var bbc = BackBufferCopy.new()
+	bbc.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
+	parent.add_child(bbc)
+	
+	var mb_rect = ColorRect.new()
+	mb_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	mb_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_motion_blur_mat = ShaderMaterial.new()
+	_motion_blur_mat.shader = load("res://Shaders/MOTION_BLUR.gdshader")
+	mb_rect.material = _motion_blur_mat
+	parent.add_child(mb_rect)
+
 	_apply_preset("calm", 0.0)
+
+func _on_camera_moved(velocity: Vector2) -> void:
+	# Convert pixel velocity to UV velocity (scaling it down significantly)
+	_target_motion = velocity * 0.0003
+
+func _process(delta: float) -> void:
+	if not _motion_blur_mat:
+		return
+		
+	# Smoothly interpolate current motion to target motion
+	_current_motion = _current_motion.lerp(_target_motion, 15.0 * delta)
+	
+	# Apply to shader
+	_motion_blur_mat.set_shader_parameter("motion_vector", _current_motion)
+	
+	# Decay target motion back to zero rapidly so it only blurs while moving
+	_target_motion = _target_motion.lerp(Vector2.ZERO, 30.0 * delta)
 
 # ─── EventBus Handlers ───────────────────────────────────────────────────────
 

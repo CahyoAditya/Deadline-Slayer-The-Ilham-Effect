@@ -14,7 +14,9 @@ extends CanvasLayer
 @onready var resume_button: Button = %ResumeButton
 @onready var retry_button: Button = %RetryButton
 @onready var quit_button: Button = %QuitButton
+@onready var crosshair: ColorRect = %Crosshair
 
+var _is_terminal_open := false
 var last_sanity := 100.0
 var last_battery := 100.0
 var last_progress := 0.0
@@ -31,6 +33,14 @@ func _ready() -> void:
 	EventBus.game_won.connect(_on_game_won)
 	EventBus.game_paused.connect(_on_game_paused)
 	EventBus.game_resumed.connect(_on_game_resumed)
+	EventBus.terminal_opened.connect(func() -> void: 
+		crosshair.visible = false
+		_is_terminal_open = true
+	)
+	EventBus.terminal_closed.connect(func() -> void: 
+		crosshair.visible = true
+		_is_terminal_open = false
+	)
 	resume_button.pressed.connect(GameManager.resume_game)
 	retry_button.pressed.connect(GameManager.restart_game)
 	quit_button.pressed.connect(func() -> void: get_tree().quit())
@@ -43,7 +53,7 @@ func _ready() -> void:
 	end_screen.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause"):
+	if event.is_action_pressed("ui_cancel") and not _is_terminal_open:
 		GameManager.toggle_pause()
 		get_viewport().set_input_as_handled()
 
@@ -100,15 +110,18 @@ func _on_game_won() -> void:
 
 func _on_game_paused() -> void:
 	pause_overlay.visible = true
+	crosshair.visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _on_game_resumed() -> void:
 	pause_overlay.visible = false
+	crosshair.visible = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _show_end_screen(title: String, reason: String) -> void:
 	end_title.text = title
 	end_reason.text = reason
+	crosshair.visible = false
 	end_stats.text = "Progress: %.1f%%\nSanity: %.1f%%\nBattery: %.1f%%\nTime survived: %s" % [
 		last_progress,
 		last_sanity,
