@@ -9,10 +9,23 @@ var time_label: Label
 var event_label: Label
 var last_event_text := "Last event: none"
 var previous_mouse_mode := Input.MOUSE_MODE_VISIBLE
+var _is_dragging := false
 
 func _ready() -> void:
 	_build_ui()
 	EventBus.five_minutes_elapsed.connect(_on_five_minutes_elapsed)
+
+func _input(event: InputEvent) -> void:
+	if panel and panel.visible:
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				var title_rect = Rect2(panel.position, Vector2(panel.size.x, 40))
+				if title_rect.has_point(event.position):
+					_is_dragging = true
+			else:
+				_is_dragging = false
+		elif event is InputEventMouseMotion and _is_dragging:
+			panel.position += event.relative
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == TOGGLE_KEY:
@@ -78,7 +91,7 @@ func _build_ui() -> void:
 	scroll.add_child(root)
 
 	var title := Label.new()
-	title.text = "Debug Test UI (F3)"
+	title.text = "Debug Test UI (F3) [Drag Me]"
 	title.add_theme_font_size_override("font_size", 18)
 	root.add_child(title)
 

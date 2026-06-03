@@ -1,21 +1,21 @@
-[gd_scene load_steps=23 format=3 uid="uid://df7h4hav11a4x"]
+[gd_scene load_steps=25 format=3 uid="uid://df7h4hav11a4x"]
 
 [ext_resource type="PackedScene" uid="uid://c8yv40tqh0t2t" path="res://Scenes/Player.tscn" id="1_player"]
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="3_post"]
 [ext_resource type="PackedScene" uid="uid://be5p0j4w6v1m4" path="res://Scenes/Bedroom.tscn" id="5_bedroom"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/HUD.tscn" id="6_hud"]
-[ext_resource type="PackedScene" path="res://Scenes/Props/CodingTerminal.tscn" id="7_terminal"]
+[ext_resource type="PackedScene" uid="uid://doem1em4jknac" path="res://Scenes/Props/CodingTerminal.tscn" id="7_terminal"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/KopiItem.tscn" id="8_kopi"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/BatteryPickup.tscn" id="9_battery"]
 [ext_resource type="PackedScene" path="res://Scenes/Entities/Specter.tscn" id="10_specter"]
-[ext_resource type="Shader" uid="uid://b8t1eosuff2cn" path="res://Shaders/SanityDistort.gdshader" id="11_distort"]
+[ext_resource type="Shader" path="res://Shaders/SanityDistort.gdshader" id="11_distort"]
 [ext_resource type="Script" uid="uid://bo3lj06bn7y24" path="res://Scripts/UI/PostProcessController.gd" id="12_controller"]
-[ext_resource type="Shader" path="res://Shaders/VHS_CRT.gdshader" id="13_vhs"]
-[ext_resource type="Shader" path="res://Shaders/GLITCH_EFFECT.gdshader" id="14_glitch"]
-[ext_resource type="Shader" path="res://Shaders/PS1_PSX_POSTPROCESSING.gdshader" id="15_ps1post"]
-[ext_resource type="Script" path="res://Scripts/UI/ShaderController.gd" id="16_shaderctrl"]
-[ext_resource type="Shader" path="res://Shaders/FISHEYE.gdshader" id="17_fisheye"]
-[ext_resource type="Shader" path="res://Shaders/COLOR_CORRECTION.gdshader" id="18_color"]
+[ext_resource type="Shader" uid="uid://d3doosgbyqvs0" path="res://Shaders/VHS_CRT.gdshader" id="13_vhs"]
+[ext_resource type="Shader" uid="uid://bdrymbunbd3mx" path="res://Shaders/GLITCH_EFFECT.gdshader" id="14_glitch"]
+[ext_resource type="Shader" uid="uid://crpj2t50saddk" path="res://Shaders/PS1_PSX_POSTPROCESSING.gdshader" id="15_ps1post"]
+[ext_resource type="Script" uid="uid://cl2ggwj71n2ev" path="res://Scripts/UI/ShaderController.gd" id="16_shaderctrl"]
+[ext_resource type="Shader" uid="uid://cxffy2dhvnf34" path="res://Shaders/FISHEYE.gdshader" id="17_fisheye"]
+[ext_resource type="Shader" uid="uid://bswwonqnogi5c" path="res://Shaders/COLOR_CORRECTION.gdshader" id="18_color"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -30,6 +30,20 @@ glow_strength = 0.8
 shader = ExtResource("11_distort")
 shader_parameter/distort_amount = 0.0
 shader_parameter/distort_speed = 3.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7"]
+shader = ExtResource("18_color")
+shader_parameter/tint_color = Color(0.85, 0.75, 0.45, 1)
+shader_parameter/tint_amount = 0.85
+shader_parameter/saturation = 0.25
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5"]
+shader = ExtResource("15_ps1post")
+shader_parameter/enabled = true
+shader_parameter/dithering = true
+shader_parameter/colors = 14
+shader_parameter/dither_size = 1
+shader_parameter/intensity = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
 shader = ExtResource("3_post")
@@ -72,24 +86,10 @@ shader_parameter/shake_speed = 3.0
 shader_parameter/shake_block_size = 30.5
 shader_parameter/shake_color_rate = 0.01
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5"]
-shader = ExtResource("15_ps1post")
-shader_parameter/enabled = true
-shader_parameter/dithering = true
-shader_parameter/colors = 14
-shader_parameter/dither_size = 1
-shader_parameter/intensity = 1.0
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6"]
 shader = ExtResource("17_fisheye")
 shader_parameter/distortion = 0.8
 shader_parameter/clip_edges = true
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7"]
-shader = ExtResource("18_color")
-shader_parameter/tint_color = Color(0.85, 0.75, 0.45, 1)
-shader_parameter/tint_amount = 0.85
-shader_parameter/saturation = 0.25
 
 [node name="Main" type="Node3D"]
 
@@ -116,7 +116,7 @@ omni_range = 7.0
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.5802236, 0.28778052, -0.6524214)
 
 [node name="CodingTerminal" parent="." instance=ExtResource("7_terminal")]
-transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -2.6122649, 1.1457566, -0.6524214)
+transform = Transform3D(-4.371139e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -1, -4.3711385e-08, 1.9106853e-15, -2.6122649, 1.4580525, -0.6524214)
 
 [node name="KopiItem" parent="." instance=ExtResource("8_kopi")]
 transform = Transform3D(0.51, 0, 0, 0, 0.51, 0, 0, 0, 0.51, -2.3074894, 1.0588962, 0.086559355)
@@ -137,6 +137,7 @@ spawn_points = Array[Vector3]([Vector3(0, 0.9, -0.65), Vector3(0.25, 0.9, 1.2), 
 script = ExtResource("12_controller")
 
 [node name="DistortRect" type="ColorRect" parent="PostProcessLayer"]
+visible = false
 material = SubResource("ShaderMaterial_2")
 anchors_preset = 15
 anchor_right = 1.0
@@ -144,7 +145,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-visible = false
 
 [node name="BBC0" type="BackBufferCopy" parent="PostProcessLayer"]
 copy_mode = 2
@@ -186,6 +186,7 @@ mouse_filter = 2
 copy_mode = 2
 
 [node name="VHSRect" type="ColorRect" parent="PostProcessLayer"]
+visible = false
 material = SubResource("ShaderMaterial_3")
 anchors_preset = 15
 anchor_right = 1.0
@@ -193,12 +194,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-visible = false
 
 [node name="BBC4" type="BackBufferCopy" parent="PostProcessLayer"]
 copy_mode = 2
 
 [node name="GlitchRect" type="ColorRect" parent="PostProcessLayer"]
+visible = false
 material = SubResource("ShaderMaterial_4")
 anchors_preset = 15
 anchor_right = 1.0
@@ -206,12 +207,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-visible = false
 
 [node name="BBC5" type="BackBufferCopy" parent="PostProcessLayer"]
 copy_mode = 2
 
 [node name="FisheyeRect" type="ColorRect" parent="PostProcessLayer"]
+visible = false
 material = SubResource("ShaderMaterial_6")
 anchors_preset = 15
 anchor_right = 1.0
@@ -219,7 +220,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-visible = false
 
 [node name="ShaderController" type="Node" parent="PostProcessLayer"]
 script = ExtResource("16_shaderctrl")
