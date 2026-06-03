@@ -112,6 +112,15 @@ func _build_ui() -> void:
 	_add_shader_toggle(shader_grid, "Glitch", "GlitchRect")
 	_add_shader_toggle(shader_grid, "PS1 Post", "PS1Rect")
 	_add_shader_toggle(shader_grid, "Distort", "DistortRect")
+	_add_shader_toggle(shader_grid, "Fisheye Lens", "FisheyeRect")
+
+	var fps_cb := CheckBox.new()
+	fps_cb.text = "Cinematic FPS Limit (24)"
+	fps_cb.focus_mode = Control.FOCUS_NONE
+	fps_cb.toggled.connect(func(toggled_on: bool):
+		Engine.max_fps = 24 if toggled_on else 0
+	)
+	root.add_child(fps_cb)
 
 	var slider_label := Label.new()
 	slider_label.text = "Shader Intensity:"
@@ -126,6 +135,7 @@ func _build_ui() -> void:
 	_add_shader_slider(slider_grid, "VHS Curve", "VHSRect", "warp_amount", 0.0, 3.0, 0.5)
 	_add_shader_slider(slider_grid, "VHS Lines", "VHSRect", "scanlines_opacity", 0.0, 1.0, 0.12)
 	_add_shader_slider(slider_grid, "Glitch Shake", "GlitchRect", "shake_power", 0.0, 0.1, 0.03)
+	_add_shader_slider(slider_grid, "Fisheye Bend", "FisheyeRect", "distortion", -2.0, 2.0, 0.8)
 
 func _add_shader_slider(parent: Node, text: String, node_name: String, param: String, min_val: float, max_val: float, default_val: float) -> void:
 	var label = Label.new()

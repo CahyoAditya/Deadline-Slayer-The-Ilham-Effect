@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://df7h4hav11a4x"]
+[gd_scene load_steps=21 format=3 uid="uid://df7h4hav11a4x"]
 
 [ext_resource type="PackedScene" uid="uid://c8yv40tqh0t2t" path="res://Scenes/Player.tscn" id="1_player"]
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="3_post"]
@@ -14,6 +14,7 @@
 [ext_resource type="Shader" path="res://Shaders/GLITCH_EFFECT.gdshader" id="14_glitch"]
 [ext_resource type="Shader" path="res://Shaders/PS1_PSX_POSTPROCESSING.gdshader" id="15_ps1post"]
 [ext_resource type="Script" path="res://Scripts/UI/ShaderController.gd" id="16_shaderctrl"]
+[ext_resource type="Shader" path="res://Shaders/FISHEYE.gdshader" id="17_fisheye"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -76,6 +77,12 @@ shader_parameter/enabled = true
 shader_parameter/dithering = true
 shader_parameter/colors = 14
 shader_parameter/dither_size = 1
+shader_parameter/intensity = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6"]
+shader = ExtResource("17_fisheye")
+shader_parameter/distortion = 0.8
+shader_parameter/clip_edges = true
 
 [node name="Main" type="Node3D"]
 
@@ -172,6 +179,18 @@ copy_mode = 2
 
 [node name="GlitchRect" type="ColorRect" parent="PostProcessLayer"]
 material = SubResource("ShaderMaterial_4")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BBC5" type="BackBufferCopy" parent="PostProcessLayer"]
+copy_mode = 2
+
+[node name="FisheyeRect" type="ColorRect" parent="PostProcessLayer"]
+material = SubResource("ShaderMaterial_6")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
