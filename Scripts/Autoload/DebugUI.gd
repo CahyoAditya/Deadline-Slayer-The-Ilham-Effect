@@ -119,6 +119,7 @@ func _build_ui() -> void:
 	_add_shader_toggle(shader_grid, "PS1 Post", "PS1Rect")
 	_add_shader_toggle(shader_grid, "Distort", "DistortRect")
 	_add_shader_toggle(shader_grid, "Fisheye Lens", "FisheyeRect")
+	_add_shader_toggle(shader_grid, "Color Grade", "ColorGradeRect")
 
 	var fps_cb := CheckBox.new()
 	fps_cb.text = "Cinematic FPS Limit (24)"
@@ -142,6 +143,8 @@ func _build_ui() -> void:
 	_add_shader_slider(slider_grid, "VHS Lines", "VHSRect", "scanlines_opacity", 0.0, 1.0, 0.12)
 	_add_shader_slider(slider_grid, "Glitch Shake", "GlitchRect", "shake_power", 0.0, 0.1, 0.03)
 	_add_shader_slider(slider_grid, "Fisheye Bend", "FisheyeRect", "distortion", -2.0, 2.0, 0.8)
+	_add_shader_slider(slider_grid, "Grade Saturate", "ColorGradeRect", "saturation", 0.0, 1.5, 0.4)
+	_add_shader_slider(slider_grid, "Grade Yellow", "ColorGradeRect", "tint_amount", 0.0, 1.0, 0.35)
 
 func _add_shader_slider(parent: Node, text: String, node_name: String, param: String, min_val: float, max_val: float, default_val: float) -> void:
 	var label = Label.new()
