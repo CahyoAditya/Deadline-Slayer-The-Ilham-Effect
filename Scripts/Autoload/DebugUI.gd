@@ -100,6 +100,32 @@ func _build_ui() -> void:
 	_add_button(button_grid, "Progress +10", _on_progress_pressed)
 	_add_button(button_grid, "Lose Sanity", _on_lose_sanity_pressed)
 
+	var shader_label := Label.new()
+	shader_label.text = "Shader Toggles:"
+	root.add_child(shader_label)
+	
+	var shader_grid := GridContainer.new()
+	shader_grid.columns = 2
+	root.add_child(shader_grid)
+
+	_add_shader_toggle(shader_grid, "VHS", "VHSRect")
+	_add_shader_toggle(shader_grid, "Glitch", "GlitchRect")
+	_add_shader_toggle(shader_grid, "PS1 Post", "PS1Rect")
+	_add_shader_toggle(shader_grid, "Distort", "DistortRect")
+
+func _add_shader_toggle(parent: Node, text: String, node_name: String) -> void:
+	var cb := CheckBox.new()
+	cb.text = text
+	cb.button_pressed = true # Assumes they start visible
+	cb.focus_mode = Control.FOCUS_NONE
+	cb.toggled.connect(func(toggled_on: bool):
+		var rect = get_tree().root.get_node_or_null("Main/PostProcessLayer/" + node_name)
+		if rect:
+			rect.visible = toggled_on
+			last_event_text = "Last event: toggled " + node_name + " " + ("ON" if toggled_on else "OFF")
+	)
+	parent.add_child(cb)
+
 func _add_button(parent: Node, text: String, callback: Callable) -> void:
 	var button := Button.new()
 	button.text = text

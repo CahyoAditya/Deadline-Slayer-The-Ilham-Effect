@@ -10,6 +10,10 @@ var _vhs_mat: ShaderMaterial
 var _glitch_mat: ShaderMaterial
 var _ps1_post_mat: ShaderMaterial
 
+var _vhs_rect: ColorRect
+var _glitch_rect: ColorRect
+var _ps1_rect: ColorRect
+
 # ─── State ────────────────────────────────────────────────────────────────────
 var _current_preset := "calm"
 var _jumpscare_active := false
@@ -80,16 +84,16 @@ func _ready() -> void:
 func _init_materials() -> void:
 	# Siblings on the parent PostProcessLayer
 	var parent := get_parent()
-	var vhs_rect := parent.get_node_or_null("VHSRect") as ColorRect
-	var glitch_rect := parent.get_node_or_null("GlitchRect") as ColorRect
-	var ps1_rect := parent.get_node_or_null("PS1Rect") as ColorRect
+	_vhs_rect = parent.get_node_or_null("VHSRect") as ColorRect
+	_glitch_rect = parent.get_node_or_null("GlitchRect") as ColorRect
+	_ps1_rect = parent.get_node_or_null("PS1Rect") as ColorRect
 
-	if vhs_rect:
-		_vhs_mat = vhs_rect.material as ShaderMaterial
-	if glitch_rect:
-		_glitch_mat = glitch_rect.material as ShaderMaterial
-	if ps1_rect:
-		_ps1_post_mat = ps1_rect.material as ShaderMaterial
+	if _vhs_rect:
+		_vhs_mat = _vhs_rect.material as ShaderMaterial
+	if _glitch_rect:
+		_glitch_mat = _glitch_rect.material as ShaderMaterial
+	if _ps1_rect:
+		_ps1_post_mat = _ps1_rect.material as ShaderMaterial
 
 	_apply_preset("calm", 0.0)
 
