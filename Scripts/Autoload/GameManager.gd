@@ -62,8 +62,7 @@ func is_playing() -> bool:
 func pause_game() -> void:
 	if current_state == GameState.PLAYING:
 		set_state(GameState.PAUSED)
-		EventBus.emit_message_requested("PAUSED")
-
+		
 func resume_game() -> void:
 	if current_state == GameState.PAUSED:
 		set_state(GameState.PLAYING)

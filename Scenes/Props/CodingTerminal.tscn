@@ -53,4 +53,4 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CameraMarker" type="Marker3D" parent="."]
-transform = Transform3D(-4.371139e-08, 1.0000001, -7.4505806e-08, 0, 7.4505806e-08, 1.0000001, 1, 4.3711392e-08, -3.2567523e-15, 0, 0.6052281, 0)
+transform = Transform3D(-4.371139e-08, 1.0000001, -7.4505806e-08, 0, 7.4505806e-08, 1.0000001, 1, 4.3711392e-08, -3.2567523e-15, 0, 0.76343614, 0)

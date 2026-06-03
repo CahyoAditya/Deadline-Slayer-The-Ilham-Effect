@@ -7,6 +7,12 @@ const MOUSE_SENSITIVITY = 0.002
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var input_locked := false
 
+# Camera Sway
+const SWAY_AMOUNT := 0.0025
+const SWAY_LERP := 10.0
+const MAX_SWAY := 0.05
+var _target_roll := 0.0
+
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
 @onready var interact_ray = $Head/Camera3D/InteractRay
@@ -29,6 +35,10 @@ func _unhandled_input(event):
 		head.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-80), deg_to_rad(80))
+		EventBus.emit_camera_moved(event.relative)
+		
+		# Set target roll for camera sway
+		_target_roll = clamp(-event.relative.x * SWAY_AMOUNT, -MAX_SWAY, MAX_SWAY)
 	
 	if event.is_action_pressed("ui_cancel"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -46,6 +56,7 @@ func _try_interact():
 		if target != null:
 			AudioManager.play_sfx("interact", 0.0)
 			target.interact(self)
+
 
 func _physics_process(delta):
 	if not is_on_floor():
@@ -71,10 +82,16 @@ func _physics_process(delta):
 		else:
 			_footstep_timer = 0.0
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if input_locked or not GameManager.is_playing():
 		EventBus.emit_interact_hint_changed("")
+		camera.rotation.z = lerp(camera.rotation.z, 0.0, SWAY_LERP * delta)
 		return
+
+	# Smoothly tilt camera towards target_roll
+	camera.rotation.z = lerp(camera.rotation.z, _target_roll, SWAY_LERP * delta)
+	# Slowly return target_roll back to 0
+	_target_roll = lerp(_target_roll, 0.0, (SWAY_LERP * 0.5) * delta)
 
 	if interact_ray.is_colliding():
 		var collider = interact_ray.get_collider()
