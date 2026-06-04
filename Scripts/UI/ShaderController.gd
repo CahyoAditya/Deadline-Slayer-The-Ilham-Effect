@@ -142,7 +142,9 @@ func _on_specter_spawned() -> void:
 	DisplayServer.window_set_title("deadline slayer — it knows you're here")
 
 func _on_specter_dismissed() -> void:
-	_transition_preset("tension", 2.0)
+	_apply_preset("kernel_panic", 0.0)
+	var t := get_tree().create_timer(0.15)
+	t.timeout.connect(func(): _transition_preset("tension", 2.0))
 	DisplayServer.window_set_title("Deadline Slayer : The Ilham Effect")
 
 func _on_jumpscare_fired(_id: String) -> void:

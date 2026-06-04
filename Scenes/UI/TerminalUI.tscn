@@ -69,12 +69,13 @@ text = "CLASS IPB TERMINAL"
 
 [node name="TerminalCloseButton" type="Button" parent="TerminalMargin/TerminalVBox/TerminalHeaderBox"]
 unique_name_in_owner = true
+focus_mode = 0
 layout_mode = 2
 text = " X "
 
 [node name="TerminalHelp" type="Label" parent="TerminalMargin/TerminalVBox"]
 layout_mode = 2
-text = "Ketik sintaks Godot di bawah ini dengan persis, lalu klik Submit."
+text = "Ketik sintaks Godot di bawah ini dengan persis, lalu klik Submit. (Tekan ESC atau klik X untuk menutup terminal)"
 autowrap_mode = 3
 
 [node name="Spacer" type="Control" parent="TerminalMargin/TerminalVBox"]
@@ -116,6 +117,7 @@ keep_editing_on_text_submit = true
 
 [node name="TerminalSubmitButton" type="Button" parent="TerminalMargin/TerminalVBox/InputHBox"]
 unique_name_in_owner = true
+focus_mode = 0
 layout_mode = 2
 text = " Submit "
 
