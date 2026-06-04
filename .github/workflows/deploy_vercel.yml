@@ -31,6 +31,9 @@ jobs:
         run: |
           cp -r web_wrapper/* build/web/
           
+      - name: Fix Git Dubious Ownership
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
