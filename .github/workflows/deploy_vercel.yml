@@ -28,7 +28,7 @@ jobs:
 
       - name: Export Web Build
         run: |
-          godot --headless --export-release "Web" build/web/index.html
+          godot --headless --export-release "Web" build/web/game.html
 
       - name: Copy Wrapper & Vercel Config
         run: |
