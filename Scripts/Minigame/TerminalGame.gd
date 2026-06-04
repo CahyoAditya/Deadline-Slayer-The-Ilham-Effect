@@ -4,7 +4,7 @@ var easy_patterns: Array[String] = [
 	"ctx.fillRect(0, 0, w, h)", "import plotly.express as px", "var gkv_score = 100",
 	"print(\"Halo Pak MAA\")", "var vertex_x = 10.0", "draw_triangle()",
 	"var vr_ready = true", "ctx.moveTo(0, 0)", "ctx.lineTo(x, y)",
-	"var data_pertanian = []", "return A_grade", "var sipemas_url = \"ipb.ac.id\"",
+	"var data_pertanian = []", "return A_grade", "var class_ipb_url = \"class.ipb.ac.id\"",
 	"queue_free()", "await timer", "func start():", "pass"
 ]
 

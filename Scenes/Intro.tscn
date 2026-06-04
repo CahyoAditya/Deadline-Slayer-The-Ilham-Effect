@@ -1,6 +1,21 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/UI/IntroController.gd" id="1_intro"]
+
+[sub_resource type="GDScript" id="GDScript_SkipWheel"]
+script/source = "extends Control
+var progress := 0.0:
+	set(val):
+		progress = val
+		queue_redraw()
+
+func _draw():
+	# Draw background circle
+	draw_arc(Vector2(16, 16), 14, 0, PI * 2, 32, Color(1, 1, 1, 0.2), 3.0, true)
+	# Draw progress arc
+	if progress > 0.0:
+		draw_arc(Vector2(16, 16), 14, -PI/2, -PI/2 + progress * PI * 2, 32, Color.WHITE, 3.0, true)
+"
 
 [node name="Intro" type="Control"]
 layout_mode = 3
@@ -43,7 +58,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="SkipHint" type="Label" parent="."]
+[node name="SkipContainer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -52,12 +67,23 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -50.0
+offset_left = -220.0
+offset_top = -60.0
 offset_right = -30.0
-offset_bottom = -20.0
+offset_bottom = -28.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
-text = "Klik / Tekan layar untuk lanjut..."
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="SkipLabel" type="Label" parent="SkipContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "Hold to Skip Intro"
 horizontal_alignment = 2
+
+[node name="SkipWheel" type="Control" parent="SkipContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+script = SubResource("GDScript_SkipWheel")

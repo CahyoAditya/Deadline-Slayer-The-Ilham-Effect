@@ -48,14 +48,12 @@ func _setup_button_hovers() -> void:
 			continue
 		
 		# We use call_deferred so layout sizes/positions are fully calculated
+		var last_hover_time := 0.0
 		btn.mouse_entered.connect(func() -> void:
-			AudioManager.play_sfx("flashlight_click", -15.0)
-			var t := create_tween()
-			t.tween_property(btn, "position:x", 8.0, 0.1).as_relative()
-		)
-		btn.mouse_exited.connect(func() -> void:
-			var t := create_tween()
-			t.tween_property(btn, "position:x", -8.0, 0.2).as_relative()
+			var current_time = Time.get_ticks_msec() / 1000.0
+			if current_time - last_hover_time > 0.1:
+				AudioManager.play_sfx("flashlight_click", -15.0)
+				last_hover_time = current_time
 		)
 
 func _process(delta: float) -> void:

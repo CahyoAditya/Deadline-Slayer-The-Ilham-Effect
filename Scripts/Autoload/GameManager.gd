@@ -12,6 +12,7 @@ var deadline_timer := 0.0
 var is_specter_active := false
 var lose_reason := ""
 var time_survived := 0.0
+var has_seen_intro := false
 
 func _ready() -> void:
 	_load_resources()

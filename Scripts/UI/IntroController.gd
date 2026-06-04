@@ -1,7 +1,8 @@
 extends Control
 
 @onready var narrative_text: Label = %NarrativeText
-@onready var skip_hint: Label = %SkipHint
+@onready var skip_container: Control = %SkipContainer
+@onready var skip_wheel: Control = %SkipWheel
 
 var lines: Array[String] = [
 	"Proyek Akhir Grafika Komputer dan Visualisasi.",
@@ -24,24 +25,39 @@ var line_pause := 1.5
 var is_typing := false
 var is_fading := false
 
+# Skip logic
+var hold_time := 0.0
+const HOLD_MAX := 1.0
+var is_holding := false
+var can_skip := false
+
 func _ready() -> void:
 	narrative_text.text = ""
 	AudioManager.play_ambient("music_static_horror", -15.0)
 	
-	var fade_tween := create_tween()
-	fade_tween.tween_property(skip_hint, "modulate:a", 1.0, 3.0)
+	# Only allow skipping if we've seen it before
+	can_skip = GameManager.has_seen_intro
+	if can_skip:
+		var fade_tween := create_tween()
+		fade_tween.tween_property(skip_container, "modulate:a", 1.0, 3.0)
+	else:
+		skip_container.modulate.a = 0.0
 	
 	_start_next_line()
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		_skip()
-	elif event is InputEventScreenTouch and event.pressed:
-		_skip()
-	elif event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel") or event.is_action_pressed("interact"):
-		_skip()
+	if not can_skip:
+		return
+		
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		is_holding = event.pressed
+	elif event is InputEventScreenTouch:
+		is_holding = event.pressed
+	elif event.is_action("ui_accept") or event.is_action("ui_cancel") or event.is_action("interact"):
+		is_holding = event.is_pressed()
 
 func _skip() -> void:
+	GameManager.has_seen_intro = true
 	AudioManager.stop_ambient()
 	get_tree().change_scene_to_file("res://Scenes/Main.tscn")
 	GameManager.start_game()
@@ -57,6 +73,18 @@ func _start_next_line() -> void:
 	type_timer = 0.0
 
 func _process(delta: float) -> void:
+	# Handle skipping
+	if can_skip:
+		if is_holding:
+			hold_time += delta
+			if hold_time >= HOLD_MAX:
+				_skip()
+				return
+		else:
+			hold_time = max(0.0, hold_time - delta * 2.0)
+		skip_wheel.set("progress", hold_time / HOLD_MAX)
+
+	# Handle typing
 	if is_typing:
 		type_timer += delta
 		if type_timer >= char_delay:
