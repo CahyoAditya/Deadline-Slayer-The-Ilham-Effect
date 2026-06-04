@@ -98,7 +98,7 @@ func trigger_win() -> void:
 	await get_tree().create_timer(0.3).timeout
 	AudioManager.play_sfx("event_win", 2.0)
 	EventBus.emit_game_won()
-	EventBus.emit_message_requested("SUBMITTED.")
+	EventBus.emit_message_requested("TUGAS BERHASIL DISUBMIT KE CLASS IPB!")
 
 func trigger_lose(reason: String) -> void:
 	if current_state == GameState.GAME_OVER or current_state == GameState.WIN:
@@ -118,11 +118,11 @@ func trigger_lose(reason: String) -> void:
 	else:
 		AudioManager.play_stinger("event_lose_timeout", 1.0)
 
-	var message := "Time's up. The professor has logged out."
+	var message := "Waktu habis. Portal CLASS IPB sudah ditutup Pak MAA."
 	if reason == "sanity_depleted":
-		message = "Your mind collapsed before the deadline."
+		message = "Kamu kena mental breakdown duluan. Gagal submit."
 	elif reason == "caught_by_specter":
-		message = "The Specter claimed you. Deadline missed."
+		message = "Kamu diculik Weeping Angel. Tugas GKV melayang."
 	EventBus.emit_message_requested(message)
 
 func _load_resources() -> void:

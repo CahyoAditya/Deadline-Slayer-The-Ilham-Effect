@@ -73,8 +73,7 @@ func _on_new_game() -> void:
 	var tween := create_tween()
 	tween.tween_property(dark_overlay, "modulate:a", 1.0, 1.2)
 	await tween.finished
-	get_tree().change_scene_to_file("res://Scenes/Main.tscn")
-	GameManager.start_game()
+	get_tree().change_scene_to_file("res://Scenes/Intro.tscn")
 
 func _on_credits() -> void:
 	if get_node_or_null("%CreditsOverlay"):

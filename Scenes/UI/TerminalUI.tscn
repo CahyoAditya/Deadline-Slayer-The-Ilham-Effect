@@ -33,7 +33,7 @@ layout_mode = 2
 [node name="TerminalTitle" type="Label" parent="TerminalMargin/TerminalVBox/TerminalHeaderBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "SIPEMAS TERMINAL"
+text = "CLASS IPB TERMINAL"
 
 [node name="TerminalCloseButton" type="Button" parent="TerminalMargin/TerminalVBox/TerminalHeaderBox"]
 unique_name_in_owner = true
@@ -42,13 +42,22 @@ text = " X "
 
 [node name="TerminalHelp" type="Label" parent="TerminalMargin/TerminalVBox"]
 layout_mode = 2
-text = "Type the pattern below exactly, then press Enter. Press Esc to close."
+text = "Ketik sintaks Godot di bawah ini dengan persis, lalu klik Submit."
 autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="TerminalMargin/TerminalVBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
 
 [node name="CurrentPattern" type="Label" parent="TerminalMargin/TerminalVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "TYPE EXACTLY:"
+theme_override_colors/font_color = Color(1, 0.95, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "KETIK PERSIS SEPERTI INI:"
+horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="OutputLog" type="RichTextLabel" parent="TerminalMargin/TerminalVBox"]

@@ -219,6 +219,7 @@ var _sfx_pool_index: int = 0
 # Dedicated player for typing — clips the long recording to 150ms per keypress
 var _typing_player: AudioStreamPlayer
 const TYPING_CLIP_DURATION := 0.15  # seconds of the recording to play per key
+var _typing_tween: Tween
 
 var _current_music_state := ""
 var _is_silenced := false
@@ -263,14 +264,17 @@ func play_typing_sfx(volume_db: float = -4.0) -> void:
 	if stream == null:
 		return
 	_typing_player.volume_db = volume_db
-	# Always restart from the beginning so each keypress sounds like a fresh hit
 	_typing_player.stream = stream
 	_typing_player.play()
-	# Schedule a stop after the clip window
-	get_tree().create_timer(TYPING_CLIP_DURATION).timeout.connect(
-		func() -> void:
-			if _typing_player.playing:
-				_typing_player.stop()
+	
+	if _typing_tween and _typing_tween.is_valid():
+		_typing_tween.kill()
+		
+	_typing_tween = create_tween()
+	_typing_tween.tween_interval(TYPING_CLIP_DURATION)
+	_typing_tween.tween_callback(func() -> void:
+		if _typing_player.playing:
+			_typing_player.stop()
 	)
 
 ## Play a one-shot sound effect by ID (uses SFX pool).

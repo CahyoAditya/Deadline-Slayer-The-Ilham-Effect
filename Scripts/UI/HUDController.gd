@@ -129,7 +129,7 @@ func _on_message_requested(text: String) -> void:
 		)
 
 func _on_game_lost(reason: String) -> void:
-	var text := "Waktu habis. Portal SIPEMAS sudah ditutup Pak MAA."
+	var text := "Waktu habis. Portal CLASS IPB sudah ditutup Pak MAA."
 	if reason == "sanity_depleted":
 		text = "Kamu kena mental breakdown duluan. Gagal submit."
 	elif reason == "caught_by_specter":
