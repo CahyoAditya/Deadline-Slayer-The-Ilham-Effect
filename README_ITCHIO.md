@@ -40,7 +40,7 @@
 - **Spasi** - Melompat
 - **E** - Interaksi (Duduk di Terminal, meminum Kopi, mengambil Baterai)
 - **F** - Menyalakan / Mematikan Senter
-- **P / Esc** - Jeda (Pause) atau Keluar dari Terminal
+- **P / Q** - Jeda (Pause) atau Keluar dari Terminal
 
 ### Interaksi Terminal
 Dekati meja komputermu, tekan `E`, dan ketikkan sintaks kode **persis** seperti yang ditampilkan di layar monitor untuk menambah persentase progres.
