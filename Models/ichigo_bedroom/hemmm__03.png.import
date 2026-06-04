@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dqvb7tyi25608"
 path.s3tc="res://.godot/imported/hemmm__03.png-8e007cdb2a97f11a5bc70d42b17f8caa.s3tc.ctex"
+path.etc2="res://.godot/imported/hemmm__03.png-8e007cdb2a97f11a5bc70d42b17f8caa.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/ichigo_bedroom/hemmm__03.png"
-dest_files=["res://.godot/imported/hemmm__03.png-8e007cdb2a97f11a5bc70d42b17f8caa.s3tc.ctex"]
+dest_files=["res://.godot/imported/hemmm__03.png-8e007cdb2a97f11a5bc70d42b17f8caa.s3tc.ctex", "res://.godot/imported/hemmm__03.png-8e007cdb2a97f11a5bc70d42b17f8caa.etc2.ctex"]
 
 [params]
 

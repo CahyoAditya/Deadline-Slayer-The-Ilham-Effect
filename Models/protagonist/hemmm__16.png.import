@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6if6t14pfkyy"
 path.s3tc="res://.godot/imported/hemmm__16.png-6360101974f49864c37a828d472febbe.s3tc.ctex"
+path.etc2="res://.godot/imported/hemmm__16.png-6360101974f49864c37a828d472febbe.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/protagonist/hemmm__16.png"
-dest_files=["res://.godot/imported/hemmm__16.png-6360101974f49864c37a828d472febbe.s3tc.ctex"]
+dest_files=["res://.godot/imported/hemmm__16.png-6360101974f49864c37a828d472febbe.s3tc.ctex", "res://.godot/imported/hemmm__16.png-6360101974f49864c37a828d472febbe.etc2.ctex"]
 
 [params]
 
