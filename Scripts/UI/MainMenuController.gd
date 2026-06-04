@@ -32,7 +32,18 @@ func _ready() -> void:
 	fade_tween.tween_property(dark_overlay, "modulate:a", 0.3, 2.0)
 
 func _setup_button_hovers() -> void:
-	for btn: Button in [%NewGameButton, %ContinueButton, %CreditsButton, %QuitButton]:
+	var empty_style := StyleBoxEmpty.new()
+	var buttons = [%NewGameButton, %ContinueButton, %CreditsButton, %QuitButton]
+	if get_node_or_null("%CloseCreditsButton"):
+		buttons.append(%CloseCreditsButton)
+		
+	for btn: Button in buttons:
+		btn.add_theme_stylebox_override("normal", empty_style)
+		btn.add_theme_stylebox_override("hover", empty_style)
+		btn.add_theme_stylebox_override("pressed", empty_style)
+		btn.add_theme_stylebox_override("disabled", empty_style)
+		btn.add_theme_stylebox_override("focus", empty_style)
+		
 		if btn.disabled:
 			continue
 		
@@ -63,9 +74,12 @@ func _on_new_game() -> void:
 	tween.tween_property(dark_overlay, "modulate:a", 1.0, 1.2)
 	await tween.finished
 	get_tree().change_scene_to_file("res://Scenes/Main.tscn")
+	GameManager.start_game()
 
 func _on_credits() -> void:
-	pass
+	if get_node_or_null("%CreditsOverlay"):
+		%CreditsOverlay.visible = true
+		%CloseCreditsButton.pressed.connect(func() -> void: %CreditsOverlay.visible = false, CONNECT_ONE_SHOT)
 
 func _on_quit() -> void:
 	get_tree().quit()

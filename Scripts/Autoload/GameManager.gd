@@ -81,7 +81,8 @@ func toggle_pause() -> void:
 func restart_game() -> void:
 	current_state = GameState.MENU
 	get_tree().reload_current_scene()
-	call_deferred("start_game")
+	await get_tree().process_frame
+	start_game()
 
 func trigger_win() -> void:
 	if current_state == GameState.WIN:
