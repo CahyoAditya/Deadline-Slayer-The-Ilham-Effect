@@ -51,12 +51,16 @@ func apply_settings():
 	if OS.has_feature("web"):
 		# Web handles resolution automatically via CSS/canvas, only apply fullscreen
 		if is_fullscreen:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+			if ClassDB.class_exists("JavaScriptBridge"):
+				JavaScriptBridge.eval("if (navigator.keyboard && navigator.keyboard.lock) { navigator.keyboard.lock(['Escape']); }")
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			if ClassDB.class_exists("JavaScriptBridge"):
+				JavaScriptBridge.eval("if (navigator.keyboard && navigator.keyboard.unlock) { navigator.keyboard.unlock(); }")
 	else:
 		if is_fullscreen:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 			if resolution_index >= 0 and resolution_index < available_resolutions.size():
