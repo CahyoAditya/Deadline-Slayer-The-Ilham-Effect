@@ -9,6 +9,27 @@ extends PanelContainer
 @onready var close_btn: Button = %TerminalCloseButton
 @onready var submit_btn: Button = %TerminalSubmitButton
 
+@onready var toko_btn: Button = %TokoAzkaButton
+@onready var shop_vbox: VBoxContainer = %ShopVBox
+@onready var terminal_vbox: VBoxContainer = $TerminalMargin/TerminalVBox
+@onready var shop_close_btn: Button = %ShopCloseButton
+@onready var shop_intro: RichTextLabel = %ShopIntro
+@onready var buy_coffee_btn: Button = %BuyCoffeeButton
+@onready var buy_battery_btn: Button = %BuyBatteryButton
+@onready var shop_log: RichTextLabel = %ShopLog
+
+var has_seen_shop_intro := false
+var coffee_consumed := 0
+var is_shop_locked := false
+var active_delivery := false
+
+const COURIERS := [
+	"Kurir Deatwalls",
+	"Kurir Juliusssy",
+	"Kurir Hamgarian",
+	"Kurir Nama Adit Pasaran"
+]
+
 var evaluator := TypingEvaluator.new()
 var current_pattern := ""
 
@@ -72,6 +93,11 @@ func _ready() -> void:
 	
 	close_btn.pressed.connect(close)
 	submit_btn.pressed.connect(func(): _on_text_submitted(input_field.text))
+	
+	toko_btn.pressed.connect(_open_shop)
+	shop_close_btn.pressed.connect(_close_shop)
+	buy_coffee_btn.pressed.connect(func(): _order_item("coffee"))
+	buy_battery_btn.pressed.connect(func(): _order_item("battery"))
 
 func open() -> void:
 	if not GameManager.is_playing():
@@ -90,6 +116,7 @@ func close() -> void:
 		return
 
 	visible = false
+	_close_shop() # Reset view
 	AudioManager.play_sfx("terminal_close", 0.0)
 	if input_field.text_changed.is_connected(_on_text_changed):
 		input_field.text_changed.disconnect(_on_text_changed)
@@ -136,8 +163,8 @@ func _process(delta: float) -> void:
 	# Tick down the typing sound cooldown
 	if _keypress_sound_timer > 0.0:
 		_keypress_sound_timer -= delta
-	# Keep input focused while terminal is open
-	if visible and input_field != null and not input_field.has_focus():
+	# Keep input focused while terminal is open and terminal view is active
+	if visible and terminal_vbox.visible and input_field != null and not input_field.has_focus():
 		input_field.grab_focus()
 		
 	if visible:
@@ -194,7 +221,7 @@ func _show_feedback(text: String, color: Color) -> void:
 	feedback_label.add_theme_color_override("font_color", color)
 
 func _focus_input() -> void:
-	if not visible:
+	if not visible or not terminal_vbox.visible:
 		return
 
 	input_field.grab_focus()
@@ -203,3 +230,95 @@ func _focus_input() -> void:
 func _refocus_input() -> void:
 	_focus_input()
 	call_deferred("_focus_input")
+
+# --- TOKO AZKA MECHANICS ---
+
+func _open_shop() -> void:
+	terminal_vbox.visible = false
+	shop_vbox.visible = true
+	if not has_seen_shop_intro:
+		has_seen_shop_intro = true
+		shop_intro.text = "SELAMAT DATANG DI TOKO AZKA JAYA ABADI"
+		shop_intro.visible_characters = 0
+		var tween = create_tween()
+		tween.tween_property(shop_intro, "visible_characters", shop_intro.text.length(), 2.0)
+	else:
+		shop_intro.visible_characters = -1
+		shop_intro.text = "SELAMAT DATANG DI TOKO AZKA JAYA ABADI"
+
+func _close_shop() -> void:
+	shop_vbox.visible = false
+	terminal_vbox.visible = true
+	if visible:
+		_refocus_input()
+
+func _order_item(item_type: String) -> void:
+	if is_shop_locked or active_delivery:
+		return
+		
+	active_delivery = true
+	buy_coffee_btn.disabled = true
+	buy_battery_btn.disabled = true
+	
+	var courier = COURIERS.pick_random()
+	var delivery_time := 10.0
+	
+	var rand := randf()
+	if rand < 0.10:
+		_append_shop_log("[color=red][!] Karyawan Hamgarian menghancurkan toko Azka Jaya Abadi![/color]")
+		_append_shop_log("Toko ditutup sementara untuk perbaikan (20 detik).")
+		active_delivery = false
+		is_shop_locked = true
+		var t = get_tree().create_timer(20.0)
+		t.timeout.connect(func():
+			is_shop_locked = false
+			buy_coffee_btn.disabled = false
+			buy_battery_btn.disabled = false
+			_append_shop_log("[color=green][!] Toko Azka Jaya Abadi kembali buka.[/color]")
+		)
+		return
+	elif rand < 0.25:
+		_append_shop_log("[color=yellow][!] Karyawan lagi rajin. Pesanan diproses kilat![/color]")
+		delivery_time = 5.0
+		
+	var item_name = "Calvin Coffee" if item_type == "coffee" else "Baterai AAA dit"
+	_append_shop_log("> Memesan " + item_name + " via " + courier + "...")
+	_append_shop_log("Estimasi waktu: " + str(delivery_time) + " detik.")
+	
+	var t = get_tree().create_timer(delivery_time)
+	t.timeout.connect(func():
+		active_delivery = false
+		if not is_shop_locked:
+			buy_coffee_btn.disabled = false
+			buy_battery_btn.disabled = false
+		_deliver_item(item_type, courier)
+	)
+
+func _deliver_item(item_type: String, courier: String) -> void:
+	_append_shop_log("[color=green]> " + courier + " telah mengantarkan pesananmu![/color]")
+	AudioManager.play_sfx("terminal_correct", 0.0)
+	
+	var player = get_tree().get_first_node_in_group("player")
+	if not player: return
+	
+	if item_type == "coffee":
+		coffee_consumed += 1
+		var san_sys = player.get_node_or_null("SanitySystem")
+		if san_sys:
+			if coffee_consumed >= 3 and randf() < 0.30:
+				_append_shop_log("[color=red]FATAL: KAMU OVERDOSIS KAFEIN![/color]")
+				_append_shop_log("[color=red]JANTUNGMU BERDETAK TERLALU KENCANG, KEWARASAN MENURUN DRASTIS![/color]")
+				san_sys.drain(60.0)
+				EventBus.emit_message_requested("OVERDOSIS KAFEIN! KAMU MERASA INGIN MATI.")
+			else:
+				_append_shop_log("> Meminum Calvin Coffee. Kewarasan bertambah.")
+				san_sys.restore(25.0)
+	elif item_type == "battery":
+		var bat_sys = player.get_node_or_null("BatterySystem")
+		if bat_sys:
+			_append_shop_log("> Mengganti baterai senter.")
+			bat_sys.restore(50.0)
+
+func _append_shop_log(text: String) -> void:
+	shop_log.append_text(text + "\n")
+	shop_log.scroll_to_line(shop_log.get_line_count())

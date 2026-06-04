@@ -170,7 +170,7 @@ const SFX_MAP: Dictionary = {
 	"event_lose_caught":    "res://Sound Effects/Monsters & Ghosts/Ghost_scream.mp3",
 
 	# ── Ambient music layers (played on music/ambient channels) ──
-	"music_calm_ambient":   "res://Sound Effects/House & Office/Home or Office/Air conditioning_Running.mp3",
+	"music_calm_ambient":   "res://Sound Effects/Ambient/Artificial Rainstorm.mp3",
 	"music_haunting":       "res://Sound Effects/Ambient/Ambience_haunting.mp3",
 	"music_haunting_long":  "res://Sound Effects/Ambient/Ambience_haunting_2.mp3",
 	"music_tension":        "res://Sound Effects/Ambient/Piano_suspense_ambient.mp3",
