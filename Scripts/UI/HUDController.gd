@@ -150,6 +150,7 @@ func _on_game_resumed() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _show_end_screen(title: String, reason: String) -> void:
+	message_label.visible = false
 	end_title.text = title
 	end_reason.text = reason
 	crosshair.visible = false
