@@ -93,7 +93,7 @@ light_energy = 0.2
 omni_range = 2.0
 
 [node name="UILayer" type="CanvasLayer" parent="."]
-layer = 10
+layer = 30
 
 [node name="Root" type="Control" parent="UILayer"]
 layout_mode = 3
@@ -212,12 +212,12 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 15.0
 offset_top = -30.0
-offset_right = 200.0
+offset_right = 600.0
 offset_bottom = -10.0
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_font_sizes/font_size = 14
-text = "© 2026 Cahyo Aditya"
+text = "© 2026 Aditya Cahyo, Azka Julian, Ilham Edgar, Julius Calvin"
 
 [node name="DarkOverlay" type="ColorRect" parent="UILayer/Root"]
 unique_name_in_owner = true
