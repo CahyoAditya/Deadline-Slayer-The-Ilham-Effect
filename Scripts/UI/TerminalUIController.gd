@@ -288,9 +288,6 @@ func _order_item(item_type: String) -> void:
 	var t = get_tree().create_timer(delivery_time)
 	t.timeout.connect(func():
 		active_delivery = false
-		if not is_shop_locked:
-			buy_coffee_btn.disabled = false
-			buy_battery_btn.disabled = false
 		_deliver_item(item_type, courier)
 	)
 
@@ -318,6 +315,17 @@ func _deliver_item(item_type: String, courier: String) -> void:
 		if bat_sys:
 			_append_shop_log("> Mengganti baterai senter.")
 			bat_sys.restore(50.0)
+
+	# Store cooldown after successful delivery
+	if not is_shop_locked:
+		_append_shop_log("[color=yellow]Toko sedang menyiapkan pesanan berikutnya (Cooldown 5 detik)...[/color]")
+		var cd_timer = get_tree().create_timer(5.0)
+		cd_timer.timeout.connect(func():
+			if not is_shop_locked:
+				buy_coffee_btn.disabled = false
+				buy_battery_btn.disabled = false
+				_append_shop_log("[color=green]Toko siap menerima pesanan kembali![/color]")
+		)
 
 func _append_shop_log(text: String) -> void:
 	shop_log.append_text(text + "\n")

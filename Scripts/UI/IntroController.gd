@@ -47,6 +47,12 @@ func _ready() -> void:
 	_start_next_line()
 
 func _input(event: InputEvent) -> void:
+	# Secret key to instantly skip intro anytime
+	if event is InputEventKey and event.keycode == KEY_F4 and event.pressed:
+		get_viewport().set_input_as_handled()
+		_skip()
+		return
+
 	if not can_skip:
 		return
 		
