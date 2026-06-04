@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  export_and_deploy:
-    name: Export to Web and Deploy
+  export_web:
+    name: Export Web Build
     runs-on: ubuntu-latest
     container:
       image: barichello/godot-ci:4.5
@@ -54,17 +54,11 @@ jobs:
           makeLatest: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Node for Butler
-        run: apt-get update && apt-get install -y nodejs npm
-
-      - name: Publish Web Build to itch.io
-        uses: manleydev/butler-publish-itchio-action@v1.0.3
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: html5
-          ITCH_GAME: deadline-slayer-the-ilham-effect
-          ITCH_USER: hamgarian
-          PACKAGE: build/web
+      - name: Upload Web Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: build/web
 
   export_windows:
     name: Export Windows Desktop
@@ -103,8 +97,32 @@ jobs:
           makeLatest: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Node for Butler
-        run: apt-get update && apt-get install -y nodejs npm
+
+  deploy_itchio:
+    name: Deploy to Itch.io
+    runs-on: ubuntu-latest
+    needs: [export_web, export_windows]
+    steps:
+      - name: Download Web Build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: build/web
+
+      - name: Download Windows Build
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows
+
+      - name: Publish Web Build to itch.io
+        uses: manleydev/butler-publish-itchio-action@v1.0.3
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: html5
+          ITCH_GAME: deadline-slayer-the-ilham-effect
+          ITCH_USER: hamgarian
+          PACKAGE: build/web
 
       - name: Publish Windows Build to itch.io
         uses: manleydev/butler-publish-itchio-action@v1.0.3
