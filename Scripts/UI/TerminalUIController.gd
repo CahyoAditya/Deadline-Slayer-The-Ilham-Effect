@@ -15,6 +15,8 @@ var current_pattern := ""
 # Typing sound cooldown — prevents flooding the pool on rapid input
 const KEYPRESS_SOUND_COOLDOWN := 0.10  # seconds
 var _keypress_sound_timer := 0.0
+var _glitch_timer := 0.0
+
 var flavor_lines: Array[String] = [
 	"> Menghubungkan ke CLASS IPB...",
 	"> [NOTIF] Kamu di-ping di grup WA kelompok...",
@@ -136,38 +138,46 @@ func _process(delta: float) -> void:
 	# Keep input focused while terminal is open
 	if visible and input_field != null and not input_field.has_focus():
 		input_field.grab_focus()
+		
+	if visible:
+		_glitch_timer -= delta
+		if _glitch_timer <= 0.0:
+			_update_glitched_text()
+			_glitch_timer = 0.1
 
-func _next_pattern() -> void:
-	current_pattern = terminal_game.get_pattern()
-	var display_pattern := current_pattern
-	# At low sanity, swap one character with a lookalike to disorient the player
+func _update_glitched_text() -> void:
+	if current_pattern == "":
+		return
+		
+	var sanity := 100.0
 	var player_node := get_tree().get_first_node_in_group("player")
 	if player_node:
 		var san_sys := player_node.get_node_or_null("SanitySystem")
 		if san_sys and san_sys.get("current_sanity") != null:
-			if san_sys.current_sanity < 30.0 and randf() < 0.5:
-				display_pattern = _distort_pattern(current_pattern)
-	current_pattern_label.text = "KETIK PERSIS SEPERTI INI:\n" + display_pattern
+			sanity = san_sys.current_sanity
+	
+	if sanity > 50.0:
+		current_pattern_label.text = "KETIK PERSIS SEPERTI INI:\n" + current_pattern
+		return
+		
+	var severity := 1.0 - (sanity / 50.0) # 0.0 to 1.0
+	var glitched := ""
+	for c in current_pattern:
+		# Max 50% chance per character to glitch at 0 sanity
+		if randf() < severity * 0.5:
+			# Random readable ASCII character
+			glitched += String.chr(randi_range(33, 126))
+		else:
+			glitched += c
+			
+	current_pattern_label.text = "KETIK PERSIS SEPERTI INI:\n" + glitched
+
+func _next_pattern() -> void:
+	current_pattern = terminal_game.get_pattern()
+	_update_glitched_text()
 	evaluator.start_pattern()
 
-## Swap one character with a visually similar lookalike to confuse at low sanity.
-func _distort_pattern(pattern: String) -> String:
-	const LOOKALIKES := {
-		"0": "O", "O": "0", "l": "1", "1": "l",
-		"I": "l", "S": "5", "5": "S", "B": "8",
-		"G": "6", "6": "G", "Z": "2", "2": "Z",
-	}
-	var chars := pattern.split("", false)
-	# Collect swappable indices
-	var swappable: Array[int] = []
-	for i in chars.size():
-		if LOOKALIKES.has(chars[i]):
-			swappable.append(i)
-	if swappable.is_empty():
-		return pattern
-	var idx: int = swappable[randi() % swappable.size()]
-	chars[idx] = LOOKALIKES[chars[idx]]
-	return "".join(chars)
+
 
 func _on_progress_changed(value: float) -> void:
 	status_bar.text = "UPLOAD %.1f%%" % value
