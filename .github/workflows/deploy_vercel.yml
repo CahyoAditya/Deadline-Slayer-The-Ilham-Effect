@@ -34,6 +34,10 @@ jobs:
       - name: Fix Git Dubious Ownership
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
           
+      - name: Install Node.js (Required for Vercel CLI)
+        run: |
+          apt-get update && apt-get install -y nodejs npm
+          
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
