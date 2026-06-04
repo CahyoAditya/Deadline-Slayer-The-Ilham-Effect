@@ -124,6 +124,8 @@ func trigger_lose(reason: String) -> void:
 		message = "Kamu kena mental breakdown duluan. Gagal submit."
 	elif reason == "caught_by_specter":
 		message = "Kamu diculik Weeping Angel. Tugas GKV melayang."
+	elif reason == "debug_timeout":
+		message = "[Debug] Timer is over."
 	EventBus.emit_message_requested(message)
 
 func _load_resources() -> void:

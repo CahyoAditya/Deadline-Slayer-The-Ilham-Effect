@@ -134,6 +134,8 @@ func _on_game_lost(reason: String) -> void:
 		text = "Kamu kena mental breakdown duluan. Gagal submit."
 	elif reason == "caught_by_specter":
 		text = "Kamu diculik Weeping Angel. Tugas GKV melayang."
+	elif reason == "debug_timeout":
+		text = "[Debug] Timer is over."
 	_show_end_screen("DEADLINE MISSED", text)
 
 func _on_game_won() -> void:
