@@ -6,13 +6,14 @@ extends Control
 
 var lines: Array[String] = [
 	"Proyek Akhir Grafika Komputer dan Visualisasi.",
-	"Sistem Koordinat, Transformasi 3D, Canvas API, Plotly...",
+	"Tugasnya jelas: Membuat Game 3D atau Aplikasi AR.",
 	"Batas waktu unggah di CLASS IPB: Malam ini, 23:59.",
-	"Teman sekelompokmu, Calvin, tidak kunjung membalas chat WA.",
-	"Matamu sudah berat. Baterai laptop menipis.",
+	"Teman-teman sekelompokmu: Azka, Adit, dan Calvin...",
+	"Tiba-tiba menghilang tanpa jejak semenjak maghrib tadi.",
+	"Kamu, Ilham, adalah satu-satunya yang tersisa.",
 	"Jika kamu gagal mem-build project Godot ini...",
-	"Bukan hanya IPK-mu yang akan hancur.",
-	"Sesuatu di sudut kamar kosmu... sudah menunggu kelengahanmu."
+	"Bukan hanya IPK kalian berempat yang akan hancur.",
+	"Sesuatu di sudut kamar kosmu... sudah menunggumu."
 ]
 
 var current_line := 0
