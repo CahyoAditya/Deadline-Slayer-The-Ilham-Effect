@@ -31,6 +31,9 @@ jobs:
         run: |
           cp -r web_wrapper/* build/web/
           
+      - name: Fix Git Dubious Ownership
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
@@ -65,3 +68,14 @@ jobs:
         with:
           name: windows-build
           path: build/windows
+
+      - name: Publish to GitHub Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/windows/DeadlineSlayer.exe"
+          tag: "latest"
+          name: "Latest Windows Build"
+          body: "Automatically generated Windows build from the `main` branch."
+          allowUpdates: true
+          makeLatest: true
+          token: ${{ secrets.GITHUB_TOKEN }}
