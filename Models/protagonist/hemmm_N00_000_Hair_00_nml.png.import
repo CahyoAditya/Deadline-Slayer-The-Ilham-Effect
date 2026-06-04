@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://de7003m2plxdg"
 path.s3tc="res://.godot/imported/hemmm_N00_000_Hair_00_nml.png-59e8564cc041b359107b70e870148000.s3tc.ctex"
+path.etc2="res://.godot/imported/hemmm_N00_000_Hair_00_nml.png-59e8564cc041b359107b70e870148000.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Models/protagonist/hemmm_N00_000_Hair_00_nml.png"
-dest_files=["res://.godot/imported/hemmm_N00_000_Hair_00_nml.png-59e8564cc041b359107b70e870148000.s3tc.ctex"]
+dest_files=["res://.godot/imported/hemmm_N00_000_Hair_00_nml.png-59e8564cc041b359107b70e870148000.s3tc.ctex", "res://.godot/imported/hemmm_N00_000_Hair_00_nml.png-59e8564cc041b359107b70e870148000.etc2.ctex"]
 
 [params]
 

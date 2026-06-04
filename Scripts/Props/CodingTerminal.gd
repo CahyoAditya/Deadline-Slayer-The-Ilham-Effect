@@ -73,6 +73,48 @@ func _on_terminal_closed() -> void:
 			attrs.dof_blur_near_enabled = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _is_active:
+	if not _is_active:
+		return
+		
+	if event is InputEventMouse:
+		var camera := get_viewport().get_camera_3d()
+		if camera:
+			var mouse_pos: Vector2 = event.position
+			var ray_origin := camera.project_ray_origin(mouse_pos)
+			var ray_dir := camera.project_ray_normal(mouse_pos)
+			
+			var screen_normal := screen_mesh.global_transform.basis.z.normalized()
+			var plane := Plane(screen_normal, screen_mesh.global_position)
+			var intersect_pos = plane.intersects_ray(ray_origin, ray_dir)
+			
+			if intersect_pos != null:
+				var local_pos = screen_mesh.global_transform.affine_inverse() * intersect_pos
+				
+				# QuadMesh size from tscn
+				var quad_size := Vector2(1.0, 0.75)
+				if screen_mesh.mesh and screen_mesh.mesh is QuadMesh:
+					quad_size = screen_mesh.mesh.size
+					
+				var uv := Vector2(
+					(local_pos.x / quad_size.x) + 0.5,
+					0.5 - (local_pos.y / quad_size.y)
+				)
+				
+				if uv.x >= 0.0 and uv.x <= 1.0 and uv.y >= 0.0 and uv.y <= 1.0:
+					var vp_size := Vector2($TerminalViewport.size)
+					var event_copy = event.duplicate()
+					event_copy.position = Vector2(uv.x * vp_size.x, uv.y * vp_size.y)
+					
+					if event_copy is InputEventMouseMotion:
+						event_copy.relative = event.relative * (vp_size / get_viewport().get_visible_rect().size)
+						
+					$TerminalViewport.push_input(event_copy)
+					get_viewport().set_input_as_handled()
+					return
+		
+		# Consume unhandled mouse events so we don't click through
+		get_viewport().set_input_as_handled()
+	else:
+		# Keyboard events
 		$TerminalViewport.push_input(event)
 		get_viewport().set_input_as_handled()

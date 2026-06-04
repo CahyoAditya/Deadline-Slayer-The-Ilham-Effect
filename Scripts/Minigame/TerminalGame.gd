@@ -1,38 +1,37 @@
 extends Node
 
 var easy_patterns: Array[String] = [
-	"print(\"hello\")", "x = 5", "deadline = true", "return score", "var hp = 100",
-	"if ready:", "queue_free()", "await timer", "func start():", "pass",
-	"for i in range(3):", "player.move()", "sanity -= 1", "battery += 10", "emit_signal()",
-	"load_level()", "save_game()", "open_laptop()", "close_terminal()", "compile()"
+	"ctx.fillRect(0, 0, w, h)", "import plotly.express as px", "var gkv_score = 100",
+	"print(\"Halo Pak MAA\")", "var vertex_x = 10.0", "draw_triangle()",
+	"var vr_ready = true", "ctx.moveTo(0, 0)", "ctx.lineTo(x, y)",
+	"var data_pertanian = []", "return A_grade", "var class_ipb_url = \"class.ipb.ac.id\"",
+	"queue_free()", "await timer", "func start():", "pass"
 ]
 
 var medium_patterns: Array[String] = [
-	"if sanity <= 0:", "func restore(amount):", "EventBus.sanity_changed.emit(value)",
-	"for task in tasks:", "var progress = clamp(value, 0, 100)", "match threshold:",
+	"var df = pd.read_csv('pertanian.csv')", "var transform_matrix = Transform3D()",
+	"fig = px.scatter(df, x='Curah_Hujan', y='Panen')", "if deadline <= 0: panic()",
+	"ctx.bezierCurveTo(20, 100, 200, 100, 200, 20)", "var camera = Camera3D.new()",
+	"ctx.arc(x, y, radius, 0, PI * 2)", "EventBus.emit_signal(\"gkv_submitted\")",
 	"Input.is_action_pressed(\"interact\")", "get_tree().reload_current_scene()",
-	"var tween = create_tween()", "deadline_timer -= delta", "set_process(true)",
-	"if battery_level <= 0:", "return input.strip_edges()", "AudioManager.play_sfx(id)",
-	"GameManager.trigger_win()", "var pattern = patterns.pick_random()",
-	"line_edit.grab_focus()", "panel.visible = true", "camera.rotate_x(angle)",
-	"velocity = velocity.normalized()"
+	"var tween = create_tween()", "GameManager.trigger_win()"
 ]
 
 var hard_patterns: Array[String] = [
-	"func _physics_process(delta: float) -> void:",
-	"current_progress = clamp(current_progress + amount, 0.0, 100.0)",
-	"EventBus.progress_threshold_reached.connect(_on_threshold_reached)",
-	"var next_pos = navigation_agent.get_next_path_position()",
-	"if current_state == GameState.KERNEL_PANIC:",
-	"await get_tree().create_timer(2.0).timeout",
-	"var accuracy = correct_chars / max(total_chars, 1)",
+	"func _hitung_transformasi_3d(matrix: Transform3D) -> Vector3:",
+	"fig.update_layout(title='Visualisasi Data Pertanian IPB')",
+	"var point_cloud = generate_3d_representation()",
+	"ctx.strokeText(\"TUGAS GKV\", 50, 50)",
+	"func _render_vr_environment(eye: int) -> void:",
+	"if mahasiswa.kewarasan < 20.0: mental_breakdown()",
+	"EventBus.progress_threshold_reached.connect(_on_threshold)",
 	"for threshold in GameManager.event_config.thresholds:",
 	"message_panel.set_anchors_preset(Control.PRESET_CENTER)",
 	"flashlight.visible = flashlight_on and battery_level > 0.0"
 ]
 
 func _ready() -> void:
-	_load_pattern_resources()
+	pass # _load_pattern_resources() disabled to use GKV hardcoded patterns
 
 func get_pattern() -> String:
 	var progress := ProgressSystem.get_progress()

@@ -12,12 +12,29 @@ var deadline_timer := 0.0
 var is_specter_active := false
 var lose_reason := ""
 var time_survived := 0.0
+var has_seen_intro := false
+
+var tooltips: Array[String] = [
+	"Tip: Tekan F untuk menyalakan Senter jika ruangan terlalu gelap.",
+	"Tip: Jangan lupa cek TOKO AZKA di pojok kanan atas Terminal!",
+	"Tip: Panik? Tekan ESC untuk segera menutup Terminal.",
+	"Tip: Jangan hiraukan suara aneh. Tetaplah mengetik.",
+	"Tip: Kafein memulihkan kewarasan, awas jangan sampai overdosis.",
+	"Tip: Baterai senter perlahan habis. Segera beli di Toko Azka.",
+	"Tip: Jangan pernah menoleh ke belakang."
+]
+var tooltip_timer := 0.0
+const TOOLTIP_INTERVAL := 45.0
 
 func _ready() -> void:
 	_load_resources()
 	EventBus.sanity_depleted.connect(func() -> void: trigger_lose("sanity_depleted"))
 	EventBus.specter_caught_player.connect(func() -> void: trigger_lose("caught_by_specter"))
-	call_deferred("start_game")
+	call_deferred("_check_auto_start")
+
+func _check_auto_start() -> void:
+	if get_tree().current_scene and get_tree().current_scene.name == "Main":
+		start_game()
 
 func _process(delta: float) -> void:
 	if current_state != GameState.PLAYING:
@@ -26,6 +43,12 @@ func _process(delta: float) -> void:
 	time_survived += delta
 	deadline_timer = maxf(deadline_timer - delta, 0.0)
 	EventBus.emit_deadline_changed(deadline_timer)
+	
+	tooltip_timer += delta
+	if tooltip_timer >= TOOLTIP_INTERVAL:
+		tooltip_timer = 0.0
+		if not is_specter_active:
+			EventBus.emit_message_requested(tooltips.pick_random())
 
 	if deadline_timer <= 0.0:
 		trigger_lose("timeout")
@@ -77,7 +100,13 @@ func toggle_pause() -> void:
 func restart_game() -> void:
 	current_state = GameState.MENU
 	get_tree().reload_current_scene()
-	call_deferred("start_game")
+	await get_tree().process_frame
+	start_game()
+
+func return_to_main_menu() -> void:
+	current_state = GameState.MENU
+	AudioManager.stop_music(0.5)
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 
 func trigger_win() -> void:
 	if current_state == GameState.WIN:
@@ -88,7 +117,7 @@ func trigger_win() -> void:
 	await get_tree().create_timer(0.3).timeout
 	AudioManager.play_sfx("event_win", 2.0)
 	EventBus.emit_game_won()
-	EventBus.emit_message_requested("SUBMITTED.")
+	EventBus.emit_message_requested("TUGAS BERHASIL DISUBMIT KE CLASS IPB!")
 
 func trigger_lose(reason: String) -> void:
 	if current_state == GameState.GAME_OVER or current_state == GameState.WIN:
@@ -108,11 +137,13 @@ func trigger_lose(reason: String) -> void:
 	else:
 		AudioManager.play_stinger("event_lose_timeout", 1.0)
 
-	var message := "Time's up. The professor has logged out."
+	var message := "Waktu habis. Portal CLASS IPB sudah ditutup Pak MAA."
 	if reason == "sanity_depleted":
-		message = "Your mind collapsed before the deadline."
+		message = "Kamu kena mental breakdown duluan. Gagal submit."
 	elif reason == "caught_by_specter":
-		message = "The Specter claimed you. Deadline missed."
+		message = "Kamu diculik Weeping Angel. Tugas GKV melayang."
+	elif reason == "debug_timeout":
+		message = "[Debug] Timer is over."
 	EventBus.emit_message_requested(message)
 
 func _load_resources() -> void:

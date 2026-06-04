@@ -6,4 +6,4 @@
 script = ExtResource("1_battery")
 max_battery = 100.0
 drain_per_second = 1.0
-pickup_restore_amount = 50.0
+pickup_restore_amount = 35.0

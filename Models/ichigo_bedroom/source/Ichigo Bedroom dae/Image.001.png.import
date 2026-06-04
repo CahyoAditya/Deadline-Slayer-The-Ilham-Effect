@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6klleslgo0aw"
 path.s3tc="res://.godot/imported/Image.001.png-dc48c483c21188d4df4b82f8dbfca4dd.s3tc.ctex"
+path.etc2="res://.godot/imported/Image.001.png-dc48c483c21188d4df4b82f8dbfca4dd.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Models/ichigo_bedroom/source/Ichigo Bedroom dae/Image.001.png"
-dest_files=["res://.godot/imported/Image.001.png-dc48c483c21188d4df4b82f8dbfca4dd.s3tc.ctex"]
+dest_files=["res://.godot/imported/Image.001.png-dc48c483c21188d4df4b82f8dbfca4dd.s3tc.ctex", "res://.godot/imported/Image.001.png-dc48c483c21188d4df4b82f8dbfca4dd.etc2.ctex"]
 
 [params]
 

@@ -2,6 +2,38 @@
 
 [ext_resource type="Script" path="res://Scripts/UI/TerminalUIController.gd" id="1_terminal_ui"]
 [ext_resource type="Script" path="res://Scripts/Minigame/TerminalGame.gd" id="2_terminal_game"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_terminal"]
+bg_color = Color(0.05, 0.08, 0.05, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.5, 0.2, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+bg_color = Color(0.0, 0.0, 0.0, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+
 [node name="TerminalPanel" type="PanelContainer"]
 unique_name_in_owner = true
 visible = false
@@ -27,33 +59,73 @@ theme_override_constants/margin_bottom = 14
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TerminalTitle" type="Label" parent="TerminalMargin/TerminalVBox"]
+[node name="TerminalHeaderBox" type="HBoxContainer" parent="TerminalMargin/TerminalVBox"]
 layout_mode = 2
-text = "SIPEMAS TERMINAL"
+
+[node name="TerminalTitle" type="Label" parent="TerminalMargin/TerminalVBox/TerminalHeaderBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CLASS IPB TERMINAL"
+
+[node name="TokoAzkaButton" type="Button" parent="TerminalMargin/TerminalVBox/TerminalHeaderBox"]
+unique_name_in_owner = true
+focus_mode = 0
+layout_mode = 2
+text = " 🛒 Toko Azka "
+
+[node name="TerminalCloseButton" type="Button" parent="TerminalMargin/TerminalVBox/TerminalHeaderBox"]
+unique_name_in_owner = true
+focus_mode = 0
+layout_mode = 2
+text = " X "
 
 [node name="TerminalHelp" type="Label" parent="TerminalMargin/TerminalVBox"]
 layout_mode = 2
-text = "Type the pattern below exactly, then press Enter. Press Esc to close."
+text = "Ketik sintaks Godot di bawah ini dengan persis, lalu klik Submit. (Tekan ESC atau klik X untuk menutup terminal)"
 autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="TerminalMargin/TerminalVBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
 
 [node name="CurrentPattern" type="Label" parent="TerminalMargin/TerminalVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "TYPE EXACTLY:"
+theme_override_colors/font_color = Color(1, 0.95, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "KETIK PERSIS SEPERTI INI:"
+horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="OutputLog" type="RichTextLabel" parent="TerminalMargin/TerminalVBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
+theme_override_colors/default_color = Color(0.6, 1, 0.6, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_terminal")
 bbcode_enabled = true
 scroll_following = true
 
-[node name="InputField" type="LineEdit" parent="TerminalMargin/TerminalVBox"]
+[node name="InputHBox" type="HBoxContainer" parent="TerminalMargin/TerminalVBox"]
+layout_mode = 2
+
+[node name="InputField" type="LineEdit" parent="TerminalMargin/TerminalVBox/InputHBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_placeholder_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
 placeholder_text = "type the pattern and press Enter"
 keep_editing_on_text_submit = true
+
+[node name="TerminalSubmitButton" type="Button" parent="TerminalMargin/TerminalVBox/InputHBox"]
+unique_name_in_owner = true
+focus_mode = 0
+layout_mode = 2
+text = " Submit "
 
 [node name="TerminalFeedback" type="Label" parent="TerminalMargin/TerminalVBox"]
 unique_name_in_owner = true
@@ -65,3 +137,56 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 text = "UPLOAD 0.0%"
+
+[node name="ShopVBox" type="VBoxContainer" parent="TerminalMargin"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ShopHeaderBox" type="HBoxContainer" parent="TerminalMargin/ShopVBox"]
+layout_mode = 2
+
+[node name="ShopTitle" type="Label" parent="TerminalMargin/ShopVBox/ShopHeaderBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "TOKO AZKA JAYA ABADI"
+
+[node name="ShopCloseButton" type="Button" parent="TerminalMargin/ShopVBox/ShopHeaderBox"]
+unique_name_in_owner = true
+focus_mode = 0
+layout_mode = 2
+text = " Kembali ke Terminal "
+
+[node name="ShopIntro" type="RichTextLabel" parent="TerminalMargin/ShopVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 0.8, 0.2, 1)
+bbcode_enabled = true
+
+[node name="ShopButtonsBox" type="HBoxContainer" parent="TerminalMargin/ShopVBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BuyCoffeeButton" type="Button" parent="TerminalMargin/ShopVBox/ShopButtonsBox"]
+unique_name_in_owner = true
+focus_mode = 0
+layout_mode = 2
+text = "☕ Pesan Calvin Coffee"
+
+[node name="BuyBatteryButton" type="Button" parent="TerminalMargin/ShopVBox/ShopButtonsBox"]
+unique_name_in_owner = true
+focus_mode = 0
+layout_mode = 2
+text = "🔋 Pesan Baterai AAA dit"
+
+[node name="ShopLog" type="RichTextLabel" parent="TerminalMargin/ShopVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_terminal")
+bbcode_enabled = true
+scroll_following = true

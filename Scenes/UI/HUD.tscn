@@ -115,11 +115,17 @@ show_percentage = true
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 0.72
-anchor_right = 0.6
-anchor_bottom = 0.78
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 80.0
+offset_right = 200.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_alignment = 1
 text = "Press E"
 
@@ -127,15 +133,53 @@ text = "Press E"
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.25
-anchor_top = 0.36
-anchor_right = 0.75
-anchor_bottom = 0.48
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -200.0
+offset_right = 400.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 28
 text = ""
+
+[node name="MobileControls" type="Control" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MobileInteractButton" type="Button" parent="Root/MobileControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.65
+anchor_right = 0.95
+anchor_bottom = 0.8
+theme_override_font_sizes/font_size = 24
+text = "INTERACT"
+
+[node name="MobileFlashlightButton" type="Button" parent="Root/MobileControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.45
+anchor_right = 0.95
+anchor_bottom = 0.6
+theme_override_font_sizes/font_size = 24
+text = "FLASHLIGHT"
 
 [node name="PauseOverlay" type="PanelContainer" parent="Root"]
 unique_name_in_owner = true
@@ -173,6 +217,16 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 text = "Resume"
+
+[node name="PauseRestartButton" type="Button" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Restart"
+
+[node name="PauseMainMenuButton" type="Button" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Main Menu"
 
 [node name="EndScreen" type="PanelContainer" parent="Root"]
 unique_name_in_owner = true

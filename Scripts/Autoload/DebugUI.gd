@@ -307,6 +307,9 @@ func _on_reset_pressed() -> void:
 
 func _on_finish_now_pressed() -> void:
 	GlobalTimer.finish_now()
+	if GameManager.is_playing():
+		GameManager.trigger_lose("debug_timeout")
+	last_event_text = "Last event: forced game over (debug)"
 
 func _on_five_minutes_elapsed() -> void:
 	last_event_text = "Last event: five_minutes_elapsed fired"
