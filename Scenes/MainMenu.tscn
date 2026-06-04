@@ -1,0 +1,267 @@
+[gd_scene load_steps=7 format=3 uid="uid://dd3a4b6c8e0f1"]
+
+[ext_resource type="Script" path="res://Scripts/UI/MainMenuController.gd" id="1_controller"]
+[ext_resource type="PackedScene" uid="uid://be5p0j4w6v1m4" path="res://Scenes/Bedroom.tscn" id="2_bedroom"]
+[ext_resource type="Shader" uid="uid://bswwonqnogi5c" path="res://Shaders/COLOR_CORRECTION.gdshader" id="3_color"]
+[ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="4_post"]
+[ext_resource type="Shader" uid="uid://d3doosgbyqvs0" path="res://Shaders/VHS_CRT.gdshader" id="5_vhs"]
+
+[sub_resource type="Environment" id="Environment_menu"]
+background_mode = 1
+background_color = Color(0.01, 0.01, 0.02, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.02, 0.02, 0.05, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_strength = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_color"]
+shader = ExtResource("3_color")
+shader_parameter/tint_color = Color(0.85, 0.75, 0.45, 1)
+shader_parameter/tint_amount = 0.9
+shader_parameter/saturation = 0.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_post"]
+shader = ExtResource("4_post")
+shader_parameter/vignette_intensity = 0.7
+shader_parameter/vignette_opacity = 0.8
+shader_parameter/vignette_color = Color(0, 0, 0, 1)
+shader_parameter/grain_amount = 0.04
+shader_parameter/grain_size = 1.0
+shader_parameter/aberration_amount = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vhs"]
+shader = ExtResource("5_vhs")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.06
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.0
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 4.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.01
+shader_parameter/noise_opacity = 0.01
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.005
+shader_parameter/aberration = 0.01
+shader_parameter/brightness = 1.1
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.3
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.3
+shader_parameter/vignette_opacity = 0.3
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_controller")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
+environment = SubResource("Environment_menu")
+
+[node name="MenuCamera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(0.965926, -0.0669873, 0.25, 0, 0.965926, 0.258819, -0.258819, -0.25, 0.933013, -1.8, 1.2, -0.2)
+
+[node name="Bedroom" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_bedroom")]
+
+[node name="DeskLamp" type="OmniLight3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 1.2, -0.6)
+light_color = Color(1, 0.85, 0.6, 1)
+light_energy = 0.5
+shadow_enabled = true
+omni_range = 3.0
+
+[node name="MonitorGlow" type="OmniLight3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.3, -0.5)
+light_color = Color(0.6, 0.8, 1, 1)
+light_energy = 0.2
+omni_range = 2.0
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Root" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleContainer" type="VBoxContainer" parent="UILayer/Root"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 200.0
+grow_horizontal = 2
+theme_override_constants/separation = 5
+
+[node name="TitleJP" type="Label" parent="UILayer/Root/TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.15, 0.15, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 72
+text = "締め切り事件"
+horizontal_alignment = 1
+
+[node name="TitleEN" type="Label" parent="UILayer/Root/TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 28
+text = "Deadline Slayer: The Ilham Effect"
+horizontal_alignment = 1
+
+[node name="MenuButtons" type="VBoxContainer" parent="UILayer/Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -20.0
+offset_right = 100.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="NewGameButton" type="Button" parent="UILayer/Root/MenuButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 0.8)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "New Game"
+flat = true
+
+[node name="ContinueButton" type="Button" parent="UILayer/Root/MenuButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.5, 0.5, 0.5, 0.4)
+theme_override_font_sizes/font_size = 22
+disabled = true
+text = "Continue"
+flat = true
+
+[node name="CreditsButton" type="Button" parent="UILayer/Root/MenuButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 0.8)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Credits"
+flat = true
+
+[node name="QuitButton" type="Button" parent="UILayer/Root/MenuButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 0.8)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Quit"
+flat = true
+
+[node name="VersionLabel" type="Label" parent="UILayer/Root"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -30.0
+offset_right = -15.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "v1.0"
+horizontal_alignment = 2
+
+[node name="CopyrightLabel" type="Label" parent="UILayer/Root"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -30.0
+offset_right = 200.0
+offset_bottom = -10.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "© 2026 Cahyo Aditya"
+
+[node name="DarkOverlay" type="ColorRect" parent="UILayer/Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PostProcessLayer" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="ColorGradeRect" type="ColorRect" parent="PostProcessLayer"]
+material = SubResource("ShaderMaterial_color")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BBC1" type="BackBufferCopy" parent="PostProcessLayer"]
+copy_mode = 2
+
+[node name="PostProcessRect" type="ColorRect" parent="PostProcessLayer"]
+material = SubResource("ShaderMaterial_post")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BBC2" type="BackBufferCopy" parent="PostProcessLayer"]
+copy_mode = 2
+
+[node name="VHSRect" type="ColorRect" parent="PostProcessLayer"]
+material = SubResource("ShaderMaterial_vhs")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

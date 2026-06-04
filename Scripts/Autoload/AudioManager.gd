@@ -251,8 +251,6 @@ func _ready() -> void:
 	_typing_player = _make_player("TypingKey", 0.0)
 	_typing_player.autoplay = false
 
-	# Start calm music
-	call_deferred("_start_calm_music")
 
 # ─── Public API ───────────────────────────────────────────────────────────────
 

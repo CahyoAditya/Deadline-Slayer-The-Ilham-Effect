@@ -17,7 +17,11 @@ func _ready() -> void:
 	_load_resources()
 	EventBus.sanity_depleted.connect(func() -> void: trigger_lose("sanity_depleted"))
 	EventBus.specter_caught_player.connect(func() -> void: trigger_lose("caught_by_specter"))
-	call_deferred("start_game")
+	call_deferred("_check_auto_start")
+
+func _check_auto_start() -> void:
+	if get_tree().current_scene and get_tree().current_scene.name == "Main":
+		start_game()
 
 func _process(delta: float) -> void:
 	if current_state != GameState.PLAYING:
