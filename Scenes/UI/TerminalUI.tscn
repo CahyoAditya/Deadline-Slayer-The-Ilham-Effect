@@ -2,6 +2,38 @@
 
 [ext_resource type="Script" path="res://Scripts/UI/TerminalUIController.gd" id="1_terminal_ui"]
 [ext_resource type="Script" path="res://Scripts/Minigame/TerminalGame.gd" id="2_terminal_game"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_terminal"]
+bg_color = Color(0.05, 0.08, 0.05, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.5, 0.2, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+bg_color = Color(0.0, 0.0, 0.0, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+
 [node name="TerminalPanel" type="PanelContainer"]
 unique_name_in_owner = true
 visible = false
@@ -64,6 +96,8 @@ autowrap_mode = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
+theme_override_colors/default_color = Color(0.6, 1, 0.6, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_terminal")
 bbcode_enabled = true
 scroll_following = true
 
@@ -74,6 +108,9 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_placeholder_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
 placeholder_text = "type the pattern and press Enter"
 keep_editing_on_text_submit = true
 
