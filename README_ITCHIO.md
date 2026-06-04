@@ -1,72 +1,64 @@
-# Deadline Slayer: The Ilham Effect
+<h1 align="center">Deadline Slayer: The Ilham Effect</h1>
 
-![Godot Engine](https://img.shields.io/badge/Godot-4.5-blue?logo=godotengine&logoColor=white)
-![Deployment](https://img.shields.io/badge/Deployment-itch.io-fa5c5c?logo=itch.io&logoColor=white)
+<p align="center">
+  <b>Selesaikan tugas coding sebelum waktu habis, atau hadapi teror yang mengintai di balik layar. Sebuah game horor <i>survival</i> tentang tekanan mahasiswa tingkat akhir.</b>
+</p>
 
-## 📖 Tentang Game (About)
-![Menu Utama](https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/menu.png)
-
-**Deadline Slayer: The Ilham Effect** adalah game horor *survival* di mana pemain berperan sebagai mahasiswa/programmer yang dikejar tenggat waktu (deadline). Pemain harus menyelesaikan tugas coding sambil menjaga tingkat kewarasan (*sanity*) dan daya baterai, serta menghindari gangguan gaib ("Specter") yang terus menghantui seiring bertambahnya progres.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/menu.png" alt="Menu Utama" width="80%">
+</p>
 
 ---
 
-## 🎮 Cara Bermain & Kontrol
+## Tentang Game (About)
 
-![Ruangan Kosan](https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/room.png)
+**Deadline Slayer: The Ilham Effect** adalah game horor *survival* sudut pandang pertama (FPS) di mana pemain berperan sebagai seorang mahasiswa/programmer yang sedang dikejar tenggat waktu (deadline). Terperangkap di dalam kamar kosan dengan waktu yang terus berjalan, kamu harus mengetikkan baris-baris kode sambil menjaga tingkat kewarasan (*sanity*) dan daya baterai senter. Namun, semakin dekat progresmu dengan 100%, semakin nyata dan agresif pula gangguan gaib ("Specter") yang datang menghantuimu.
 
-**Tujuan Utama:** Selesaikan target *coding* hingga progress mencapai 100% sebelum waktu habis (*deadline*) atau *sanity* (kewarasan) mencapai angka 0.
+---
+
+## Fitur Utama (Key Features)
+
+* **Mekanik Coding Interaktif:** Ketik sintaks kode yang sebenarnya melalui in-game terminal untuk memajukan progres tugasmu.
+* **Manajemen Kewarasan (Sanity):** Tekanan deadline perlahan merusak mentalmu. Cari item kopi di sekitar ruangan untuk memulihkan *sanity*.
+* **Sistem Senter (Battery):** Ruangan kosanmu gelap gulita. Gunakan senter dengan bijak dan cari baterai cadangan sebelum kamu tertinggal dalam kegelapan.
+* **Dynamic Jumpscares:** Teror tidak terjadi secara acak, melainkan meningkat intensitasnya seiring dengan progres tugasmu (25%, 50%, 75%, 99%).
+* **3D Spatial Audio:** Dengarkan dari arah mana suara langkah kaki atau bisikan berasal untuk menghindari bahaya.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/room.png" alt="Ruangan Kosan" width="80%">
+</p>
+
+---
+
+## Cara Bermain & Kontrol
+
+**Tujuan Utama:** Capai progress *coding* hingga 100% dan submit sebelum waktu (*deadline*) habis atau *sanity* (kewarasan) mencapai 0.
 
 ### Kontrol Dasar
-- **W, A, S, D**: Bergerak
-- **Mouse**: Menggerakkan kamera (melihat sekitar)
-- **Spasi (Space)**: Melompat
-- **E**: Interaksi (Berinteraksi dengan Terminal Coding, Kopi, Baterai, dll.)
-- **F**: Menyalakan / Mematikan Senter (*Flashlight*)
-- **P**: Jeda (*Pause*) / Melanjutkan Game
-- **Esc**: Keluar dari Terminal Coding atau menampilkan kursor mouse
+- **W, A, S, D** - Bergerak di dalam ruangan kosan
+- **Mouse** - Menggerakkan arah kamera
+- **Spasi** - Melompat
+- **E** - Interaksi (Duduk di Terminal, meminum Kopi, mengambil Baterai)
+- **F** - Menyalakan / Mematikan Senter
+- **P / Esc** - Jeda (Pause) atau Keluar dari Terminal
 
-### Mekanik Game
-![Tampilan Terminal](https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/terminal_1.png)
-![Tampilan Terminal 2](https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/terminal_2.png)
+### Interaksi Terminal
+Dekati meja komputermu, tekan `E`, dan ketikkan sintaks kode **persis** seperti yang ditampilkan di layar monitor untuk menambah persentase progres.
 
-- **Coding Terminal**: Dekati terminal, tekan `E`, dan ketikkan sintaks kode persis seperti yang ditampilkan di layar untuk menambah progres.
-- **Sanity (Kewarasan)**: Terus berkurang seiring berjalannya waktu. Cari item **Kopi** untuk memulihkannya.
-- **Battery**: Senter akan menguras baterai. Cari item **Battery** untuk mengisi daya kembali.
-- **Specter / Jumpscares**: Semakin tinggi progres coding Anda (25%, 50%, 75%, 99%), semakin intens gangguan yang akan Anda alami.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/terminal_1.png" alt="Terminal" width="45%">
+  <img src="https://raw.githubusercontent.com/CahyoAditya/Deadline-Slayer-The-Ilham-Effect/main/Screenshots/terminal_2.png" alt="Terminal 2" width="45%">
+</p>
 
 ---
 
-## 🛠️ Menu Debug (Developer Tools)
+## Credits
 
-Game ini menyertakan menu debug untuk keperluan testing selama masa pengembangan.
-- **F3 (atau F4 tergantung konfigurasi)**: Menampilkan/Menyembunyikan UI Debug.
+Game ini dikembangkan sebagai Proyek Akhir untuk mata kuliah Grafika Komputer (GKV) oleh **Kelompok 5 - Kelas Paralel 2**:
 
-**Fungsi dalam Debug Menu:**
-- **Start 5m / 10s**: Memulai timer test global.
-- **Stop / Reset**: Menghentikan atau mereset timer.
-- **Finish Now**: Langsung memicu event timer selesai.
-- **Progress +10**: Menambah 10% progress coding instan.
-- **Lose Sanity**: Mengurangi 25 sanity secara instan.
+* **Azka Julian Putra Wahyudi** (M0403241029)
+* **Aditya Cahyo Nugroho** (M0403241109)
+* **Julius Calvin Kurniadi** (M0403241082)
+* **Ilham Edgar Maulana Goesasi** (M0403241087)
 
----
-
-## ⚙️ Dokumentasi Teknis
-
-### Arsitektur Sistem
-Proyek ini dibangun menggunakan **Godot Engine 4.5** dengan arsitektur berbasis *Autoloads* / *Singletons* dan pola *Event-Driven*:
-- `EventBus`: Sentral komunikasi sinyal global antar komponen.
-- `GameManager`: Mengelola alur game utama (kondisi Menang/Kalah, waktu deadline).
-- `ProgressSystem` & `EventTrigger`: Melacak progres pemain dan memicu event horor secara spesifik berdasarkan persentase (*threshold*).
-
-### CI/CD dan Deployment (Itch.io & Windows)
-Proyek ini telah dikonfigurasi dengan *Continuous Integration & Continuous Deployment* (CI/CD) menggunakan **GitHub Actions**.
-
-1. **Itch.io Web Deployment**: Setiap kali ada *push* atau *merge* ke branch `main`, GitHub Actions akan otomatis mengekspor game ini dalam format Web (HTML5) menggunakan `barichello/godot-ci:4.5` dan mengunggahnya ke itch.io menggunakan Butler.
-2. **Windows Desktop Release**: Selain Web, workflow ini juga akan membuat executable untuk **Windows Desktop**. Hasil *build* `.exe` otomatis diunggah ke channel Windows di itch.io, serta tersedia di tab Releases GitHub.
-3. *(Opsional)* **Mac OS**: Dukungan untuk Mac dapat ditambahkan melalui menu `Project -> Export` di Godot.
-
-### Cara Setup di Lokal
-1. Pastikan Anda telah menginstal **Godot Engine versi 4.5**.
-2. Lakukan clone repository ini ke komputer Anda.
-3. Buka Godot Engine, pilih `Import`, dan cari file `project.godot` di dalam folder hasil clone.
-4. Tekan tombol **F5** (atau ikon Play di pojok kanan atas) untuk mencoba menjalankan game.
+Dibuat menggunakan **Godot Engine 4.5**.
