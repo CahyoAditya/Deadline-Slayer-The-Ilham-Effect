@@ -84,6 +84,11 @@ func restart_game() -> void:
 	await get_tree().process_frame
 	start_game()
 
+func return_to_main_menu() -> void:
+	current_state = GameState.MENU
+	AudioManager.stop_music(0.5)
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+
 func trigger_win() -> void:
 	if current_state == GameState.WIN:
 		return

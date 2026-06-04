@@ -12,6 +12,8 @@ extends CanvasLayer
 @onready var end_reason: Label = %EndReason
 @onready var end_stats: Label = %EndStats
 @onready var resume_button: Button = %ResumeButton
+@onready var pause_restart_button: Button = %PauseRestartButton
+@onready var pause_main_menu_button: Button = %PauseMainMenuButton
 @onready var retry_button: Button = %RetryButton
 @onready var quit_button: Button = %QuitButton
 @onready var crosshair: ColorRect = %Crosshair
@@ -42,6 +44,14 @@ func _ready() -> void:
 		_is_terminal_open = false
 	)
 	resume_button.pressed.connect(GameManager.resume_game)
+	pause_restart_button.pressed.connect(func() -> void:
+		GameManager.resume_game()
+		GameManager.restart_game()
+	)
+	pause_main_menu_button.pressed.connect(func() -> void:
+		GameManager.resume_game()
+		GameManager.return_to_main_menu()
+	)
 	retry_button.pressed.connect(GameManager.restart_game)
 	quit_button.pressed.connect(func() -> void: get_tree().quit())
 

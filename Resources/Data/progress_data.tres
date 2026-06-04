@@ -6,4 +6,4 @@
 script = ExtResource("1_progress")
 current_progress = 0.0
 max_progress = 100.0
-progress_per_correct_input = 2.0
+progress_per_correct_input = 1.0
