@@ -6,6 +6,8 @@ extends PanelContainer
 @onready var status_bar: Label = %StatusBar
 @onready var feedback_label: Label = %TerminalFeedback
 @onready var terminal_game: Node = $TerminalGame
+@onready var close_btn: Button = %TerminalCloseButton
+@onready var submit_btn: Button = %TerminalSubmitButton
 
 var evaluator := TypingEvaluator.new()
 var current_pattern := ""
@@ -14,31 +16,31 @@ var current_pattern := ""
 const KEYPRESS_SOUND_COOLDOWN := 0.10  # seconds
 var _keypress_sound_timer := 0.0
 var flavor_lines: Array[String] = [
-	"> gcc -o main main.c",
-	"> Compiling module 3/12...",
-	"> [OK] SanityCheck.dll loaded",
-	"> ERROR: NullPointerException at deadline.cpp:99",
-	"> Retrying...",
-	"> Uploading to SIPEMAS IPB...",
-	"> Linker warning: sleep debt unresolved",
-	"> Coffee driver mounted",
-	"> Deadline daemon still alive",
-	"> Build cache corrupted. Continuing anyway.",
-	"> git commit -m 'please work'",
-	"> Warning: sleep_debt exceeds safe threshold",
-	"> [SIPEMAS] Session expires in 00:07:32",
-	"> Segmentation fault (core dumped)",
-	"> TODO: fix this tomorrow [2 years ago]",
-	"> npm install... (this may take a while)",
-	"> ERROR: undefined reference to 'motivation'",
-	"> Connection to professor server: TIMEOUT",
-	"> Low battery on phone... 4%",
-	"> 3 unread emails from: pak.dosen@ipb.ac.id",
-	"> Stack overflow at exam_pressure.c:404",
-	"> malloc() failed: not enough brain cells",
-	"> signal 11 (SIGSEGV) — something is here",
-	"> Last modified: tonight, 23:47",
-	"> [WARNING] filesystem integrity compromised",
+	"> Menghubungkan ke SIPEMAS IPB...",
+	"> [WARNING] Module Canvas API belum di-import",
+	"> ERROR: Plotly is not defined di baris 42",
+	"> Pak MAA: 'Jangan lupa tugas GKV dikumpulkan di SIPEMAS'",
+	"> Mengunggah ke SIPEMAS... (Timeout)",
+	"> Compile Godot engine... (Tolong cepetan dong)",
+	"> ERROR: Transformasi 3D gagal. Matrix error.",
+	"> Menyeduh kopi... [Kopi driver mounted]",
+	"> git commit -m 'Tugas GKV Bismillah A'",
+	"> Warning: Kurang tidur terdeteksi. Silakan istirahat.",
+	"> [SIPEMAS] Sesi akan habis dalam 00:07:32",
+	"> ERROR: undefined reference to 'kewarasan_mahasiswa'",
+	"> TODO: Bikin tutorial VR Unity besok",
+	"> AAS, SNN, EPG mereview kode kamu...",
+	"> Menghitung verteks objek geometri... 100% CPU",
+	"> 'Aduh ini error apaan lagi dah?'",
+	"> Mengirim tugas ke pak.dosen@ipb.ac.id... GAGAL",
+	"> Baterai laptop sisa 4%... Gawat",
+	"> [WARNING] Kopi sudah habis",
+	"> Memuat scene Godot... Memori penuh",
+	"> 'Kok render Canvas API nya nge-blank putih doang?'",
+	"> Tugas Pekan 9 belum selesai... Deadline sudah dekat",
+	"> ERROR: NullPointerException pada mental_breakdown.gd",
+	"> Memuat materi: Transformasi Objek 3D... [FAILED]",
+	"> Mengekstrak file tugas_akhir_gkv_final_bgt_fix.zip",
 ]
 
 func _ready() -> void:
@@ -50,6 +52,9 @@ func _ready() -> void:
 	EventBus.game_won.connect(close)
 	input_field.text_submitted.connect(_on_text_submitted)
 	input_field.keep_editing_on_text_submit = true
+	
+	close_btn.pressed.connect(close)
+	submit_btn.pressed.connect(func(): _on_text_submitted(input_field.text))
 
 func open() -> void:
 	if not GameManager.is_playing():
@@ -92,13 +97,13 @@ func _on_text_submitted(text: String) -> void:
 	if PatternMatcher.check(text, current_pattern):
 		var gained := evaluator.score(GameManager.progress_data.progress_per_correct_input)
 		ProgressSystem.add_progress(gained)
-		_append_output("[color=green]> OK +%.1f%%[/color]" % gained)
-		_show_feedback("OK +%.1f%%" % gained, Color(0.25, 1.0, 0.35))
+		_append_output("[color=green]> OKE +%.1f%%[/color]" % gained)
+		_show_feedback("MANTAP +%.1f%%" % gained, Color(0.25, 1.0, 0.35))
 		AudioManager.play_sfx("terminal_correct", 0.0)
 		_next_pattern()
 	else:
-		_append_output("[color=red]> ERROR: pattern mismatch[/color]")
-		_show_feedback("ERROR: type it exactly", Color(1.0, 0.2, 0.2))
+		_append_output("[color=red]> ERROR: salah ketik cuy[/color]")
+		_show_feedback("ERROR: ketik yang bener!", Color(1.0, 0.2, 0.2))
 		AudioManager.play_sfx("terminal_wrong", 0.0)
 		# While the Specter is active, mistakes cost sanity — panic makes you clumsy
 		if GameManager.is_specter_active:
@@ -128,7 +133,7 @@ func _next_pattern() -> void:
 		if san_sys and san_sys.get("current_sanity") != null:
 			if san_sys.current_sanity < 30.0 and randf() < 0.5:
 				display_pattern = _distort_pattern(current_pattern)
-	current_pattern_label.text = "TYPE EXACTLY:\n" + display_pattern
+	current_pattern_label.text = "KETIK PERSIS SEPERTI INI:\n" + display_pattern
 	evaluator.start_pattern()
 
 ## Swap one character with a visually similar lookalike to confuse at low sanity.

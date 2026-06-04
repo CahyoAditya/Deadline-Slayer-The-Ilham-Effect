@@ -17,6 +17,9 @@ extends CanvasLayer
 @onready var retry_button: Button = %RetryButton
 @onready var quit_button: Button = %QuitButton
 @onready var crosshair: ColorRect = %Crosshair
+@onready var mobile_controls: Control = %MobileControls
+@onready var mobile_interact_btn: Button = %MobileInteractButton
+@onready var mobile_flashlight_btn: Button = %MobileFlashlightButton
 
 var _is_terminal_open := false
 var last_sanity := 100.0
@@ -37,10 +40,14 @@ func _ready() -> void:
 	EventBus.game_resumed.connect(_on_game_resumed)
 	EventBus.terminal_opened.connect(func() -> void: 
 		crosshair.visible = false
+		if mobile_controls.visible:
+			mobile_controls.hide()
 		_is_terminal_open = true
 	)
 	EventBus.terminal_closed.connect(func() -> void: 
 		crosshair.visible = true
+		if OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
+			mobile_controls.show()
 		_is_terminal_open = false
 	)
 	resume_button.pressed.connect(GameManager.resume_game)
@@ -54,6 +61,20 @@ func _ready() -> void:
 	)
 	retry_button.pressed.connect(GameManager.restart_game)
 	quit_button.pressed.connect(func() -> void: get_tree().quit())
+
+	mobile_controls.visible = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
+	mobile_interact_btn.pressed.connect(func() -> void:
+		var ev := InputEventAction.new()
+		ev.action = "interact"
+		ev.pressed = true
+		Input.parse_input_event(ev)
+	)
+	mobile_flashlight_btn.pressed.connect(func() -> void:
+		var ev := InputEventAction.new()
+		ev.action = "flashlight"
+		ev.pressed = true
+		Input.parse_input_event(ev)
+	)
 
 	_on_deadline_changed(GameManager.deadline_timer)
 	_on_sanity_changed(100.0)
@@ -108,15 +129,15 @@ func _on_message_requested(text: String) -> void:
 		)
 
 func _on_game_lost(reason: String) -> void:
-	var text := "Time's up. The professor has logged out."
+	var text := "Waktu habis. Portal SIPEMAS sudah ditutup Pak MAA."
 	if reason == "sanity_depleted":
-		text = "Your mind collapsed before the deadline."
+		text = "Kamu kena mental breakdown duluan. Gagal submit."
 	elif reason == "caught_by_specter":
-		text = "The Specter claimed you. Deadline missed."
+		text = "Kamu diculik Weeping Angel. Tugas GKV melayang."
 	_show_end_screen("DEADLINE MISSED", text)
 
 func _on_game_won() -> void:
-	_show_end_screen("SUBMITTED.", "The upload made it before the deadline.")
+	_show_end_screen("SUBMITTED", "Tugas GKV berhasil di-upload! Pak MAA bangga.")
 
 func _on_game_paused() -> void:
 	pause_overlay.visible = true

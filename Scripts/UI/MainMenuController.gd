@@ -25,7 +25,7 @@ func _ready() -> void:
 	
 	_camera_origin = menu_camera.transform
 	
-	AudioManager.play_ambient("music_calm_ambient", -12.0)
+	AudioManager.play_ambient("music_static_horror", -12.0)
 	
 	dark_overlay.modulate.a = 1.0
 	var fade_tween := create_tween()

@@ -137,6 +137,38 @@ vertical_alignment = 1
 theme_override_font_sizes/font_size = 28
 text = ""
 
+[node name="MobileControls" type="Control" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MobileInteractButton" type="Button" parent="Root/MobileControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.65
+anchor_right = 0.95
+anchor_bottom = 0.8
+theme_override_font_sizes/font_size = 24
+text = "INTERACT"
+
+[node name="MobileFlashlightButton" type="Button" parent="Root/MobileControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.45
+anchor_right = 0.95
+anchor_bottom = 0.6
+theme_override_font_sizes/font_size = 24
+text = "FLASHLIGHT"
+
 [node name="PauseOverlay" type="PanelContainer" parent="Root"]
 unique_name_in_owner = true
 visible = false
