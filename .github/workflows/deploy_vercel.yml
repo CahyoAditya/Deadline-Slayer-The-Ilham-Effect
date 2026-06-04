@@ -68,3 +68,14 @@ jobs:
         with:
           name: windows-build
           path: build/windows
+
+      - name: Publish to GitHub Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/windows/DeadlineSlayer.exe"
+          tag: "latest"
+          name: "Latest Windows Build"
+          body: "Automatically generated Windows build from the `main` branch."
+          allowUpdates: true
+          makeLatest: true
+          token: ${{ secrets.GITHUB_TOKEN }}
