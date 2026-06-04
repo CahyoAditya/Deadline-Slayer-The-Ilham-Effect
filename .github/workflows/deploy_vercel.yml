@@ -1,4 +1,4 @@
-name: Godot CI/CD to Vercel
+name: Godot CI/CD
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   export_and_deploy:
-    name: Export to Web and Deploy to Vercel
+    name: Export to Web and Deploy
     runs-on: ubuntu-latest
     container:
       image: barichello/godot-ci:4.5
@@ -37,18 +37,32 @@ jobs:
       - name: Fix Git Dubious Ownership
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
           
-      - name: Install Node.js (Required for Vercel CLI)
+      - name: Zip Web Build
         run: |
-          apt-get update && apt-get install -y nodejs npm
-          
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
+          apt-get update && apt-get install -y zip
+          cd build/web
+          zip -r ../../DeadlineSlayer-Web.zip .
+
+      - name: Publish Web Build to GitHub Releases
+        uses: ncipollo/release-action@v1
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./build/web
-          vercel-args: '--prod'
+          artifacts: "DeadlineSlayer-Web.zip"
+          tag: "latest"
+          name: "Latest Web Build"
+          body: "Automatically generated builds from the `main` branch."
+          allowUpdates: true
+          makeLatest: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Web Build to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          apt-get update && apt-get install -y curl unzip
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler push build/web hamgarian/deadline-slayer-the-ilham-effect:html5
 
   export_windows:
     name: Export Windows Desktop
@@ -86,3 +100,13 @@ jobs:
           allowUpdates: true
           makeLatest: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Windows Build to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          apt-get update && apt-get install -y curl unzip
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler push build/windows hamgarian/deadline-slayer-the-ilham-effect:windows
