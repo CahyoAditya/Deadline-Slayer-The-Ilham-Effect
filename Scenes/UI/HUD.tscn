@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://Scripts/UI/HUDController.gd" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://cx6r0r11settings" path="res://Scenes/UI/SettingsMenu.tscn" id="2_settings"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 10
@@ -223,10 +224,19 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Restart"
 
+[node name="PauseSettingsButton" type="Button" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+
 [node name="PauseMainMenuButton" type="Button" parent="Root/PauseOverlay/PauseMargin/PauseVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Main Menu"
+
+[node name="SettingsMenu" parent="Root" instance=ExtResource("2_settings")]
+unique_name_in_owner = true
+visible = false
 
 [node name="EndScreen" type="PanelContainer" parent="Root"]
 unique_name_in_owner = true

@@ -13,6 +13,7 @@ extends CanvasLayer
 @onready var end_stats: Label = %EndStats
 @onready var resume_button: Button = %ResumeButton
 @onready var pause_restart_button: Button = %PauseRestartButton
+@onready var pause_settings_button: Button = %PauseSettingsButton
 @onready var pause_main_menu_button: Button = %PauseMainMenuButton
 @onready var retry_button: Button = %RetryButton
 @onready var quit_button: Button = %QuitButton
@@ -59,6 +60,11 @@ func _ready() -> void:
 		GameManager.resume_game()
 		GameManager.return_to_main_menu()
 	)
+	pause_settings_button.pressed.connect(_on_settings_pressed)
+	
+	if get_node_or_null("%SettingsMenu"):
+		%SettingsMenu.closed.connect(_on_settings_closed)
+		
 	retry_button.pressed.connect(GameManager.restart_game)
 	quit_button.pressed.connect(func() -> void: get_tree().quit())
 
@@ -148,8 +154,19 @@ func _on_game_paused() -> void:
 
 func _on_game_resumed() -> void:
 	pause_overlay.visible = false
+	if get_node_or_null("%SettingsMenu"):
+		%SettingsMenu.hide()
 	crosshair.visible = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _on_settings_pressed() -> void:
+	if get_node_or_null("%SettingsMenu") and get_node_or_null("Root/PauseOverlay/PauseMargin"):
+		$"Root/PauseOverlay/PauseMargin".visible = false
+		%SettingsMenu.open()
+
+func _on_settings_closed() -> void:
+	if get_node_or_null("Root/PauseOverlay/PauseMargin"):
+		$"Root/PauseOverlay/PauseMargin".visible = true
 
 func _show_end_screen(title: String, reason: String) -> void:
 	message_label.visible = false

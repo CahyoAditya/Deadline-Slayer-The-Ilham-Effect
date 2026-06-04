@@ -27,6 +27,11 @@ KernelPanicSystem="*res://Scripts/Systems/KernelPanicSystem.gd"
 GlobalTimer="*res://Scripts/Autoload/GlobalTimer.gd"
 DebugUI="*res://Scripts/Autoload/DebugUI.gd"
 TimerEndTestMessage="*res://Scripts/Autoload/TimerEndTestMessage.gd"
+SettingsManager="*res://Scripts/Autoload/SettingsManager.gd"
+
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
 
 [input]
 

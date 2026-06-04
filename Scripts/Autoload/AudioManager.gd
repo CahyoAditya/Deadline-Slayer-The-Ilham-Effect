@@ -228,28 +228,34 @@ var _silence_tween: Tween
 func _ready() -> void:
 	# Music base layer
 	_music_base = _make_player("MusicBase", -6.0)
+	_music_base.bus = "BGM"
 	_music_base.autoplay = false
 
 	# Music overlay layer (horror undertone on top of base)
 	_music_overlay = _make_player("MusicOverlay", -14.0)
+	_music_overlay.bus = "BGM"
 	_music_overlay.autoplay = false
 
 	# Ambient layer (for active-horror ambience, separate from music)
 	_ambient = _make_player("Ambient", -10.0)
+	_ambient.bus = "BGM"
 	_ambient.autoplay = false
 
 	# Stinger — loud, one-shot, high priority
 	_stinger = _make_player("Stinger", 0.0)
+	_stinger.bus = "SFX"
 	_stinger.autoplay = false
 
 	# SFX pool — polyphonic
 	for i in SFX_POOL_SIZE:
 		var p := _make_player("SFX_%d" % i, 0.0)
+		p.bus = "SFX"
 		p.autoplay = false
 		_sfx_pool.append(p)
 
 	# Typing — dedicated player that clips long recordings to one keyclick
 	_typing_player = _make_player("TypingKey", 0.0)
+	_typing_player.bus = "SFX"
 	_typing_player.autoplay = false
 
 

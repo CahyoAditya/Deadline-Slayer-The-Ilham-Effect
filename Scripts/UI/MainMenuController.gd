@@ -3,6 +3,7 @@ extends Node
 @onready var new_game_btn: Button = %NewGameButton
 @onready var continue_btn: Button = %ContinueButton
 @onready var credits_btn: Button = %CreditsButton
+@onready var settings_btn: Button = %SettingsButton
 @onready var quit_btn: Button = %QuitButton
 @onready var dark_overlay: ColorRect = %DarkOverlay
 @onready var menu_camera: Camera3D = %MenuCamera3D
@@ -19,7 +20,11 @@ func _ready() -> void:
 	
 	new_game_btn.pressed.connect(_on_new_game)
 	credits_btn.pressed.connect(_on_credits)
+	settings_btn.pressed.connect(_on_settings)
 	quit_btn.pressed.connect(_on_quit)
+	
+	if get_node_or_null("%SettingsMenu"):
+		%SettingsMenu.closed.connect(_on_settings_closed)
 	
 	_setup_button_hovers()
 	
@@ -33,7 +38,7 @@ func _ready() -> void:
 
 func _setup_button_hovers() -> void:
 	var empty_style := StyleBoxEmpty.new()
-	var buttons = [%NewGameButton, %ContinueButton, %CreditsButton, %QuitButton]
+	var buttons = [%NewGameButton, %ContinueButton, %CreditsButton, %SettingsButton, %QuitButton]
 	if get_node_or_null("%CloseCreditsButton"):
 		buttons.append(%CloseCreditsButton)
 		
@@ -77,6 +82,17 @@ func _on_credits() -> void:
 	if get_node_or_null("%CreditsOverlay"):
 		%CreditsOverlay.visible = true
 		%CloseCreditsButton.pressed.connect(func() -> void: %CreditsOverlay.visible = false, CONNECT_ONE_SHOT)
+
+func _on_settings() -> void:
+	var menu_btns = get_node_or_null("UILayer/Root/MenuButtons")
+	if get_node_or_null("%SettingsMenu") and menu_btns:
+		menu_btns.visible = false
+		%SettingsMenu.open()
+
+func _on_settings_closed() -> void:
+	var menu_btns = get_node_or_null("UILayer/Root/MenuButtons")
+	if menu_btns:
+		menu_btns.visible = true
 
 func _on_quit() -> void:
 	get_tree().quit()
