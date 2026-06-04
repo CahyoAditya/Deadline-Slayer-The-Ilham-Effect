@@ -115,20 +115,16 @@ jobs:
           name: windows-build
           path: build/windows
 
-      - name: Publish Web Build to itch.io
-        uses: manleydev/butler-publish-itchio-action@v1.0.3
+      - name: Install and Run Butler
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: html5
-          ITCH_GAME: deadline-slayer-the-ilham-effect
-          ITCH_USER: hamgarian
-          PACKAGE: build/web
-
-      - name: Publish Windows Build to itch.io
-        uses: manleydev/butler-publish-itchio-action@v1.0.3
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: windows
-          ITCH_GAME: deadline-slayer-the-ilham-effect
-          ITCH_USER: hamgarian
-          PACKAGE: build/windows
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          curl -4 -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          
+          # Push Web Build
+          ./butler push build/web hamgarian/deadline-slayer-the-ilham-effect:html5
+          
+          # Push Windows Build
+          ./butler push build/windows hamgarian/deadline-slayer-the-ilham-effect:windows
