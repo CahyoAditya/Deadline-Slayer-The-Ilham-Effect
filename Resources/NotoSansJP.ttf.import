@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c6ggjmx7e8nip"
-path="res://.godot/imported/SawarabiMincho-Regular.ttf-36b62f07f4d7203afc3d926e7e1db402.fontdata"
+uid="uid://bra3o046jx53"
+path="res://.godot/imported/NotoSansJP.ttf-68d6aaadcb3f486a35e10e7324bf84a4.fontdata"
 
 [deps]
 
-source_file="res://Resources/SawarabiMincho-Regular.ttf"
-dest_files=["res://.godot/imported/SawarabiMincho-Regular.ttf-36b62f07f4d7203afc3d926e7e1db402.fontdata"]
+source_file="res://Resources/NotoSansJP.ttf"
+dest_files=["res://.godot/imported/NotoSansJP.ttf-68d6aaadcb3f486a35e10e7324bf84a4.fontdata"]
 
 [params]
 

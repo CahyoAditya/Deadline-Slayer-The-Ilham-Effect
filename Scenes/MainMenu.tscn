@@ -6,7 +6,8 @@
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="4_post"]
 [ext_resource type="Shader" uid="uid://d3doosgbyqvs0" path="res://Shaders/VHS_CRT.gdshader" id="5_vhs"]
 [ext_resource type="PackedScene" uid="uid://cx6r0r11settings" path="res://Scenes/UI/SettingsMenu.tscn" id="6_settings"]
-[ext_resource type="FontFile" uid="uid://dsuq3r6d7e9xx" path="res://Resources/Creepster-Regular.ttf" id="1_font"]
+[ext_resource type="FontFile" path="res://Resources/MPLUS1p-Regular.ttf" id="1_font"]
+
 
 [sub_resource type="Environment" id="Environment_menu"]
 background_mode = 1
@@ -125,7 +126,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("1_font")
 theme_override_font_sizes/font_size = 72
-text = "DEADLINE SLAYER"
+text = "締め切り事件"
 horizontal_alignment = 1
 
 [node name="TitleEN" type="Label" parent="UILayer/Root/TitleContainer"]
@@ -135,7 +136,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 28
-text = "The Ilham Effect"
+text = "Deadline Slayer: The Ilham Effect"
 horizontal_alignment = 1
 
 [node name="MenuButtons" type="VBoxContainer" parent="UILayer/Root"]
