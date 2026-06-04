@@ -10,7 +10,7 @@ jobs:
     name: Export to Web and Deploy to Vercel
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:4.3
+      image: barichello/godot-ci:4.5
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
@@ -39,3 +39,29 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: ./build/web
           vercel-args: '--prod'
+
+  export_windows:
+    name: Export Windows Desktop
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.5
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Create Windows Build Folder
+        run: mkdir -p build/windows
+
+      - name: Setup Export Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates
+          mv /root/.local/share/godot/export_templates/* ~/.local/share/godot/export_templates/
+
+      - name: Export Windows Build
+        run: godot --headless --export-release "Windows Desktop" build/windows/DeadlineSlayer.exe
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows
