@@ -18,6 +18,9 @@ func _ready() -> void:
 	
 	continue_btn.disabled = true
 	
+	if OS.has_feature("web"):
+		quit_btn.hide()
+	
 	new_game_btn.pressed.connect(_on_new_game)
 	credits_btn.pressed.connect(_on_credits)
 	settings_btn.pressed.connect(_on_settings)

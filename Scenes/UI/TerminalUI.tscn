@@ -81,7 +81,7 @@ text = " X "
 
 [node name="TerminalHelp" type="Label" parent="TerminalMargin/TerminalVBox"]
 layout_mode = 2
-text = "Ketik sintaks Godot di bawah ini dengan persis, lalu klik Submit. (Tekan ESC atau klik X untuk menutup terminal)"
+text = "Ketik sintaks Godot di bawah ini dengan persis, lalu klik Submit. (Tekan Q atau klik X untuk menutup terminal)"
 autowrap_mode = 3
 
 [node name="Spacer" type="Control" parent="TerminalMargin/TerminalVBox"]

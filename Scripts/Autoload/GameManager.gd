@@ -17,7 +17,7 @@ var has_seen_intro := false
 var tooltips: Array[String] = [
 	"Tip: Tekan F untuk menyalakan Senter jika ruangan terlalu gelap.",
 	"Tip: Jangan lupa cek TOKO AZKA di pojok kanan atas Terminal!",
-	"Tip: Panik? Tekan ESC untuk segera menutup Terminal.",
+	"Tip: Panik? Tekan Q untuk segera menutup Terminal.",
 	"Tip: Jangan hiraukan suara aneh. Tetaplah mengetik.",
 	"Tip: Kafein memulihkan kewarasan, awas jangan sampai overdosis.",
 	"Tip: Baterai senter perlahan habis. Segera beli di Toko Azka.",
