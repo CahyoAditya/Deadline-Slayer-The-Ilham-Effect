@@ -14,6 +14,18 @@ var lose_reason := ""
 var time_survived := 0.0
 var has_seen_intro := false
 
+var tooltips: Array[String] = [
+	"Tip: Tekan F untuk menyalakan Senter jika ruangan terlalu gelap.",
+	"Tip: Jangan lupa cek TOKO AZKA di pojok kanan atas Terminal!",
+	"Tip: Panik? Tekan ESC untuk segera menutup Terminal.",
+	"Tip: Jangan hiraukan suara aneh. Tetaplah mengetik.",
+	"Tip: Kafein memulihkan kewarasan, awas jangan sampai overdosis.",
+	"Tip: Baterai senter perlahan habis. Segera beli di Toko Azka.",
+	"Tip: Jangan pernah menoleh ke belakang."
+]
+var tooltip_timer := 0.0
+const TOOLTIP_INTERVAL := 45.0
+
 func _ready() -> void:
 	_load_resources()
 	EventBus.sanity_depleted.connect(func() -> void: trigger_lose("sanity_depleted"))
@@ -31,6 +43,12 @@ func _process(delta: float) -> void:
 	time_survived += delta
 	deadline_timer = maxf(deadline_timer - delta, 0.0)
 	EventBus.emit_deadline_changed(deadline_timer)
+	
+	tooltip_timer += delta
+	if tooltip_timer >= TOOLTIP_INTERVAL:
+		tooltip_timer = 0.0
+		if not is_specter_active:
+			EventBus.emit_message_requested(tooltips.pick_random())
 
 	if deadline_timer <= 0.0:
 		trigger_lose("timeout")

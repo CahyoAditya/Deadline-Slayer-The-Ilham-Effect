@@ -127,8 +127,6 @@ func _input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed("ui_cancel"):
 		close()
 		get_viewport().set_input_as_handled()
-	elif visible and event is InputEventMouseButton and event.pressed:
-		call_deferred("_focus_input")
 
 func _on_text_changed(_new_text: String) -> void:
 	# Cooldown prevents flooding the pool on rapid keypresses
