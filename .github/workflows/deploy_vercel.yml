@@ -54,15 +54,17 @@ jobs:
           makeLatest: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Node for Butler
+        run: apt-get update && apt-get install -y nodejs npm
+
       - name: Publish Web Build to itch.io
+        uses: manleydev/butler-publish-itchio-action@v1.0.3
         env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-        run: |
-          apt-get update && apt-get install -y curl unzip
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler push build/web hamgarian/deadline-slayer-the-ilham-effect:html5
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: html5
+          ITCH_GAME: deadline-slayer-the-ilham-effect
+          ITCH_USER: hamgarian
+          PACKAGE: build/web
 
   export_windows:
     name: Export Windows Desktop
@@ -101,12 +103,14 @@ jobs:
           makeLatest: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Node for Butler
+        run: apt-get update && apt-get install -y nodejs npm
+
       - name: Publish Windows Build to itch.io
+        uses: manleydev/butler-publish-itchio-action@v1.0.3
         env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-        run: |
-          apt-get update && apt-get install -y curl unzip
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler push build/windows hamgarian/deadline-slayer-the-ilham-effect:windows
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: windows
+          ITCH_GAME: deadline-slayer-the-ilham-effect
+          ITCH_USER: hamgarian
+          PACKAGE: build/windows
