@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   export_and_deploy:
     name: Export to Web and Deploy to Vercel
