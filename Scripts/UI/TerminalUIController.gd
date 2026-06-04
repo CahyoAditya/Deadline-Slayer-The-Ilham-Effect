@@ -270,9 +270,10 @@ func _order_item(item_type: String) -> void:
 		var t = get_tree().create_timer(20.0)
 		t.timeout.connect(func():
 			is_shop_locked = false
-			buy_coffee_btn.disabled = false
-			buy_battery_btn.disabled = false
-			_append_shop_log("[color=green][!] Toko Azka Jaya Abadi kembali buka.[/color]")
+			if is_instance_valid(buy_coffee_btn):
+				buy_coffee_btn.disabled = false
+				buy_battery_btn.disabled = false
+				_append_shop_log("[color=green][!] Toko Azka Jaya Abadi kembali buka.[/color]")
 		)
 		return
 	elif rand < 0.25:
@@ -319,7 +320,7 @@ func _deliver_item(item_type: String, courier: String) -> void:
 		_append_shop_log("[color=yellow]Toko sedang menyiapkan pesanan berikutnya (Cooldown 5 detik)...[/color]")
 		var cd_timer = get_tree().create_timer(5.0)
 		cd_timer.timeout.connect(func():
-			if not is_shop_locked:
+			if not is_shop_locked and is_instance_valid(buy_coffee_btn):
 				buy_coffee_btn.disabled = false
 				buy_battery_btn.disabled = false
 				_append_shop_log("[color=green]Toko siap menerima pesanan kembali![/color]")
