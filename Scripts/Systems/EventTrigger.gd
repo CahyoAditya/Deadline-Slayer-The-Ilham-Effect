@@ -12,6 +12,8 @@ func _on_threshold_reached(threshold: int) -> void:
 			_fire_event_50()
 		75:
 			_fire_event_75()
+		80:
+			_fire_event_80()
 		99:
 			_fire_kernel_panic()
 		100:
@@ -57,6 +59,17 @@ func _fire_event_75() -> void:
 	EventBus.emit_jumpscare_fired("desk_jumpscare")
 	EventBus.emit_specter_spawned()
 	EventBus.emit_message_requested("The lights hate you now.")
+
+## 80% — Face-to-face specter spawn: ghost appears directly in front of player's face
+func _fire_event_80() -> void:
+	AudioManager.play_sfx("event_glass_shatter", 1.5)
+	AudioManager.play_stinger("jumpscare_stinger", 3.0)
+	
+	var specter = get_tree().root.get_node_or_null("Main/Specter")
+	if specter and specter.has_method("spawn_in_front_of_player"):
+		GameManager.is_specter_active = true
+		specter.spawn_in_front_of_player()
+		EventBus.emit_jumpscare_fired("face_to_face")
 
 ## 99% — Kernel panic: alarm + electrical static
 func _fire_kernel_panic() -> void:

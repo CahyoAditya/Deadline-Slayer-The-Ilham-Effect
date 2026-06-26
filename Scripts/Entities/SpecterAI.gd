@@ -121,6 +121,46 @@ func _check_if_flashed() -> bool:
 
 	return true
 
+func spawn_in_front_of_player() -> void:
+	if player == null:
+		return
+
+	var camera = player.get_node_or_null("Head/Camera3D") as Camera3D
+	if camera == null:
+		return
+
+	var forward_dir = -camera.global_transform.basis.z.normalized()
+	
+	# Position the ghost body so its head (0.7m above its origin) is directly in front of the camera
+	# Adjusted distance to 0.9 meters for a closer look without camera near-plane clipping
+	var target_ghost_pos = camera.global_position + forward_dir * 0.9
+	target_ghost_pos.y -= 0.85 # Offset head height to align with camera eye level
+	
+	global_position = target_ghost_pos
+	
+	# Look at the player camera horizontally (keeping X and Z rotation at 0)
+	var look_target = camera.global_position
+	look_target.y = global_position.y
+	look_at(look_target, Vector3.UP)
+
+	# Disable collision shape so she doesn't physically push/collide with the player
+	$CollisionShape3D.disabled = true
+
+	visible = true
+	is_active = true
+	is_jumpscaring = false
+	jumpscare_timer = jumpscare_time_limit
+	senter_time_accumulated = 0.0
+	_horror_mode_triggered = false
+	_footstep_timer = 0.0
+	_breath_interval_timer = 0.0
+	$MeshInstance3D.position = Vector3.ZERO
+
+	# Play immediate intense sounds
+	AudioManager.play_sfx("specter_moan_aggressive", 1.0)
+	AudioManager.play_music("horror_active")
+	EventBus.emit_message_requested("SHE IS RIGHT HERE.")
+
 func _on_specter_spawned() -> void:
 	if spawn_points.is_empty():
 		return
@@ -135,6 +175,9 @@ func _on_specter_spawned() -> void:
 		target_pos.y = global_position.y
 		if global_position.distance_to(target_pos) > 0.1:
 			look_at(target_pos, Vector3.UP)
+
+	# Re-enable collision for normal spawn
+	$CollisionShape3D.disabled = false
 
 	visible = true
 	is_active = true
@@ -161,6 +204,9 @@ func _dismiss_specter() -> void:
 	_horror_mode_triggered = false
 	$MeshInstance3D.position = Vector3.ZERO
 
+	# Re-enable collision shape on reset
+	$CollisionShape3D.disabled = false
+
 	# Play a retreating scream, then switch back to tension music
 	AudioManager.play_sfx("specter_dismissed", 0.0)
 	await get_tree().create_timer(0.5).timeout
@@ -178,6 +224,27 @@ func _initiate_jumpscare_sequence() -> void:
 	await AudioManager.silence_for_jumpscare(_do_jumpscare.bind())
 
 func _do_jumpscare() -> void:
+	# Position the ghost head right in front of the camera for an extreme close-up
+	if player != null:
+		var camera = player.get_node_or_null("Head/Camera3D") as Camera3D
+		if camera != null and is_instance_valid(camera):
+			var forward_dir = -camera.global_transform.basis.z.normalized()
+			
+			# Put the ghost head close (0.65 meters) to avoid camera clipping
+			var target_ghost_pos = camera.global_position + forward_dir * 0.65
+			target_ghost_pos.y -= 0.85 # Offset head height to align with camera eye level
+			
+			global_position = target_ghost_pos
+			
+			# Make it look at the camera horizontally (keeping X and Z rotation at 0)
+			var look_target = camera.global_position
+			look_target.y = global_position.y
+			look_at(look_target, Vector3.UP)
+			
+	# Disable collision shape so she doesn't push the camera / player
+	$CollisionShape3D.disabled = true
+	visible = true
+
 	# ── JUMPSCARE AUDIO BLAST ─────────────────────────────────────────────
 	# Fire both the ghost scream AND the piano dissonance at max volume
 	AudioManager.play_sfx("jumpscare_01", 3.0)
