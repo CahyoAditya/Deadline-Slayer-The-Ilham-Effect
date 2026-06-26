@@ -4,18 +4,18 @@
 [ext_resource type="Shader" uid="uid://vmjsonirh63n" path="res://Shaders/PostProcess.gdshader" id="3_post"]
 [ext_resource type="PackedScene" uid="uid://be5p0j4w6v1m4" path="res://Scenes/Bedroom.tscn" id="5_bedroom"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/HUD.tscn" id="6_hud"]
-[ext_resource type="PackedScene" uid="uid://doem1em4jknac" path="res://Scenes/Props/CodingTerminal.tscn" id="7_terminal"]
+[ext_resource type="PackedScene" path="res://Scenes/Props/CodingTerminal.tscn" id="7_terminal"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/KopiItem.tscn" id="8_kopi"]
 [ext_resource type="PackedScene" path="res://Scenes/Props/BatteryPickup.tscn" id="9_battery"]
-[ext_resource type="PackedScene" path="res://Scenes/Entities/Specter.tscn" id="10_specter"]
-[ext_resource type="Shader" path="res://Shaders/SanityDistort.gdshader" id="11_distort"]
+[ext_resource type="PackedScene" uid="uid://dre1asf22p57u" path="res://Scenes/Entities/Specter.tscn" id="10_specter"]
+[ext_resource type="Shader" uid="uid://b8t1eosuff2cn" path="res://Shaders/SanityDistort.gdshader" id="11_distort"]
 [ext_resource type="Script" uid="uid://bo3lj06bn7y24" path="res://Scripts/UI/PostProcessController.gd" id="12_controller"]
 [ext_resource type="Shader" uid="uid://d3doosgbyqvs0" path="res://Shaders/VHS_CRT.gdshader" id="13_vhs"]
 [ext_resource type="Shader" uid="uid://bdrymbunbd3mx" path="res://Shaders/GLITCH_EFFECT.gdshader" id="14_glitch"]
 [ext_resource type="Shader" uid="uid://crpj2t50saddk" path="res://Shaders/PS1_PSX_POSTPROCESSING.gdshader" id="15_ps1post"]
 [ext_resource type="Script" uid="uid://cl2ggwj71n2ev" path="res://Scripts/UI/ShaderController.gd" id="16_shaderctrl"]
 [ext_resource type="Shader" uid="uid://cxffy2dhvnf34" path="res://Shaders/FISHEYE.gdshader" id="17_fisheye"]
-[ext_resource type="Shader" uid="uid://bswwonqnogi5c" path="res://Shaders/COLOR_CORRECTION.gdshader" id="18_color"]
+[ext_resource type="Shader" path="res://Shaders/COLOR_CORRECTION.gdshader" id="18_color"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -128,7 +128,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.3601797, 1.0591336, 
 transform = Transform3D(0.28395778, 0, 0.4115434, 0, 0.5, 0, -0.4115434, 0, 0.28395778, -2.1916904, 0.9029902, -1.6060847)
 
 [node name="Specter" parent="." instance=ExtResource("10_specter")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 8.263377)
+transform = Transform3D(0.15881288, 0, 0.9873087, 0, 1, 0, -0.9873087, 0, 0.15881288, -0.28260952, 0.4048553, 7.4857645)
 spawn_points = Array[Vector3]([Vector3(0, 0.9, -0.65), Vector3(0.25, 0.9, 1.2), Vector3(2, 0.9, -1.85), Vector3(2.5, 0.9, -0.5)])
 
 [node name="HUD" parent="." instance=ExtResource("6_hud")]

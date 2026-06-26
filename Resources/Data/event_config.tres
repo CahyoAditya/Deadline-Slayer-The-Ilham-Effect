@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_event")
 deadline_seconds = 360.0
-thresholds = Array[int]([25, 50, 75, 99, 100])
+thresholds = Array[int]([25, 50, 75, 80, 99, 100])
 jumpscare_duration = 1.5
 kernel_panic_auto_reboot_time = 10.0

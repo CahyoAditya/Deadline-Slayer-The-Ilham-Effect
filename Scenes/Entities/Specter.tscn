@@ -1,10 +1,7 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://dre1asf22p57u"]
 
-[ext_resource type="Script" path="res://Scripts/Entities/SpecterAI.gd" id="1_specter"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_specter"]
-radius = 0.35
-height = 1.8
+[ext_resource type="Script" uid="uid://co6if88ogj4n3" path="res://Scripts/Entities/SpecterAI.gd" id="1_specter"]
+[ext_resource type="PackedScene" uid="uid://dqr6wg8grjola" path="res://Models/ghost-girl/source/Ghost Girl.fbx" id="2_ghost_girl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_specter"]
 radius = 0.35
@@ -15,17 +12,17 @@ radius = 1.25
 
 [node name="Specter" type="CharacterBody3D"]
 script = ExtResource("1_specter")
-jumpscare_time_limit = 7.0
-senter_duration_to_dismiss = 5.0
+spawn_points = Array[Vector3]([Vector3(0, 0.9, -0.65), Vector3(-1.8, 0.9, 1.2), Vector3(-1.8, 0.9, -2.5), Vector3(0.5, 0.9, 1.2), Vector3(-0.3, 0.4, -1)])
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_specter")
+[node name="MeshInstance3D" type="Node3D" parent="."]
+
+[node name="GhostGirl" parent="MeshInstance3D" instance=ExtResource("2_ghost_girl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_specter")
 
 [node name="DetectionArea" type="Area3D" parent="."]
-monitoring = true
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
