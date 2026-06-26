@@ -18,7 +18,7 @@ func _ready() -> void:
 		start_timer(duration_seconds)
 
 func _process(delta: float) -> void:
-	if not is_running:
+	if not is_running or not GameManager.is_playing():
 		return
 
 	time_left_seconds = maxf(time_left_seconds - delta, 0.0)

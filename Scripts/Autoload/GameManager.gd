@@ -6,6 +6,7 @@ enum GameState { MENU, PLAYING, PAUSED, KERNEL_PANIC, GAME_OVER, WIN }
 @export var sanity_data: SanityData = SanityData.new()
 @export var battery_data: BatteryData = BatteryData.new()
 @export var event_config: EventConfig = EventConfig.new()
+@export var money_data: MoneyData = MoneyData.new()
 
 var current_state: GameState = GameState.MENU
 var deadline_timer := 0.0
@@ -62,6 +63,10 @@ func start_game() -> void:
 	lose_reason = ""
 	time_survived = 0.0
 	EventBus.emit_deadline_changed(deadline_timer)
+	
+	if is_instance_valid(GlobalTimer):
+		GlobalTimer.start_timer(event_config.deadline_seconds)
+
 	set_state(GameState.PLAYING)
 	# Start calm background music (deferred so AudioManager is fully ready)
 	call_deferred("_start_calm_music")
@@ -166,6 +171,11 @@ func _load_resources() -> void:
 		var loaded_config := load("res://Resources/Data/event_config.tres")
 		if loaded_config is EventConfig:
 			event_config = loaded_config
+
+	if ResourceLoader.exists("res://Resources/Data/money_data.tres"):
+		var loaded_money := load("res://Resources/Data/money_data.tres")
+		if loaded_money is MoneyData:
+			money_data = loaded_money
 
 func _start_calm_music() -> void:
 	AudioManager.play_music("calm")

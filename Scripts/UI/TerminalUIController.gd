@@ -16,19 +16,14 @@ extends PanelContainer
 @onready var shop_intro: RichTextLabel = %ShopIntro
 @onready var buy_coffee_btn: Button = %BuyCoffeeButton
 @onready var buy_battery_btn: Button = %BuyBatteryButton
+@onready var buy_battery_upgrade_btn: Button = %BuyBatteryUpgradeButton
+@onready var buy_sanity_upgrade_btn: Button = %BuySanityUpgradeButton
+@onready var money_label: Label = %MoneyLabel
+@onready var shop_money_label: Label = %ShopMoneyLabel
 @onready var shop_log: RichTextLabel = %ShopLog
 
 var has_seen_shop_intro := false
 var coffee_consumed := 0
-var is_shop_locked := false
-var active_delivery := false
-
-const COURIERS := [
-	"Kurir Deatwalls",
-	"Kurir Juliusssy",
-	"Kurir Hamgarian",
-	"Kurir Nama Adit Pasaran"
-]
 
 var evaluator := TypingEvaluator.new()
 var current_pattern := ""
@@ -98,6 +93,9 @@ func _ready() -> void:
 	shop_close_btn.pressed.connect(_close_shop)
 	buy_coffee_btn.pressed.connect(func(): _order_item("coffee"))
 	buy_battery_btn.pressed.connect(func(): _order_item("battery"))
+	buy_battery_upgrade_btn.pressed.connect(func(): _buy_upgrade("battery"))
+	buy_sanity_upgrade_btn.pressed.connect(func(): _buy_upgrade("sanity"))
+	EventBus.money_changed.connect(_on_money_changed)
 
 func open() -> void:
 	if not GameManager.is_playing():
@@ -109,6 +107,7 @@ func open() -> void:
 	AudioManager.play_sfx("terminal_open", 0.0)
 	_next_pattern()
 	_refocus_input()
+	_on_money_changed(MoneyManager.current_money)
 	input_field.text_changed.connect(_on_text_changed)
 
 func close() -> void:
@@ -123,7 +122,7 @@ func close() -> void:
 	EventBus.emit_terminal_closed()
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed("ui_cancel"):
 		close()
 		get_viewport().set_input_as_handled()
@@ -139,8 +138,17 @@ func _on_text_submitted(text: String) -> void:
 	if PatternMatcher.check(text, current_pattern):
 		var gained := evaluator.score(GameManager.progress_data.progress_per_correct_input)
 		ProgressSystem.add_progress(gained)
-		_append_output("[color=green]> OKE +%.1f%%[/color]" % gained)
-		_show_feedback("MANTAP +%.1f%%" % gained, Color(0.25, 1.0, 0.35))
+		
+		# Hitung uang berdasarkan kecepatan mengetik
+		var money_cfg := GameManager.money_data
+		var is_fast := (Time.get_ticks_msec() - evaluator.started_at_msec) < 3000
+		var earned_money := money_cfg.money_per_correct_input
+		if is_fast:
+			earned_money += money_cfg.money_bonus_fast
+		MoneyManager.add_money(earned_money)
+
+		_append_output("[color=green]> OKE +%.1f%% (+Rp%d)[/color]" % [gained, int(earned_money)])
+		_show_feedback("MANTAP +%.1f%% | +Rp%d" % [gained, int(earned_money)], Color(0.25, 1.0, 0.35))
 		AudioManager.play_sfx("terminal_correct", 0.0)
 		_next_pattern()
 	else:
@@ -234,6 +242,7 @@ func _refocus_input() -> void:
 func _open_shop() -> void:
 	terminal_vbox.visible = false
 	shop_vbox.visible = true
+	_on_money_changed(MoneyManager.current_money)
 	if not has_seen_shop_intro:
 		has_seen_shop_intro = true
 		shop_intro.text = "SELAMAT DATANG DI TOKO AZKA JAYA ABADI"
@@ -251,51 +260,21 @@ func _close_shop() -> void:
 		_refocus_input()
 
 func _order_item(item_type: String) -> void:
-	if is_shop_locked or active_delivery:
+	var cfg := GameManager.money_data
+	var price := cfg.kopi_price if item_type == "coffee" else cfg.battery_price
+	if not MoneyManager.spend_money(price):
+		_append_shop_log("[color=red]Uang tidak cukup! (Rp %d)[/color]" % int(price))
 		return
-		
-	active_delivery = true
-	buy_coffee_btn.disabled = true
-	buy_battery_btn.disabled = true
 	
-	var courier = COURIERS.pick_random()
-	var delivery_time := 10.0
-	
-	var rand := randf()
-	if rand < 0.10:
-		_append_shop_log("[color=red][!] Karyawan Hamgarian menghancurkan toko Azka Jaya Abadi![/color]")
-		_append_shop_log("Toko ditutup sementara untuk perbaikan (20 detik).")
-		active_delivery = false
-		is_shop_locked = true
-		var t = get_tree().create_timer(20.0)
-		t.timeout.connect(func():
-			is_shop_locked = false
-			if is_instance_valid(buy_coffee_btn):
-				buy_coffee_btn.disabled = false
-				buy_battery_btn.disabled = false
-				_append_shop_log("[color=green][!] Toko Azka Jaya Abadi kembali buka.[/color]")
-		)
-		return
-	elif rand < 0.25:
-		_append_shop_log("[color=yellow][!] Karyawan lagi rajin. Pesanan diproses kilat![/color]")
-		delivery_time = 5.0
-		
-	var item_name = "Calvin Coffee" if item_type == "coffee" else "Baterai AAA dit"
-	_append_shop_log("> Memesan " + item_name + " via " + courier + "...")
-	_append_shop_log("Estimasi waktu: " + str(delivery_time) + " detik.")
-	
-	var t = get_tree().create_timer(delivery_time)
-	t.timeout.connect(func():
-		active_delivery = false
-		_deliver_item(item_type, courier)
-	)
+	_deliver_item(item_type)
 
-func _deliver_item(item_type: String, courier: String) -> void:
-	_append_shop_log("[color=green]> " + courier + " telah mengantarkan pesananmu![/color]")
+func _deliver_item(item_type: String) -> void:
 	AudioManager.play_sfx("terminal_correct", 0.0)
 	
 	var player = get_tree().get_first_node_in_group("player")
-	if not player: return
+	if not player: 
+		_append_shop_log("[color=red]Error: Player tidak ditemukan![/color]")
+		return
 	
 	if item_type == "coffee":
 		coffee_consumed += 1
@@ -307,24 +286,57 @@ func _deliver_item(item_type: String, courier: String) -> void:
 				san_sys.drain(60.0)
 				EventBus.emit_message_requested("OVERDOSIS KAFEIN! KAMU MERASA INGIN MATI.")
 			else:
-				_append_shop_log("> Meminum Calvin Coffee. Kewarasan bertambah.")
-				san_sys.restore(25.0)
+				_append_shop_log("[color=green]> Meminum Calvin Coffee. Kewarasan bertambah.[/color]")
+				san_sys.restore(GameManager.sanity_data.kopi_restore_amount)
 	elif item_type == "battery":
 		var bat_sys = player.get_node_or_null("BatterySystem")
 		if bat_sys:
-			_append_shop_log("> Mengganti baterai senter.")
+			_append_shop_log("[color=green]> Mengganti baterai senter.[/color]")
 			bat_sys.restore(50.0)
 
-	# Store cooldown after successful delivery
-	if not is_shop_locked:
-		_append_shop_log("[color=yellow]Toko sedang menyiapkan pesanan berikutnya (Cooldown 5 detik)...[/color]")
-		var cd_timer = get_tree().create_timer(5.0)
-		cd_timer.timeout.connect(func():
-			if not is_shop_locked and is_instance_valid(buy_coffee_btn):
-				buy_coffee_btn.disabled = false
-				buy_battery_btn.disabled = false
-				_append_shop_log("[color=green]Toko siap menerima pesanan kembali![/color]")
-		)
+func _buy_upgrade(type: String) -> void:
+	var cfg := GameManager.money_data
+	var price := cfg.upgrade_battery_price if type == "battery" else cfg.upgrade_sanity_price
+	if not MoneyManager.spend_money(price):
+		_append_shop_log("[color=red]Uang tidak cukup untuk upgrade! (Rp %d)[/color]" % int(price))
+		return
+	
+	AudioManager.play_sfx("terminal_correct", 0.0)
+	
+	if type == "battery":
+		GameManager.battery_data.max_battery += cfg.upgrade_battery_amount
+		var player = get_tree().get_first_node_in_group("player")
+		if player:
+			var bat_sys = player.get_node_or_null("BatterySystem")
+			if bat_sys:
+				bat_sys.restore(cfg.upgrade_battery_amount)
+		_append_shop_log("[color=green]Max Batre naik! (+%d) Total: %d[/color]" % [int(cfg.upgrade_battery_amount), int(GameManager.battery_data.max_battery)])
+	else:
+		GameManager.sanity_data.max_sanity += cfg.upgrade_sanity_amount
+		var player = get_tree().get_first_node_in_group("player")
+		if player:
+			var san_sys = player.get_node_or_null("SanitySystem")
+			if san_sys:
+				san_sys.restore(cfg.upgrade_sanity_amount)
+		_append_shop_log("[color=green]Max Sanity naik! (+%d) Total: %d[/color]" % [int(cfg.upgrade_sanity_amount), int(GameManager.sanity_data.max_sanity)])
+	
+	EventBus.emit_upgrade_purchased(type)
+
+func _on_money_changed(new_value: float) -> void:
+	if money_label != null:
+		money_label.text = "💰 Rp %d" % int(new_value)
+	if shop_money_label != null:
+		shop_money_label.text = "💰 Rp %d" % int(new_value)
+		
+	var cfg := GameManager.money_data
+	if buy_coffee_btn != null:
+		buy_coffee_btn.disabled = new_value < cfg.kopi_price
+	if buy_battery_btn != null:
+		buy_battery_btn.disabled = new_value < cfg.battery_price
+	if buy_battery_upgrade_btn != null:
+		buy_battery_upgrade_btn.disabled = new_value < cfg.upgrade_battery_price
+	if buy_sanity_upgrade_btn != null:
+		buy_sanity_upgrade_btn.disabled = new_value < cfg.upgrade_sanity_price
 
 func _append_shop_log(text: String) -> void:
 	shop_log.append_text(text + "\n")
