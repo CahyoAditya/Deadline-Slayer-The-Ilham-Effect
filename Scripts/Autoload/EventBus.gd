@@ -37,6 +37,8 @@ signal terminal_requested()
 signal terminal_opened()
 signal terminal_closed()
 signal message_requested(text: String)
+signal money_changed(new_value: float)
+signal upgrade_purchased(type: String)
 
 func emit_game_state_changed(new_state: int) -> void:
 	game_state_changed.emit(new_state)
@@ -125,6 +127,12 @@ func emit_terminal_closed() -> void:
 
 func emit_message_requested(text: String) -> void:
 	message_requested.emit(text)
+
+func emit_money_changed(value: float) -> void:
+	money_changed.emit(value)
+
+func emit_upgrade_purchased(type: String) -> void:
+	upgrade_purchased.emit(type)
 
 signal camera_moved(velocity: Vector2)
 

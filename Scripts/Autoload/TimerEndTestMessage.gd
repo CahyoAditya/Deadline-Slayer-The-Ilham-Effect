@@ -9,6 +9,12 @@ var message_label: Label
 func _ready() -> void:
 	_build_ui()
 	EventBus.five_minutes_elapsed.connect(_on_five_minutes_elapsed)
+	EventBus.game_state_changed.connect(_on_game_state_changed)
+
+func _on_game_state_changed(state: int) -> void:
+	if state == 1: # PLAYING
+		if message_panel != null:
+			message_panel.visible = false
 
 func _build_ui() -> void:
 	canvas_layer = CanvasLayer.new()

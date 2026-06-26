@@ -30,6 +30,10 @@ func _ready() -> void:
 	# Connect to EventBus for dramatic one-shot sounds
 	EventBus.sanity_critical.connect(_on_sanity_critical)
 	EventBus.sanity_depleted.connect(_on_sanity_depleted)
+	EventBus.upgrade_purchased.connect(func(type: String) -> void:
+		if type == "sanity":
+			max_sanity = GameManager.sanity_data.max_sanity
+	)
 
 func _process(delta: float) -> void:
 	if _game_manager_is_playing():
