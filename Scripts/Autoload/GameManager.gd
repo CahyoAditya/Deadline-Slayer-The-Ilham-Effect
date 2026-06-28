@@ -89,6 +89,10 @@ func set_state(new_state: GameState) -> void:
 func is_playing() -> bool:
 	return current_state == GameState.PLAYING
 
+func add_deadline_time(seconds: float) -> void:
+	deadline_timer = clampf(deadline_timer + seconds, 0.0, event_config.deadline_seconds)
+	EventBus.emit_deadline_changed(deadline_timer)
+
 func pause_game() -> void:
 	if current_state == GameState.PLAYING:
 		set_state(GameState.PAUSED)

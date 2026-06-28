@@ -149,6 +149,10 @@ func _on_text_submitted(text: String) -> void:
 		var earned_money := base_money * multiplier
 		MoneyManager.add_money(earned_money)
 
+		# Tambah waktu deadline
+		var time_reward := 5.0 if multiplier == 1.5 else 2.0
+		GameManager.add_deadline_time(time_reward)
+
 		_append_output("[color=green]> OKE +%.1f%% (+Rp%d)[/color]" % [gained, int(earned_money)])
 		_show_feedback("MANTAP +%.1f%% | +Rp%d" % [gained, int(earned_money)], Color(0.25, 1.0, 0.35))
 		AudioManager.play_sfx("terminal_correct", 0.0)
