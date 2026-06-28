@@ -14,6 +14,7 @@ var is_active := false
 var jumpscare_timer := 0.0
 var senter_time_accumulated := 0.0
 var is_jumpscaring := false
+var spawn_check_timer := 0.0
 
 # Horror audio state
 var _last_flash_sound_time := 0.0
@@ -33,6 +34,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not is_active or player == null or not GameManager.is_playing() or is_jumpscaring:
 		$MeshInstance3D.position = Vector3.ZERO
+		if GameManager.is_playing() and not is_active and not is_jumpscaring:
+			_tick_spawn_timer(delta)
 		return
 
 	# Check if player is shining flashlight at the Specter
@@ -87,6 +90,32 @@ func _process(delta: float) -> void:
 		if jumpscare_timer <= 0.0:
 			_initiate_jumpscare_sequence()
 			return
+
+func _tick_spawn_timer(delta: float) -> void:
+	var progress := ProgressSystem.get_progress()
+	if progress < 25.0:
+		spawn_check_timer = 0.0
+		return
+
+	spawn_check_timer += delta
+
+	var interval := 30.0
+	var chance := 0.30
+
+	if progress >= 80.0:
+		interval = 10.0
+		chance = 0.75
+	elif progress >= 75.0:
+		interval = 15.0
+		chance = 0.60
+	elif progress >= 50.0:
+		interval = 20.0
+		chance = 0.45
+
+	if spawn_check_timer >= interval:
+		spawn_check_timer = 0.0
+		if randf() < chance:
+			_on_specter_spawned()
 
 func _check_if_flashed() -> bool:
 	if player == null:
@@ -149,7 +178,9 @@ func spawn_in_front_of_player() -> void:
 	visible = true
 	is_active = true
 	is_jumpscaring = false
-	jumpscare_timer = jumpscare_time_limit
+	var progress := ProgressSystem.get_progress()
+	var current_limit = 5.0 if progress >= 80.0 else jumpscare_time_limit
+	jumpscare_timer = current_limit
 	senter_time_accumulated = 0.0
 	_horror_mode_triggered = false
 	_footstep_timer = 0.0
@@ -182,7 +213,9 @@ func _on_specter_spawned() -> void:
 	visible = true
 	is_active = true
 	is_jumpscaring = false
-	jumpscare_timer = jumpscare_time_limit
+	var progress := ProgressSystem.get_progress()
+	var current_limit = 5.0 if progress >= 80.0 else jumpscare_time_limit
+	jumpscare_timer = current_limit
 	senter_time_accumulated = 0.0
 	_horror_mode_triggered = false
 	_footstep_timer = 0.0

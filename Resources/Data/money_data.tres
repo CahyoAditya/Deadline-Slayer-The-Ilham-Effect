@@ -6,6 +6,7 @@
 script = ExtResource("1_money")
 money_per_correct_input = 10.0
 money_bonus_fast = 5.0
+money_per_char = 0.6
 kopi_price = 30.0
 battery_price = 30.0
 upgrade_battery_price = 30.0
