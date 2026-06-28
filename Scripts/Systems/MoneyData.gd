@@ -3,6 +3,7 @@ extends Resource
 
 @export var money_per_correct_input    := 10.0
 @export var money_bonus_fast           := 5.0   # bonus tambahan jika < 3 detik
+@export var money_per_char             := 0.6
 
 @export var kopi_price                 := 30.0
 @export var battery_price              := 30.0

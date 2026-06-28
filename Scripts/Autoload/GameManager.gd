@@ -58,6 +58,8 @@ func start_game() -> void:
 	progress_data.reset()
 	if is_instance_valid(ProgressSystem):
 		ProgressSystem.reset()
+	if is_instance_valid(MoneyManager):
+		MoneyManager.reset()
 	deadline_timer = event_config.deadline_seconds
 	is_specter_active = false
 	lose_reason = ""

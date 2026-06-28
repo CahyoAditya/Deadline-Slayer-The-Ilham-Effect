@@ -136,15 +136,17 @@ func _on_text_changed(_new_text: String) -> void:
 
 func _on_text_submitted(text: String) -> void:
 	if PatternMatcher.check(text, current_pattern):
-		var gained := evaluator.score(GameManager.progress_data.progress_per_correct_input)
+		var char_count := current_pattern.length()
+		var multiplier := evaluator.get_speed_multiplier(char_count)
+		
+		# Hitung progress
+		var base_progress := float(char_count) * GameManager.progress_data.progress_per_char
+		var gained := base_progress * multiplier
 		ProgressSystem.add_progress(gained)
 		
-		# Hitung uang berdasarkan kecepatan mengetik
-		var money_cfg := GameManager.money_data
-		var is_fast := (Time.get_ticks_msec() - evaluator.started_at_msec) < 3000
-		var earned_money := money_cfg.money_per_correct_input
-		if is_fast:
-			earned_money += money_cfg.money_bonus_fast
+		# Hitung uang
+		var base_money := float(char_count) * GameManager.money_data.money_per_char
+		var earned_money := base_money * multiplier
 		MoneyManager.add_money(earned_money)
 
 		_append_output("[color=green]> OKE +%.1f%% (+Rp%d)[/color]" % [gained, int(earned_money)])
@@ -283,7 +285,14 @@ func _deliver_item(item_type: String) -> void:
 			if coffee_consumed >= 3 and randf() < 0.30:
 				_append_shop_log("[color=red]FATAL: KAMU OVERDOSIS KAFEIN![/color]")
 				_append_shop_log("[color=red]JANTUNGMU BERDETAK TERLALU KENCANG, KEWARASAN MENURUN DRASTIS![/color]")
-				san_sys.drain(60.0)
+				# Sisakan minimal 5% sanity agar tidak langsung mati tanpa sempat membaca log/warning
+				var target_drain := 45.0
+				var current_san := float(san_sys.get("current_sanity"))
+				if current_san - target_drain < 5.0:
+					target_drain = maxf(current_san - 5.0, 0.0)
+				san_sys.drain(target_drain)
+				
+				AudioManager.play_sfx("gasp", 2.0)
 				EventBus.emit_message_requested("OVERDOSIS KAFEIN! KAMU MERASA INGIN MATI.")
 			else:
 				_append_shop_log("[color=green]> Meminum Calvin Coffee. Kewarasan bertambah.[/color]")
@@ -317,7 +326,7 @@ func _buy_upgrade(type: String) -> void:
 		if player:
 			var san_sys = player.get_node_or_null("SanitySystem")
 			if san_sys:
-				san_sys.restore(cfg.upgrade_sanity_amount)
+				san_sys.restore(15.0) # Berikan pemulihan kecil saja (15.0) agar tidak terlalu OP
 		_append_shop_log("[color=green]Max Sanity naik! (+%d) Total: %d[/color]" % [int(cfg.upgrade_sanity_amount), int(GameManager.sanity_data.max_sanity)])
 	
 	EventBus.emit_upgrade_purchased(type)
